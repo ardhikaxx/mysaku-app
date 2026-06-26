@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../core/constants/firebase_constants.dart';
 import '../../core/errors/app_exception.dart';
@@ -22,7 +23,10 @@ class AuthRepository {
         email: email,
         password: password,
       );
-      await _handlePostLogin(credential.user);
+      if (credential.user != null) {
+        await ensureUserInitialized(credential.user!);
+        await _handlePostLogin(credential.user);
+      }
       return credential;
     } on FirebaseAuthException catch (e) {
       throw AppException(e.message ?? 'Login gagal', e.code);
@@ -66,22 +70,20 @@ class AuthRepository {
 
       final userCredential = await _auth.signInWithCredential(credential);
       if (userCredential.user != null) {
-        final userDoc = await _firestore
-            .collection(FirebaseConstants.users)
-            .doc(userCredential.user!.uid)
-            .get();
-
-        if (!userDoc.exists) {
-          await _initializeUserAndWallet(
-            userCredential.user!,
-            googleUser.displayName ?? 'User',
-          );
-        } else {
-          await _handlePostLogin(userCredential.user);
-        }
+        await ensureUserInitialized(
+          userCredential.user!,
+          googleUser.displayName,
+        );
+        await _handlePostLogin(userCredential.user);
       }
       return userCredential;
     } on FirebaseAuthException catch (e) {
+      throw AppException(e.message ?? 'Google Sign-In gagal', e.code);
+    } on PlatformException catch (e) {
+      if (e.code == 'sign_in_failed' || e.toString().contains('ApiException: 10')) {
+        throw AppException(
+            'Konfigurasi Google Sign-In gagal (SHA-1 fingerprint belum didaftarkan di Firebase Console).');
+      }
       throw AppException(e.message ?? 'Google Sign-In gagal', e.code);
     } catch (e) {
       throw AppException(e.toString());
@@ -94,6 +96,24 @@ class AuthRepository {
       await _auth.signOut();
     } catch (e) {
       throw AppException(e.toString());
+    }
+  }
+
+  Future<void> ensureUserInitialized(User authUser, [String? name]) async {
+    try {
+      final userDoc = await _firestore
+          .collection(FirebaseConstants.users)
+          .doc(authUser.uid)
+          .get();
+      if (!userDoc.exists) {
+        final displayName = name ??
+            authUser.displayName ??
+            authUser.email?.split('@')[0] ??
+            'User';
+        await _initializeUserAndWallet(authUser, displayName);
+      }
+    } catch (e) {
+      print('Gagal inisialisasi user di Firestore: $e');
     }
   }
 
@@ -158,6 +178,7 @@ class AuthRepository {
 
   Future<void> _handlePostLogin(User? authUser) async {
     if (authUser == null) return;
+    await ensureUserInitialized(authUser);
     final uid = authUser.uid;
     final userDocRef = _firestore.collection(FirebaseConstants.users).doc(uid);
     final userDoc = await userDocRef.get();

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1033802383199",
+    "firebase_url": "https://mysaku-a652f-default-rtdb.firebaseio.com",
     "project_id": "mysaku-a652f",
     "storage_bucket": "mysaku-a652f.firebasestorage.app"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1033802383199-r3no3lmhiatopbt1qdksh1vc2aar3afd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mysaku_app",
+            "certificate_hash": "f0b7683c2c2e77674954fdbeb0b4d88c11736e16"
+          }
+        },
         {
           "client_id": "1033802383199-9velnubis34q03h8g41m7ku1lr5u53qv.apps.googleusercontent.com",
           "client_type": 3

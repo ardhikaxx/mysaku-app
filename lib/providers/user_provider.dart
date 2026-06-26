@@ -11,6 +11,9 @@ final userProvider = StreamProvider<UserModel?>((ref) {
   final authUser = ref.watch(authStateProvider).value;
   if (authUser == null) return Stream.value(null);
 
+  // Otomatis buat dokumen Firestore jika belum ada
+  ref.read(authRepositoryProvider).ensureUserInitialized(authUser);
+
   final userRepo = ref.watch(userRepositoryProvider);
   return userRepo.getUserStream(authUser.uid);
 });
