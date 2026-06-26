@@ -136,7 +136,7 @@ class ProfileScreen extends ConsumerWidget {
           final isPersonal = user.activeWalletId == user.personalWalletId;
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
             child: Column(
               children: [
                 ProfileHeader(user: user),

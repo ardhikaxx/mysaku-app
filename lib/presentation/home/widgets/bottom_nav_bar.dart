@@ -13,40 +13,52 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surfaceWhite,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.surfaceWhite,
+            borderRadius: BorderRadius.circular(32),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 24,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: NavigationBar(
-        selectedIndex: currentIndex,
-        onDestinationSelected: onTap,
-        backgroundColor: AppColors.surfaceWhite,
-        indicatorColor: AppColors.primaryColor.withOpacity(0.15),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.swap_horiz_outlined),
-            selectedIcon: Icon(Icons.swap_horiz, color: AppColors.primaryColor),
-            label: 'Cashflow',
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(32),
+            child: NavigationBar(
+              height: 65,
+              selectedIndex: currentIndex,
+              onDestinationSelected: onTap,
+              backgroundColor: AppColors.surfaceWhite,
+              indicatorColor: AppColors.primaryColor.withOpacity(0.15),
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(Icons.swap_horiz_outlined),
+                  selectedIcon:
+                      Icon(Icons.swap_horiz, color: AppColors.primaryColor),
+                  label: 'Cashflow',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.auto_awesome_outlined),
+                  selectedIcon:
+                      Icon(Icons.auto_awesome, color: AppColors.accentAmber),
+                  label: 'Impian',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.person_outline),
+                  selectedIcon:
+                      Icon(Icons.person, color: AppColors.primaryColor),
+                  label: 'Profil',
+                ),
+              ],
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.auto_awesome_outlined),
-            selectedIcon:
-                Icon(Icons.auto_awesome, color: AppColors.accentAmber),
-            label: 'Impian',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person, color: AppColors.primaryColor),
-            label: 'Profil',
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -25,23 +25,20 @@ class TransactionList extends ConsumerWidget {
           children: [
             const Text('Riwayat Transaksi',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            SegmentedButton<String>(
-              segments: const [
-                ButtonSegment(
-                    value: 'all',
-                    label: Text('Semua', style: TextStyle(fontSize: 11))),
-                ButtonSegment(
-                    value: 'income',
-                    label: Text('Masuk', style: TextStyle(fontSize: 11))),
-                ButtonSegment(
-                    value: 'expense',
-                    label: Text('Keluar', style: TextStyle(fontSize: 11))),
-              ],
-              selected: {filter},
-              onSelectionChanged: (val) => ref
-                  .read(transactionFilterProvider.notifier)
-                  .state = val.first,
-              style: const ButtonStyle(visualDensity: VisualDensity.compact),
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFFEEEEF2),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.all(3),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildTab(ref, filter, 'all', 'Semua'),
+                  _buildTab(ref, filter, 'income', 'Masuk'),
+                  _buildTab(ref, filter, 'expense', 'Keluar'),
+                ],
+              ),
             ),
           ],
         ),
@@ -95,6 +92,39 @@ class TransactionList extends ConsumerWidget {
                   style: const TextStyle(color: Colors.red))),
         ),
       ],
+    );
+  }
+
+  Widget _buildTab(
+      WidgetRef ref, String currentFilter, String value, String label) {
+    final isSelected = currentFilter == value;
+    return GestureDetector(
+      onTap: () => ref.read(transactionFilterProvider.notifier).state = value,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.surfaceWhite : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  )
+                ]
+              : null,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+            color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+          ),
+        ),
+      ),
     );
   }
 }
