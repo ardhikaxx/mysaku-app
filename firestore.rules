@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isMember(walletId) {
+      return request.auth != null &&
+             request.auth.uid in get(/databases/$(database)/documents/wallets/$(walletId)).data.memberIds;
+    }
+
+    function isOwner(walletId) {
+      return request.auth != null &&
+             request.auth.uid == get(/databases/$(database)/documents/wallets/$(walletId)).data.ownerId;
+    }
+
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    match /wallets/{walletId} {
+      allow read: if isMember(walletId);
+      allow create: if request.auth != null;
+      allow update: if isOwner(walletId);
+      allow delete: if isOwner(walletId);
+
+      match /transactions/{transactionId} {
+        allow read: if isMember(walletId);
+        allow create: if isMember(walletId);
+        allow update: if isMember(walletId) &&
+                         (isOwner(walletId) ||
+                          resource.data.createdBy == request.auth.uid);
+        allow delete: if isMember(walletId) &&
+                         (isOwner(walletId) ||
+                          resource.data.createdBy == request.auth.uid);
+      }
+
+      match /dreams/{dreamId} {
+        allow read: if isMember(walletId);
+        allow create: if isMember(walletId);
+        allow update: if isMember(walletId);
+        allow delete: if isOwner(walletId) ||
+                         resource.data.createdBy == request.auth.uid;
+      }
+
+      match /members/{memberId} {
+        allow read: if isMember(walletId);
+        allow write: if isOwner(walletId);
+      }
+    }
+
+    match /invitations/{invitationId} {
+      allow create: if request.auth != null;
+      allow read: if request.auth != null &&
+                     (resource.data.ownerId == request.auth.uid ||
+                      resource.data.invitedEmail == request.auth.token.email);
+      allow update: if request.auth != null &&
+                       (resource.data.ownerId == request.auth.uid ||
+                        resource.data.invitedEmail == request.auth.token.email);
+      allow delete: if request.auth != null &&
+                       resource.data.ownerId == request.auth.uid;
+    }
+  }
+}

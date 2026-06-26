@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1033802383199",
+    "project_id": "mysaku-a652f",
+    "storage_bucket": "mysaku-a652f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033802383199:android:5a55e8c0a6b3a56f4fc0ea",
+        "android_client_info": {
+          "package_name": "com.example.mysaku_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1033802383199-9velnubis34q03h8g41m7ku1lr5u53qv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs0SEH7T_Im2BUVpVxH_qbXhmLsbAFazM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1033802383199-9velnubis34q03h8g41m7ku1lr5u53qv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

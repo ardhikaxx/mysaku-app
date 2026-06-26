@@ -12,7 +12,7 @@
 | Nama Aplikasi   | MySAKU — My Smart Saving & Cashflow Utility                        |
 | Versi           | 1.0.0                                                               |
 | Platform        | Flutter (Android & iOS)                                             |
-| Backend         | Firebase (Authentication, Cloud Firestore, Cloud Storage)          |
+| Backend         | Firebase (Authentication & database realtime)          |
 | State Management| Riverpod                                                            |
 | Navigasi        | go_router                                                           |
 | Bahasa Kode     | Dart                                                                |
