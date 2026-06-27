@@ -9,6 +9,7 @@ import '../../data/models/transaction_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/transaction_provider.dart';
 import '../../providers/user_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 
 class AddTransactionScreen extends ConsumerStatefulWidget {
   const AddTransactionScreen({super.key});
@@ -119,15 +120,10 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text(AppStrings.addTransaction,
-            style: TextStyle(
-                color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
-        leading: IconButton(
-            icon: const Icon(Icons.close, color: AppColors.textPrimary),
-            onPressed: () => context.pop()),
+      appBar: FloatingCapsuleAppBar(
+        title: AppStrings.addTransaction,
+        showBack: true,
+        onLeadingTap: () => context.pop(),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

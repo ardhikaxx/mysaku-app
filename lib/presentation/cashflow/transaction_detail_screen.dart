@@ -9,6 +9,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/transaction_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/wallet_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 
 class TransactionDetailScreen extends ConsumerWidget {
   final TransactionModel tx;
@@ -80,28 +81,20 @@ class TransactionDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text('Detail Transaksi',
-            style: TextStyle(
-                fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => context.pop(),
-        ),
-        actions: [
-          if (canEdit)
-            IconButton(
-              icon: const Icon(Icons.edit_outlined,
-                  color: AppColors.textPrimary),
-              tooltip: 'Edit Transaksi',
-              onPressed: () => context.push(
-                  '/home/cashflow/edit/${tx.transactionId}',
-                  extra: tx),
-            ),
-        ],
+      appBar: FloatingCapsuleAppBar(
+        title: 'Detail Transaksi',
+        showBack: true,
+        onLeadingTap: () => context.pop(),
+        trailing: canEdit
+            ? IconButton(
+                icon: const Icon(Icons.edit_outlined,
+                    color: AppColors.textPrimary),
+                tooltip: 'Edit Transaksi',
+                onPressed: () => context.push(
+                    '/home/cashflow/edit/${tx.transactionId}',
+                    extra: tx),
+              )
+            : null,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

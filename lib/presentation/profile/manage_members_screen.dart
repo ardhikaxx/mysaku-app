@@ -6,6 +6,7 @@ import '../../core/constants/app_strings.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/wallet_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 import 'widgets/member_item_card.dart';
 
 class ManageMembersScreen extends ConsumerWidget {
@@ -19,15 +20,10 @@ class ManageMembersScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text(AppStrings.manageMembers,
-            style: TextStyle(
-                color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
-        leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-            onPressed: () => context.pop()),
+      appBar: FloatingCapsuleAppBar(
+        title: AppStrings.manageMembers,
+        showBack: true,
+        onLeadingTap: () => context.pop(),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

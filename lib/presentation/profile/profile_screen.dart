@@ -7,6 +7,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/invitation_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/wallet_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/settings_tile.dart';
 
@@ -120,12 +121,9 @@ class ProfileScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text(AppStrings.profileTitle,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
+      appBar: const FloatingCapsuleAppBar(
+        title: AppStrings.profileTitle,
+        leadingIcon: Icons.person_rounded,
       ),
       body: userAsync.when(
         data: (user) {

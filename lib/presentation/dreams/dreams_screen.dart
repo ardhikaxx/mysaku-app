@@ -6,6 +6,7 @@ import '../../core/constants/app_strings.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/dream_provider.dart';
 import '../../providers/wallet_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 import 'widgets/dream_card.dart';
 
 class DreamsScreen extends ConsumerWidget {
@@ -20,12 +21,9 @@ class DreamsScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text(AppStrings.dreamsTitle,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
+      appBar: const FloatingCapsuleAppBar(
+        title: AppStrings.dreamsTitle,
+        leadingIcon: Icons.auto_awesome_rounded,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),

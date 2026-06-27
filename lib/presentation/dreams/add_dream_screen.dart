@@ -7,6 +7,7 @@ import '../../data/models/dream_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/dream_provider.dart';
 import '../../providers/user_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 
 class AddDreamScreen extends ConsumerStatefulWidget {
   const AddDreamScreen({super.key});
@@ -64,15 +65,10 @@ class _AddDreamScreenState extends ConsumerState<AddDreamScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text(AppStrings.addDream,
-            style: TextStyle(
-                color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
-        leading: IconButton(
-            icon: const Icon(Icons.close, color: AppColors.textPrimary),
-            onPressed: () => context.pop()),
+      appBar: FloatingCapsuleAppBar(
+        title: AppStrings.addDream,
+        showBack: true,
+        onLeadingTap: () => context.pop(),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

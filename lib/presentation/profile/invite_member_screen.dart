@@ -7,6 +7,7 @@ import '../../core/errors/app_exception.dart';
 import '../../providers/invitation_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/wallet_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 
 class InviteMemberScreen extends ConsumerStatefulWidget {
   const InviteMemberScreen({super.key});
@@ -61,15 +62,10 @@ class _InviteMemberScreenState extends ConsumerState<InviteMemberScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text(AppStrings.inviteMember,
-            style: TextStyle(
-                color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
-        leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-            onPressed: () => context.pop()),
+      appBar: FloatingCapsuleAppBar(
+        title: AppStrings.inviteMember,
+        showBack: true,
+        onLeadingTap: () => context.pop(),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),

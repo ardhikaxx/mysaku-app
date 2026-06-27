@@ -6,6 +6,7 @@ import '../../core/constants/app_strings.dart';
 import '../../data/models/dream_model.dart';
 import '../../providers/dream_provider.dart';
 import '../../providers/user_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 
 class EditDreamScreen extends ConsumerStatefulWidget {
   final DreamModel dream;
@@ -113,20 +114,14 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text(AppStrings.editDream,
-            style: TextStyle(
-                color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
-        leading: IconButton(
-            icon: const Icon(Icons.close, color: AppColors.textPrimary),
-            onPressed: () => context.pop()),
-        actions: [
-          IconButton(
-              icon: const Icon(Icons.delete_outline, color: Colors.red),
-              onPressed: _isLoading ? null : _delete),
-        ],
+      appBar: FloatingCapsuleAppBar(
+        title: AppStrings.editDream,
+        showBack: true,
+        onLeadingTap: () => context.pop(),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete_outline, color: Colors.red),
+          onPressed: _isLoading ? null : _delete,
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

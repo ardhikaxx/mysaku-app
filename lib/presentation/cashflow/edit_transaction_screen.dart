@@ -8,6 +8,7 @@ import '../../core/extensions/datetime_extension.dart';
 import '../../data/models/transaction_model.dart';
 import '../../providers/transaction_provider.dart';
 import '../../providers/user_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 
 class EditTransactionScreen extends ConsumerStatefulWidget {
   final TransactionModel tx;
@@ -162,20 +163,14 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: const Text(AppStrings.editTransaction,
-            style: TextStyle(
-                color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
-        leading: IconButton(
-            icon: const Icon(Icons.close, color: AppColors.textPrimary),
-            onPressed: () => context.pop()),
-        actions: [
-          IconButton(
-              icon: const Icon(Icons.delete_outline, color: Colors.red),
-              onPressed: _isLoading ? null : _delete),
-        ],
+      appBar: FloatingCapsuleAppBar(
+        title: AppStrings.editTransaction,
+        showBack: true,
+        onLeadingTap: () => context.pop(),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete_outline, color: Colors.red),
+          onPressed: _isLoading ? null : _delete,
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

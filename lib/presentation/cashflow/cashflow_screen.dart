@@ -5,6 +5,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/extensions/currency_extension.dart';
 import '../../providers/transaction_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 import 'widgets/balance_card.dart';
 import 'widgets/summary_card.dart';
 import 'widgets/transaction_list.dart';
@@ -24,48 +25,19 @@ class CashflowScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(7),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF1E3A8A), Color(0xFF1E88E5)],
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.account_balance_wallet,
-                  color: Colors.white, size: 18),
-            ),
-            const SizedBox(width: 10),
-            const Text(
-              AppStrings.appName,
-              style: TextStyle(
-                fontWeight: FontWeight.w800,
-                fontSize: 18,
-                letterSpacing: -0.5,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: AppColors.surfaceWhite,
-        elevation: 0,
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 12),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundLight,
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.notifications_outlined,
-                  color: AppColors.textPrimary, size: 22),
-              onPressed: () {},
-            ),
+      appBar: FloatingCapsuleAppBar(
+        title: AppStrings.appName,
+        trailing: Container(
+          decoration: const BoxDecoration(
+            color: Color(0xFFF3F4F6),
+            shape: BoxShape.circle,
           ),
-        ],
+          child: IconButton(
+            icon: const Icon(Icons.notifications_outlined,
+                color: Color(0xFF111827), size: 20),
+            onPressed: () {},
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
