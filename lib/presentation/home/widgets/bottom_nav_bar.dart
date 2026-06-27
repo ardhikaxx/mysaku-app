@@ -16,13 +16,13 @@ class BottomNavBar extends StatelessWidget {
       padding: const EdgeInsets.only(left: 24, right: 24, bottom: 20),
       child: Container(
         height: 60,
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF0F172A).withOpacity(0.07),
+              color: const Color(0xFF0F172A).withOpacity(0.08),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -41,8 +41,8 @@ class BottomNavBar extends StatelessWidget {
 
   Widget _buildNavItem(int index, IconData icon, String label) {
     final isSelected = currentIndex == index;
-    const activeColor = Color(0xFF1E3A8A);
-    const inactiveColor = Color(0xFF9CA3AF);
+    const activeBgColor = Color(0xFF1E3A8A);
+    const inactiveColor = Color(0xFF6B7280);
 
     return Expanded(
       child: GestureDetector(
@@ -51,11 +51,10 @@ class BottomNavBar extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),
           curve: Curves.easeOutCubic,
-          margin: const EdgeInsets.symmetric(horizontal: 2),
-          padding: const EdgeInsets.symmetric(horizontal: 6),
+          height: double.infinity,
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFEFF6FF) : Colors.transparent,
-            borderRadius: BorderRadius.circular(25),
+            color: isSelected ? activeBgColor : Colors.transparent,
+            borderRadius: BorderRadius.circular(26),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -63,14 +62,14 @@ class BottomNavBar extends StatelessWidget {
               Icon(
                 icon,
                 size: 19,
-                color: isSelected ? activeColor : inactiveColor,
+                color: isSelected ? Colors.white : inactiveColor,
               ),
               const SizedBox(width: 5),
               Flexible(
                 child: Text(
                   label,
                   style: TextStyle(
-                    color: isSelected ? activeColor : inactiveColor,
+                    color: isSelected ? Colors.white : inactiveColor,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     fontSize: 11.5,
                     letterSpacing: -0.2,
