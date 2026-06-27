@@ -9,6 +9,7 @@ import '../../providers/user_provider.dart';
 import '../../providers/wallet_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
 import '../shared/widgets/confirm_dialog.dart';
+import 'widgets/daily_reminder_sheet.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/settings_tile.dart';
 
@@ -199,6 +200,12 @@ class ProfileScreen extends ConsumerWidget {
             title: 'Kelola Kategori Kustom',
             subtitle: 'Tambah & atur kategori pemasukan atau pengeluaran',
             onTap: () => context.push('/home/profile/manage-categories'),
+          ));
+          tiles.add(SettingsTile(
+            icon: Icons.notifications_active_rounded,
+            title: 'Pengingat Catat Harian',
+            subtitle: 'Atur jadwal notifikasi & getaran otomatis setiap hari',
+            onTap: () => DailyReminderSheet.show(context),
           ));
           tiles.add(SettingsTile(
             icon: Icons.headset_mic_rounded,

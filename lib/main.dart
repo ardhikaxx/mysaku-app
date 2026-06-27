@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'core/constants/app_colors.dart';
 import 'core/constants/app_strings.dart';
+import 'core/services/notification_service.dart';
 import 'firebase_options.dart';
 import 'routes/app_router.dart';
 
@@ -21,6 +22,8 @@ void main() async {
       rethrow;
     }
   }
+
+  await NotificationService().init();
 
   runApp(
     const ProviderScope(
