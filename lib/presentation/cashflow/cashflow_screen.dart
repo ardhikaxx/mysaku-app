@@ -25,16 +25,45 @@ class CashflowScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
       appBar: AppBar(
-        title: const Text(AppStrings.appName,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(7),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF1E3A8A), Color(0xFF1E88E5)],
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.account_balance_wallet,
+                  color: Colors.white, size: 18),
+            ),
+            const SizedBox(width: 10),
+            const Text(
+              AppStrings.appName,
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 18,
+                letterSpacing: -0.5,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ],
+        ),
         backgroundColor: AppColors.surfaceWhite,
         elevation: 0,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined,
-                color: AppColors.textPrimary),
-            onPressed: () {},
+          Container(
+            margin: const EdgeInsets.only(right: 12),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundLight,
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.notifications_outlined,
+                  color: AppColors.textPrimary, size: 22),
+              onPressed: () {},
+            ),
           ),
         ],
       ),
@@ -50,14 +79,14 @@ class CashflowScreen extends ConsumerWidget {
                   title: AppStrings.totalIncome,
                   amount: income.toCompactIDR,
                   icon: Icons.arrow_downward,
-                  color: AppColors.accentGreen,
+                  color: const Color(0xFF10B981),
                 ),
                 const SizedBox(width: 12),
                 SummaryCard(
                   title: AppStrings.totalExpense,
                   amount: expense.toCompactIDR,
                   icon: Icons.arrow_upward,
-                  color: AppColors.accentRed,
+                  color: const Color(0xFFEF4444),
                 ),
               ],
             ),

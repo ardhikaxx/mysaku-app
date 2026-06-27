@@ -7,6 +7,7 @@ import '../presentation/auth/register_screen.dart';
 import '../presentation/cashflow/add_transaction_screen.dart';
 import '../presentation/cashflow/cashflow_screen.dart';
 import '../presentation/cashflow/edit_transaction_screen.dart';
+import '../presentation/cashflow/transaction_detail_screen.dart';
 import '../presentation/dreams/add_dream_screen.dart';
 import '../presentation/dreams/dreams_screen.dart';
 import '../presentation/dreams/edit_dream_screen.dart';
@@ -61,6 +62,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     builder: (context, state) {
                       final tx = state.extra as TransactionModel;
                       return EditTransactionScreen(tx: tx);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'detail/:id',
+                    builder: (context, state) {
+                      final tx = state.extra as TransactionModel;
+                      return TransactionDetailScreen(tx: tx);
                     },
                   ),
                 ],
