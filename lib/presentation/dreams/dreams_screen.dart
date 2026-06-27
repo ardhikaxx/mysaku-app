@@ -102,7 +102,7 @@ class DreamsScreen extends ConsumerWidget {
                               color: Colors.white.withValues(alpha: 0.15),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.diamond_rounded,
+                            child: const Icon(Icons.card_giftcard_rounded,
                                 color: Colors.white, size: 28),
                           ),
                           const SizedBox(width: 16),
