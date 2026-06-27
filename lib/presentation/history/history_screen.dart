@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
-import '../cashflow/widgets/transaction_list.dart';
+import 'widgets/history_transaction_list.dart';
 
 class HistoryScreen extends ConsumerWidget {
   const HistoryScreen({super.key});
@@ -26,7 +26,7 @@ class HistoryScreen extends ConsumerWidget {
               style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
             ),
             SizedBox(height: 16),
-            TransactionList(),
+            HistoryTransactionList(),
           ],
         ),
       ),
