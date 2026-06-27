@@ -190,7 +190,7 @@ class _AddDreamScreenState extends ConsumerState<AddDreamScreen> {
                               color: AppColors.accentAmber.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Icon(Icons.auto_awesome_rounded,
+                            child: const Icon(Icons.rocket_launch_rounded,
                                 color: AppColors.accentAmber, size: 22),
                           ),
                           const SizedBox(width: 16),

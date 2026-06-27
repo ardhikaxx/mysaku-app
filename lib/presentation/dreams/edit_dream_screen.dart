@@ -85,7 +85,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
       message:
           'Impian keuangan ini akan dihapus secara permanen dan tidak dapat dikembalikan.',
       confirmText: 'Ya, Hapus',
-      icon: Icons.auto_awesome_rounded,
+      icon: Icons.delete_forever_rounded,
       iconColor: const Color(0xFFEF4444),
     );
 
@@ -323,7 +323,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
                               color: AppColors.accentAmber.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Icon(Icons.auto_awesome_rounded,
+                            child: const Icon(Icons.rocket_launch_rounded,
                                 color: AppColors.accentAmber, size: 22),
                           ),
                           const SizedBox(width: 16),

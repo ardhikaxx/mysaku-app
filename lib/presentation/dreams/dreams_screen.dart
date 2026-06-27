@@ -23,7 +23,7 @@ class DreamsScreen extends ConsumerWidget {
       backgroundColor: AppColors.backgroundLight,
       appBar: const FloatingCapsuleAppBar(
         title: AppStrings.dreamsTitle,
-        leadingIcon: Icons.auto_awesome_rounded,
+        leadingIcon: Icons.rocket_launch_rounded,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
@@ -46,7 +46,7 @@ class DreamsScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(16)),
                     child: const Column(
                       children: [
-                        Icon(Icons.auto_awesome_outlined,
+                        Icon(Icons.rocket_launch_outlined,
                             size: 56, color: AppColors.divider),
                         SizedBox(height: 12),
                         Text('Belum ada impian / target',

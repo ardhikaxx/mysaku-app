@@ -87,7 +87,7 @@ class DreamCard extends ConsumerWidget {
                       child: Icon(
                         isAchieved
                             ? Icons.emoji_events_rounded
-                            : Icons.auto_awesome_rounded,
+                            : Icons.rocket_launch_rounded,
                         color: Colors.white,
                         size: 26,
                       ),
@@ -246,7 +246,7 @@ class DreamCard extends ConsumerWidget {
             message:
                 'Impian keuangan ini akan dihapus secara permanen dan tidak dapat dikembalikan.',
             confirmText: 'Ya, Hapus',
-            icon: Icons.auto_awesome_rounded,
+            icon: Icons.delete_forever_rounded,
             iconColor: const Color(0xFFEF4444),
           );
 
