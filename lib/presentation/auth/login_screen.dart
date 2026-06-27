@@ -30,7 +30,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _emailController.text.trim(),
         _passwordController.text,
       );
-      if (mounted) context.go('/home');
+      if (mounted) context.go('/home/cashflow');
     } on AppException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
@@ -47,7 +47,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final repo = ref.read(authRepositoryProvider);
       final cred = await repo.signInWithGoogle();
       if (cred != null && mounted) {
-        context.go('/home');
+        context.go('/home/cashflow');
       }
     } on AppException catch (e) {
       if (mounted) {

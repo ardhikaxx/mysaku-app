@@ -68,6 +68,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Future<void> _completeOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_completed', true);
+    ref.invalidate(onboardingCompletedProvider);
     if (mounted) context.go('/home');
   }
 

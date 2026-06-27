@@ -32,7 +32,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         _emailController.text.trim(),
         _passwordController.text,
       );
-      if (mounted) context.go('/home');
+      if (mounted) context.go('/home/cashflow');
     } on AppException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
