@@ -13,6 +13,7 @@ import '../presentation/dreams/dream_detail_screen.dart';
 import '../presentation/dreams/dreams_screen.dart';
 import '../presentation/dreams/edit_dream_screen.dart';
 import '../presentation/home/home_screen.dart';
+import '../presentation/onboarding/onboarding_screen.dart';
 import '../presentation/profile/invite_member_screen.dart';
 import '../presentation/profile/manage_members_screen.dart';
 import '../presentation/profile/profile_screen.dart';
@@ -20,6 +21,7 @@ import '../providers/auth_provider.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
+  final onboardingCompleted = ref.watch(onboardingCompletedProvider);
 
   return GoRouter(
     initialLocation: '/auth/login',
@@ -31,7 +33,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         return '/auth/login';
       }
       if (isLoggedIn && isAuthRoute) {
+        if (onboardingCompleted.value == false) {
+          return '/onboarding';
+        }
         return '/home/cashflow';
+      }
+      if (isLoggedIn && !onboardingCompleted.hasValue) {
+        return '/onboarding';
       }
       return null;
     },
@@ -43,6 +51,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/auth/register',
         builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: '/onboarding',
+        builder: (context, state) => const OnboardingScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
