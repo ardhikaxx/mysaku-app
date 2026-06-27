@@ -67,7 +67,7 @@ class AppInfoScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Text(
-                      'Versi 1.0.0 (Build 100)',
+                      'Versi 1.0.0',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
