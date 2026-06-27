@@ -23,30 +23,25 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceWhite,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.divider),
+    return ListTile(
+      onTap: onTap,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 2),
+      leading: Icon(icon, color: iconColor ?? AppColors.primaryColor, size: 24),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: textColor ?? AppColors.textPrimary,
+          fontSize: 14,
+        ),
       ),
-      child: ListTile(
-        onTap: onTap,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        leading: Icon(icon, color: iconColor ?? AppColors.primaryColor),
-        title: Text(title,
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: textColor ?? AppColors.textPrimary,
-                fontSize: 14)),
-        subtitle: subtitle != null
-            ? Text(subtitle!,
-                style: const TextStyle(
-                    fontSize: 12, color: AppColors.textSecondary))
-            : null,
-        trailing: trailing ??
-            const Icon(Icons.chevron_right, color: AppColors.divider),
-      ),
+      subtitle: subtitle != null
+          ? Text(
+              subtitle!,
+              style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            )
+          : null,
+      trailing: trailing ?? const Icon(Icons.chevron_right_rounded, color: AppColors.divider, size: 22),
     );
   }
 }

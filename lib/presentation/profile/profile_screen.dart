@@ -135,124 +135,149 @@ class ProfileScreen extends ConsumerWidget {
           final isOwner = wallet?.ownerId == user.uid;
           final isPersonal = user.activeWalletId == user.personalWalletId;
 
+          final List<Widget> tiles = [];
+
+          if (invList.isNotEmpty) {
+            tiles.add(SettingsTile(
+              icon: Icons.mark_email_unread_outlined,
+              iconColor: AppColors.accentAmber,
+              title: 'Undangan Bergabung',
+              subtitle: '${invList.length} undangan menunggu respon',
+              trailing: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                child: Text('${invList.length}',
+                    style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+              ),
+              onTap: () => _showInvitationsModal(context, ref),
+            ));
+          }
+
+          if (isOwner) {
+            tiles.add(SettingsTile(
+              icon: Icons.person_add_outlined,
+              title: AppStrings.inviteMember,
+              subtitle: 'Ajak keluarga atau pasangan (maks. 5 orang)',
+              onTap: () => context.push('/home/profile/invite'),
+            ));
+            tiles.add(SettingsTile(
+              icon: Icons.people_outline,
+              title: AppStrings.manageMembers,
+              subtitle: 'Daftar anggota di tabungan saat ini',
+              onTap: () => context.push('/home/profile/members'),
+            ));
+          } else {
+            tiles.add(SettingsTile(
+              icon: Icons.exit_to_app,
+              iconColor: Colors.redAccent,
+              title: AppStrings.leaveWallet,
+              subtitle: 'Keluar dari tabungan bersama ini',
+              onTap: () async {
+                final confirmed = await ConfirmDialog.show(
+                  context,
+                  title: 'Keluar Tabungan?',
+                  message: 'Anda akan kembali menggunakan Tabungan Pribadi.',
+                  confirmText: 'Keluar',
+                  icon: Icons.exit_to_app,
+                  iconColor: const Color(0xFFEF4444),
+                );
+                if (confirmed && wallet != null) {
+                  ref.read(walletRepositoryProvider).leaveWallet(wallet.walletId, user.uid, user.personalWalletId);
+                }
+              },
+            ));
+          }
+
+          if (!isPersonal) {
+            tiles.add(SettingsTile(
+              icon: Icons.swap_horiz,
+              title: 'Kembali ke Tabungan Pribadi',
+              subtitle: 'Beralih ke wallet pribadi Anda',
+              onTap: () => ref.read(userRepositoryProvider).updateActiveWallet(user.uid, user.personalWalletId),
+            ));
+          }
+
+          tiles.add(SettingsTile(
+            icon: Icons.download_rounded,
+            iconColor: const Color(0xFF10B981),
+            title: 'Ekspor Laporan Finansial',
+            subtitle: 'Unduh rekap transaksi Excel / CSV / PDF',
+            onTap: () => ExportReportModal.show(context),
+          ));
+          tiles.add(SettingsTile(
+            icon: Icons.headset_mic_rounded,
+            iconColor: const Color(0xFF3B82F6),
+            title: 'Pusat Bantuan',
+            subtitle: 'Layanan dukungan pelanggan WhatsApp / Email',
+            onTap: () => context.push('/home/profile/help'),
+          ));
+          tiles.add(SettingsTile(
+            icon: Icons.question_answer_rounded,
+            iconColor: const Color(0xFF8B5CF6),
+            title: 'Pertanyaan Umum (FAQ)',
+            subtitle: 'Panduan cara menghapus, edit, & fitur impian',
+            onTap: () => context.push('/home/profile/faq'),
+          ));
+          tiles.add(SettingsTile(
+            icon: Icons.privacy_tip_rounded,
+            iconColor: const Color(0xFFF59E0B),
+            title: 'Kebijakan Privasi',
+            subtitle: 'Komitmen perlindungan & enkripsi data Anda',
+            onTap: () => context.push('/home/profile/privacy'),
+          ));
+          tiles.add(SettingsTile(
+            icon: Icons.logout,
+            iconColor: Colors.red,
+            textColor: Colors.red,
+            title: AppStrings.logout,
+            onTap: () async {
+              final confirmed = await ConfirmDialog.show(
+                context,
+                title: 'Keluar Akun?',
+                message: 'Anda akan keluar dari akun MySaku. Pastikan data Anda sudah tersimpan.',
+                confirmText: 'Ya, Keluar',
+                icon: Icons.logout_rounded,
+                iconColor: Colors.red,
+                confirmColor: Colors.red,
+              );
+              if (confirmed && context.mounted) {
+                await ref.read(authRepositoryProvider).signOut();
+                if (context.mounted) context.go('/auth/login');
+              }
+            },
+          ));
+
           return SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 140),
             child: Column(
               children: [
                 ProfileHeader(user: user),
                 const SizedBox(height: 24),
-                if (invList.isNotEmpty)
-                  SettingsTile(
-                    icon: Icons.mark_email_unread_outlined,
-                    iconColor: AppColors.accentAmber,
-                    title: 'Undangan Bergabung',
-                    subtitle: '${invList.length} undangan menunggu respon',
-                    trailing: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                          color: Colors.red, shape: BoxShape.circle),
-                      child: Text('${invList.length}',
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold)),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceWhite,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.divider),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.03),
+                        blurRadius: 16,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < tiles.length; i++) ...[
+                          tiles[i],
+                          if (i < tiles.length - 1)
+                            const Divider(height: 1, color: AppColors.divider, indent: 60),
+                        ],
+                      ],
                     ),
-                    onTap: () => _showInvitationsModal(context, ref),
                   ),
-                if (isOwner) ...[
-                  SettingsTile(
-                    icon: Icons.person_add_outlined,
-                    title: AppStrings.inviteMember,
-                    subtitle: 'Ajak keluarga atau pasangan (maks. 5 orang)',
-                    onTap: () => context.push('/home/profile/invite'),
-                  ),
-                  SettingsTile(
-                    icon: Icons.people_outline,
-                    title: AppStrings.manageMembers,
-                    subtitle: 'Daftar anggota di tabungan saat ini',
-                    onTap: () => context.push('/home/profile/members'),
-                  ),
-                ] else ...[
-SettingsTile(
-                    icon: Icons.exit_to_app,
-                    iconColor: Colors.redAccent,
-                    title: AppStrings.leaveWallet,
-                    subtitle: 'Keluar dari tabungan bersama ini',
-                    onTap: () async {
-                      final confirmed = await ConfirmDialog.show(
-                        context,
-                        title: 'Keluar Tabungan?',
-                        message: 'Anda akan kembali menggunakan Tabungan Pribadi.',
-                        confirmText: 'Keluar',
-                        icon: Icons.exit_to_app,
-                        iconColor: const Color(0xFFEF4444),
-                      );
-                      if (confirmed && wallet != null) {
-                        ref.read(walletRepositoryProvider).leaveWallet(
-                            wallet.walletId, user.uid, user.personalWalletId);
-                      }
-                    },
-                  ),
-                ],
-                if (!isPersonal)
-                  SettingsTile(
-                    icon: Icons.swap_horiz,
-                    title: 'Kembali ke Tabungan Pribadi',
-                    subtitle: 'Beralih ke wallet pribadi Anda',
-                    onTap: () => ref
-                        .read(userRepositoryProvider)
-                        .updateActiveWallet(user.uid, user.personalWalletId),
-                  ),
-                const SizedBox(height: 12),
-                SettingsTile(
-                  icon: Icons.download_rounded,
-                  iconColor: const Color(0xFF10B981),
-                  title: 'Ekspor Laporan Finansial',
-                  subtitle: 'Unduh rekap transaksi Excel / CSV / PDF',
-                  onTap: () => ExportReportModal.show(context),
-                ),
-                SettingsTile(
-                  icon: Icons.headset_mic_rounded,
-                  iconColor: const Color(0xFF3B82F6),
-                  title: 'Pusat Bantuan',
-                  subtitle: 'Layanan dukungan pelanggan WhatsApp / Email',
-                  onTap: () => context.push('/home/profile/help'),
-                ),
-                SettingsTile(
-                  icon: Icons.question_answer_rounded,
-                  iconColor: const Color(0xFF8B5CF6),
-                  title: 'Pertanyaan Umum (FAQ)',
-                  subtitle: 'Panduan cara menghapus, edit, & fitur impian',
-                  onTap: () => context.push('/home/profile/faq'),
-                ),
-                SettingsTile(
-                  icon: Icons.privacy_tip_rounded,
-                  iconColor: const Color(0xFFF59E0B),
-                  title: 'Kebijakan Privasi',
-                  subtitle: 'Komitmen perlindungan & enkripsi data Anda',
-                  onTap: () => context.push('/home/profile/privacy'),
-                ),
-                const SizedBox(height: 12),
-                SettingsTile(
-                  icon: Icons.logout,
-                  iconColor: Colors.red,
-                  textColor: Colors.red,
-                  title: AppStrings.logout,
-                  onTap: () async {
-                    final confirmed = await ConfirmDialog.show(
-                      context,
-                      title: 'Keluar Akun?',
-                      message: 'Anda akan keluar dari akun MySaku. Pastikan data Anda sudah tersimpan.',
-                      confirmText: 'Ya, Keluar',
-                      icon: Icons.logout_rounded,
-                      iconColor: Colors.red,
-                      confirmColor: Colors.red,
-                    );
-                    if (confirmed && context.mounted) {
-                      await ref.read(authRepositoryProvider).signOut();
-                      if (context.mounted) context.go('/auth/login');
-                    }
-                  },
                 ),
               ],
             ),
