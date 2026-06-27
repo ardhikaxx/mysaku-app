@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/utils/app_haptics.dart';
 import '../../../providers/category_provider.dart';
 
 class ManageCategoriesScreen extends ConsumerStatefulWidget {
@@ -216,6 +217,7 @@ class _ManageCategoriesScreenState
   }
 
   void _deleteCategory(String key) {
+    AppHaptics.successFeedback();
     if (_isExpense) {
       final current = Map<String, String>.from(
           ref.read(customExpenseCategoriesProvider));
@@ -315,6 +317,7 @@ class _ManageCategoriesScreenState
                         onPressed: () {
                           final name = controller.text.trim();
                           if (name.isNotEmpty) {
+                            AppHaptics.successFeedback();
                             final key = 'custom_${DateTime.now().millisecondsSinceEpoch}';
                             if (_isExpense) {
                               final current = Map<String, String>.from(
@@ -327,8 +330,10 @@ class _ManageCategoriesScreenState
                               current[key] = name;
                               ref.read(customIncomeCategoriesProvider.notifier).state = current;
                             }
+                            Navigator.pop(ctx);
+                          } else {
+                            AppHaptics.errorFeedback();
                           }
-                          Navigator.pop(ctx);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryColor,

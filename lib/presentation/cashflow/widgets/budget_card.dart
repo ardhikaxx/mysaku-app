@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/extensions/currency_extension.dart';
+import '../../../core/utils/app_haptics.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../providers/transaction_provider.dart';
 
@@ -348,15 +349,16 @@ class BudgetCard extends ConsumerWidget {
                         Expanded(
                           flex: 2,
                           child: ElevatedButton(
-                            onPressed: () {
-                              final cleanText =
-                                  controller.text.replaceAll('.', '');
-                              final newBudget =
-                                  double.tryParse(cleanText) ?? 3000000.0;
-                              ref.read(monthlyBudgetProvider.notifier).state =
-                                  newBudget;
-                              Navigator.pop(ctx);
-                            },
+                              onPressed: () {
+                                AppHaptics.successFeedback();
+                                final cleanText =
+                                    controller.text.replaceAll('.', '');
+                                final newBudget =
+                                    double.tryParse(cleanText) ?? 3000000.0;
+                                ref.read(monthlyBudgetProvider.notifier).state =
+                                    newBudget;
+                                Navigator.pop(ctx);
+                              },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryColor,
                               padding: const EdgeInsets.symmetric(vertical: 14),
@@ -399,7 +401,10 @@ class BudgetCard extends ConsumerWidget {
 
   Widget _buildQuickPill(String label, double amount, Function(double) onTap) {
     return InkWell(
-      onTap: () => onTap(amount),
+      onTap: () {
+        AppHaptics.lightTap();
+        onTap(amount);
+      },
       borderRadius: BorderRadius.circular(20),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),

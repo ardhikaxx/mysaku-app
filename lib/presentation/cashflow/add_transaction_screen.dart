@@ -5,6 +5,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/errors/app_exception.dart';
 import '../../core/extensions/datetime_extension.dart';
+import '../../core/utils/app_haptics.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../data/models/transaction_model.dart';
 import '../../providers/auth_provider.dart';
@@ -50,7 +51,10 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   }
 
   Future<void> _save() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      AppHaptics.errorFeedback();
+      return;
+    }
     final walletId = ref.read(activeWalletIdProvider);
     if (walletId == null) return;
 
@@ -79,13 +83,16 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
 
       final repo = ref.read(transactionRepositoryProvider);
       await repo.addTransaction(walletId, tx);
+      AppHaptics.successFeedback();
       if (mounted) context.pop();
     } on AppException catch (e) {
+      AppHaptics.errorFeedback();
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.message)));
       }
     } catch (e) {
+      AppHaptics.errorFeedback();
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Error: $e')));
