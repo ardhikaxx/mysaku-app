@@ -14,3 +14,6 @@ final dreamsProvider = StreamProvider<List<DreamModel>>((ref) {
   final repo = ref.watch(dreamRepositoryProvider);
   return repo.getDreamsStream(walletId);
 });
+
+final dreamFilterProvider = StateProvider<String>((ref) => 'all'); // 'all', 'active', 'achieved'
+final dreamSortProvider = StateProvider<String>((ref) => 'default'); // 'default', 'progress', 'amount_desc', 'amount_asc'

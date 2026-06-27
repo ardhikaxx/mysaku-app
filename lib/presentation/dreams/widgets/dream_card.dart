@@ -24,6 +24,7 @@ class DreamCard extends ConsumerWidget {
     final balance = ref.watch(walletBalanceProvider);
     final progress = dream.calculateProgress(balance);
     final isAchieved = dream.isAchieved || balance >= dream.targetAmount;
+    final remaining = dream.targetAmount - balance;
 
     final cardContent = Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -168,6 +169,35 @@ class DreamCard extends ConsumerWidget {
                     ),
                   ],
                 ),
+                if (!isAchieved && remaining > 0) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF8FAFC),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.tips_and_updates_rounded,
+                            size: 16, color: Color(0xFFD97706)),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            '💡 Saran Nabung: ${(remaining / 90).toCompactIDR}/hari atau ${(remaining / 3).toCompactIDR}/bln (estimasi 3 bln)',
+                            style: const TextStyle(
+                              fontSize: 11.5,
+                              color: Color(0xFF475569),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
