@@ -129,15 +129,6 @@ class AppInfoScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   _buildInfoRow(
                       Icons.person_outline_rounded, 'Dikembangkan Oleh', 'Yanuar Ardhika R.U'),
-                  const SizedBox(height: 14),
-                  _buildInfoRow(
-                      Icons.code_rounded, 'Kerangka Kerja (Framework)', 'Flutter & Dart'),
-                  const SizedBox(height: 14),
-                  _buildInfoRow(
-                      Icons.cloud_done_outlined, 'Penyimpanan Data', 'Firebase Cloud Firestore'),
-                  const SizedBox(height: 14),
-                  _buildInfoRow(
-                      Icons.security_rounded, 'Keamanan & Enkripsi', 'Standar Enkripsi Tingkat Tinggi'),
                 ],
               ),
             ),
