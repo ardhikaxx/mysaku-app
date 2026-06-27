@@ -95,9 +95,7 @@ class DreamDetailScreen extends ConsumerWidget {
                       isAchieved
                           ? Icons.emoji_events_rounded
                           : Icons.card_giftcard_rounded,
-                      color: isAchieved
-                          ? const Color(0xFF34D399)
-                          : const Color(0xFF60A5FA),
+                      color: Colors.white,
                       size: 40,
                     ),
                   ),
@@ -140,9 +138,7 @@ class DreamDetailScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
-                        color: isAchieved
-                            ? const Color(0xFF34D399)
-                            : const Color(0xFF60A5FA),
+                        color: Colors.white,
                       ),
                     ),
                   ),
