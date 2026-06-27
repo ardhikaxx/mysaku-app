@@ -13,6 +13,7 @@ import '../presentation/dreams/add_dream_screen.dart';
 import '../presentation/dreams/dream_detail_screen.dart';
 import '../presentation/dreams/dreams_screen.dart';
 import '../presentation/dreams/edit_dream_screen.dart';
+import '../presentation/history/history_screen.dart';
 import '../presentation/home/home_screen.dart';
 import '../presentation/profile/faq_screen.dart';
 import '../presentation/profile/help_screen.dart';
@@ -60,6 +61,34 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/home/cashflow',
                 builder: (context, state) => const CashflowScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'add',
+                    builder: (context, state) => const AddTransactionScreen(),
+                  ),
+                  GoRoute(
+                    path: 'edit/:id',
+                    builder: (context, state) {
+                      final tx = state.extra as TransactionModel;
+                      return EditTransactionScreen(tx: tx);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'detail/:id',
+                    builder: (context, state) {
+                      final tx = state.extra as TransactionModel;
+                      return TransactionDetailScreen(tx: tx);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/home/history',
+                builder: (context, state) => const HistoryScreen(),
                 routes: [
                   GoRoute(
                     path: 'add',

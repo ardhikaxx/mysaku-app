@@ -91,9 +91,13 @@ class TransactionDetailScreen extends ConsumerWidget {
                 icon: const Icon(Icons.edit_outlined,
                     color: AppColors.textPrimary),
                 tooltip: 'Edit Transaksi',
-                onPressed: () => context.push(
-                    '/home/cashflow/edit/${tx.transactionId}',
-                    extra: tx),
+                onPressed: () {
+                  final path = GoRouterState.of(context).uri.path;
+                  final base = path.startsWith('/home/history')
+                      ? '/home/history'
+                      : '/home/cashflow';
+                  context.push('$base/edit/${tx.transactionId}', extra: tx);
+                },
               )
             : null,
       ),

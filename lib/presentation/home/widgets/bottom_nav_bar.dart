@@ -22,7 +22,7 @@ class BottomNavBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF0F172A).withOpacity(0.08),
+              color: const Color(0xFF0F172A).withValues(alpha: 0.08),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -31,8 +31,9 @@ class BottomNavBar extends StatelessWidget {
         child: Row(
           children: [
             _buildNavItem(0, Icons.swap_horiz_rounded, 'Cashflow'),
-            _buildNavItem(1, Icons.card_giftcard_rounded, 'Impian'),
-            _buildNavItem(2, Icons.person_rounded, 'Profil'),
+            _buildNavItem(1, Icons.receipt_long_rounded, 'Riwayat'),
+            _buildNavItem(2, Icons.card_giftcard_rounded, 'Impian'),
+            _buildNavItem(3, Icons.person_rounded, 'Profil'),
           ],
         ),
       ),

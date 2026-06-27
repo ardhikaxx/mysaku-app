@@ -64,7 +64,7 @@ class TransactionItemCard extends ConsumerWidget {
         border: Border.all(color: const Color(0xFFF3F4F6), width: 1.2),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -75,8 +75,13 @@ class TransactionItemCard extends ConsumerWidget {
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: () => context.push('/home/cashflow/detail/${tx.transactionId}',
-              extra: tx),
+          onTap: () {
+            final path = GoRouterState.of(context).uri.path;
+            final base = path.startsWith('/home/history')
+                ? '/home/history'
+                : '/home/cashflow';
+            context.push('$base/detail/${tx.transactionId}', extra: tx);
+          },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             child: Row(
