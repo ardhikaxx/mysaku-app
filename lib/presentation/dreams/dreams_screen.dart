@@ -30,17 +30,19 @@ class DreamsScreen extends ConsumerWidget {
         title: AppStrings.dreamsTitle,
         leadingIcon: Icons.card_giftcard_rounded,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Text(
               'Target impian yang ingin dicapai bersama dari total saldo tabungan saat ini.',
               style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
             ),
-            const SizedBox(height: 16),
-            dreamsAsync.when(
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: dreamsAsync.when(
               data: (list) {
                 double totalTarget = 0;
                 int achievedCount = 0;
@@ -72,172 +74,196 @@ class DreamsScreen extends ConsumerWidget {
                 });
 
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Banner Ringkasan Akumulasi Impian
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.only(bottom: 16),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF1E3A8A), Color(0xFF3B82F6)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF1E3A8A).withValues(alpha: 0.25),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
+                    // Bagian Header yang diam / tidak ikut ter-scroll
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
                         children: [
+                          // Banner Ringkasan Akumulasi Impian
                           Container(
-                            padding: const EdgeInsets.all(12),
+                            width: double.infinity,
+                            margin: const EdgeInsets.only(bottom: 16),
+                            padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.15),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(Icons.card_giftcard_rounded,
-                                color: Colors.white, size: 28),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Total Target Akumulasi',
-                                  style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  totalTarget.toIDR,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  'Saldo dompet: ${balance.toIDR} • $achievedCount/${list.length} Tercapai',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500),
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF1E3A8A), Color(0xFF3B82F6)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF1E3A8A)
+                                      .withValues(alpha: 0.25),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Filter Tab & Sort Bar
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEEEEF2),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: const EdgeInsets.all(3),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _buildTab(ref, filter, 'all', 'Semua'),
-                              _buildTab(ref, filter, 'active', 'Aktif'),
-                              _buildTab(ref, filter, 'achieved', 'Tercapai'),
-                            ],
-                          ),
-                        ),
-                        PopupMenuButton<String>(
-                          initialValue: sort,
-                          onSelected: (val) =>
-                              ref.read(dreamSortProvider.notifier).state = val,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16)),
-                          elevation: 4,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: AppColors.surfaceWhite,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                  color: const Color(0xFFF3F4F6), width: 1.2),
-                            ),
                             child: Row(
                               children: [
-                                const Icon(Icons.sort_rounded,
-                                    size: 18, color: AppColors.primaryColor),
-                                const SizedBox(width: 6),
-                                Text(
-                                  _getSortLabel(sort),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xFF111827),
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.15),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                      Icons.card_giftcard_rounded,
+                                      color: Colors.white,
+                                      size: 28),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Total Target Akumulasi',
+                                        style: TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        totalTarget.toIDR,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Saldo dompet: ${balance.toIDR} • $achievedCount/${list.length} Tercapai',
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          itemBuilder: (context) => [
-                            const PopupMenuItem(
-                                value: 'default', child: Text('Terbaru')),
-                            const PopupMenuItem(
-                                value: 'progress',
-                                child: Text('Progres Tertinggi')),
-                            const PopupMenuItem(
-                                value: 'amount_desc',
-                                child: Text('Target Terbesar')),
-                            const PopupMenuItem(
-                                value: 'amount_asc',
-                                child: Text('Target Terkecil')),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    if (filteredList.isEmpty)
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 60),
-                        decoration: BoxDecoration(
-                            color: AppColors.surfaceWhite,
-                            borderRadius: BorderRadius.circular(16)),
-                        child: const Column(
-                          children: [
-                            Icon(Icons.card_giftcard_outlined,
-                                size: 56, color: AppColors.divider),
-                            SizedBox(height: 12),
-                            Text('Tidak ada impian pada kategori ini',
-                                style: TextStyle(
-                                    color: AppColors.textSecondary,
-                                    fontSize: 14)),
-                          ],
-                        ),
-                      )
-                    else
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: filteredList.length,
-                        itemBuilder: (context, i) {
-                          final item = filteredList[i];
-                          final canEdit =
-                              isOwner || item.createdBy == currentUid;
-                          return DreamCard(dream: item, canEdit: canEdit);
-                        },
+                          // Filter Tab & Sort Bar
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFEEEEF2),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: const EdgeInsets.all(3),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    _buildTab(ref, filter, 'all', 'Semua'),
+                                    _buildTab(ref, filter, 'active', 'Aktif'),
+                                    _buildTab(
+                                        ref, filter, 'achieved', 'Tercapai'),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuButton<String>(
+                                initialValue: sort,
+                                onSelected: (val) => ref
+                                    .read(dreamSortProvider.notifier)
+                                    .state = val,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16)),
+                                elevation: 4,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.surfaceWhite,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                        color: const Color(0xFFF3F4F6),
+                                        width: 1.2),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.sort_rounded,
+                                          size: 18,
+                                          color: AppColors.primaryColor),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        _getSortLabel(sort),
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xFF111827),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                itemBuilder: (context) => [
+                                  const PopupMenuItem(
+                                      value: 'default', child: Text('Terbaru')),
+                                  const PopupMenuItem(
+                                      value: 'progress',
+                                      child: Text('Progres Tertinggi')),
+                                  const PopupMenuItem(
+                                      value: 'amount_desc',
+                                      child: Text('Target Terbesar')),
+                                  const PopupMenuItem(
+                                      value: 'amount_asc',
+                                      child: Text('Target Terkecil')),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                        ],
                       ),
+                    ),
+                    // Area Daftar Impian yang scrollable secara independen
+                    Expanded(
+                      child: filteredList.isEmpty
+                          ? SingleChildScrollView(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 60),
+                                decoration: BoxDecoration(
+                                    color: AppColors.surfaceWhite,
+                                    borderRadius: BorderRadius.circular(16)),
+                                child: const Column(
+                                  children: [
+                                    Icon(Icons.card_giftcard_outlined,
+                                        size: 56, color: AppColors.divider),
+                                    SizedBox(height: 12),
+                                    Text(
+                                        'Tidak ada impian pada kategori ini',
+                                        style: TextStyle(
+                                            color: AppColors.textSecondary,
+                                            fontSize: 14)),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              padding:
+                                  const EdgeInsets.fromLTRB(16, 0, 16, 140),
+                              itemCount: filteredList.length,
+                              itemBuilder: (context, i) {
+                                final item = filteredList[i];
+                                final canEdit =
+                                    isOwner || item.createdBy == currentUid;
+                                return DreamCard(
+                                    dream: item, canEdit: canEdit);
+                              },
+                            ),
+                    ),
                   ],
                 );
               },
@@ -249,8 +275,8 @@ class DreamsScreen extends ConsumerWidget {
                   child: Text('Error: $err',
                       style: const TextStyle(color: Colors.red))),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 80),
