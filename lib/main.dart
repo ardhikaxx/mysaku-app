@@ -23,7 +23,11 @@ void main() async {
     }
   }
 
-  await NotificationService().init();
+  try {
+    await NotificationService().init();
+  } catch (e) {
+    debugPrint('Notification init failed or native plugin not recompiled: $e');
+  }
 
   runApp(
     const ProviderScope(
