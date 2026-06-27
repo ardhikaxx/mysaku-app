@@ -16,20 +16,7 @@ class HistoryScreen extends ConsumerWidget {
         title: 'Riwayat Transaksi',
         leadingIcon: Icons.receipt_long_rounded,
       ),
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 160),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Seluruh catatan arus kas masuk dan keluar yang tercatat dalam dompet Anda.',
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
-            ),
-            SizedBox(height: 16),
-            HistoryTransactionList(),
-          ],
-        ),
-      ),
+      body: const HistoryTransactionList(),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 80),
         child: FloatingActionButton(
