@@ -31,6 +31,15 @@ class _ManageCategoriesScreenState
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: _showAddCategoryDialog,
+            icon: const Icon(Icons.add_circle_rounded,
+                color: AppColors.primaryColor, size: 28),
+            tooltip: 'Tambah Kategori',
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: Column(
         children: [
@@ -65,7 +74,7 @@ class _ManageCategoriesScreenState
                         style: TextStyle(color: AppColors.textSecondary)),
                   )
                 : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 100),
+                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
                     itemCount: currentMap.length,
                     separatorBuilder: (context, index) => const SizedBox(height: 12),
                     itemBuilder: (context, index) {
@@ -129,16 +138,46 @@ class _ManageCategoriesScreenState
                     },
                   ),
           ),
+          // Tombol bawah anti-bentrok dengan floating nav bar
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 110),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF0F172A).withValues(alpha: 0.04),
+                  blurRadius: 10,
+                  offset: const Offset(0, -4),
+                ),
+              ],
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _showAddCategoryDialog,
+                icon:
+                    const Icon(Icons.add_rounded, color: Colors.white, size: 22),
+                label: const Text(
+                  'Tambah Kategori Baru',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  elevation: 4,
+                  shadowColor: AppColors.primaryColor.withValues(alpha: 0.3),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _showAddCategoryDialog,
-        backgroundColor: AppColors.primaryColor,
-        icon: const Icon(Icons.add_rounded, color: Colors.white),
-        label: const Text(
-          'Tambah Kategori',
-          style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-        ),
       ),
     );
   }
