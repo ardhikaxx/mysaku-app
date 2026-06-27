@@ -195,6 +195,12 @@ class ProfileScreen extends ConsumerWidget {
           }
 
           tiles.add(SettingsTile(
+            icon: Icons.category_rounded,
+            title: 'Kelola Kategori Kustom',
+            subtitle: 'Tambah & atur kategori pemasukan atau pengeluaran',
+            onTap: () => context.push('/home/profile/manage-categories'),
+          ));
+          tiles.add(SettingsTile(
             icon: Icons.headset_mic_rounded,
             title: 'Pusat Bantuan',
             subtitle: 'Layanan dukungan pelanggan WhatsApp / Email',

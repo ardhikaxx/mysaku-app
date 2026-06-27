@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/extensions/currency_extension.dart';
+import '../../../providers/category_provider.dart';
 import '../../../providers/transaction_provider.dart';
 
 class AnalyticsCard extends ConsumerWidget {
@@ -25,12 +26,15 @@ class AnalyticsCard extends ConsumerWidget {
     final Map<String, double> categoryTotals = {};
     double totalExpense = 0;
 
+    final expenseCategories = ref.watch(customExpenseCategoriesProvider);
+
     for (final tx in txList) {
       if (tx.isExpense &&
           tx.transactionDate.year == now.year &&
           tx.transactionDate.month == now.month) {
-        final cat = tx.category.isNotEmpty ? tx.category : 'Lainnya';
-        categoryTotals[cat] = (categoryTotals[cat] ?? 0) + tx.amount;
+        final rawCat = tx.category.isNotEmpty ? tx.category : 'Lainnya';
+        final catLabel = expenseCategories[rawCat] ?? rawCat;
+        categoryTotals[catLabel] = (categoryTotals[catLabel] ?? 0) + tx.amount;
         totalExpense += tx.amount;
       }
     }

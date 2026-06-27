@@ -8,6 +8,7 @@ import '../../core/extensions/datetime_extension.dart';
 import '../../core/utils/currency_formatter.dart';
 import 'package:intl/intl.dart';
 import '../../data/models/transaction_model.dart';
+import '../../providers/category_provider.dart';
 import '../../providers/transaction_provider.dart';
 import '../../providers/user_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
@@ -37,26 +38,6 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
   late DateTime _date;
   bool _isLoading = false;
 
-  final Map<String, String> _incomeCategories = {
-    'salary': 'Gaji',
-    'freelance': 'Freelance',
-    'investment': 'Investasi',
-    'bonus': 'Bonus',
-    'gift': 'Hadiah / Pemberian',
-    'other_income': 'Lainnya',
-  };
-
-  final Map<String, String> _expenseCategories = {
-    'food': 'Makan & Minum',
-    'transport': 'Transportasi',
-    'bills': 'Tagihan',
-    'shopping': 'Belanja',
-    'health': 'Kesehatan',
-    'education': 'Pendidikan',
-    'entertainment': 'Hiburan',
-    'savings': 'Tabungan / Investasi',
-    'other_expense': 'Lainnya',
-  };
 
   @override
   void initState() {
@@ -152,8 +133,9 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final activeCategories =
-        _type == 'income' ? _incomeCategories : _expenseCategories;
+    final incCategories = ref.watch(customIncomeCategoriesProvider);
+    final expCategories = ref.watch(customExpenseCategoriesProvider);
+    final activeCategories = _type == 'income' ? incCategories : expCategories;
     final isIncome = _type == 'income';
     final activeColor = isIncome ? AppColors.accentGreen : AppColors.accentRed;
 

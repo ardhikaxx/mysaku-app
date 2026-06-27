@@ -19,6 +19,7 @@ import '../presentation/profile/app_info_screen.dart';
 import '../presentation/profile/faq_screen.dart';
 import '../presentation/profile/help_screen.dart';
 import '../presentation/profile/invite_member_screen.dart';
+import '../presentation/profile/manage_categories_screen.dart';
 import '../presentation/profile/manage_members_screen.dart';
 import '../presentation/profile/privacy_screen.dart';
 import '../presentation/profile/profile_screen.dart';
@@ -170,6 +171,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'app-info',
                     builder: (context, state) => const AppInfoScreen(),
+                  ),
+                  GoRoute(
+                    path: 'manage-categories',
+                    builder: (context, state) => const ManageCategoriesScreen(),
                   ),
                 ],
               ),
