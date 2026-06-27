@@ -152,37 +152,45 @@ class CashflowScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
-        child: Column(
-          children: [
-            const BalanceCard(),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                SummaryCard(
-                  title: AppStrings.totalIncome,
-                  amount: income.toCompactIDR,
-                  icon: Icons.arrow_downward,
-                  color: const Color(0xFF10B981),
-                ),
-                const SizedBox(width: 12),
-                SummaryCard(
-                  title: AppStrings.totalExpense,
-                  amount: expense.toCompactIDR,
-                  icon: Icons.arrow_upward,
-                  color: const Color(0xFFEF4444),
-                ),
-              ],
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: BalanceCard(),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 160),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SummaryCard(
+                        title: AppStrings.totalIncome,
+                        amount: income.toCompactIDR,
+                        icon: Icons.arrow_downward,
+                        color: const Color(0xFF10B981),
+                      ),
+                      const SizedBox(width: 12),
+                      SummaryCard(
+                        title: AppStrings.totalExpense,
+                        amount: expense.toCompactIDR,
+                        icon: Icons.arrow_upward,
+                        color: const Color(0xFFEF4444),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const BudgetCard(),
+                  const SizedBox(height: 16),
+                  const AnalyticsCard(),
+                  const SizedBox(height: 24),
+                  const TransactionList(),
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
-            const BudgetCard(),
-            const SizedBox(height: 16),
-            const AnalyticsCard(),
-            const SizedBox(height: 24),
-            const TransactionList(),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 80),
