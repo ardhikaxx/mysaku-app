@@ -225,27 +225,6 @@ class ProfileScreen extends ConsumerWidget {
             subtitle: 'Komitmen perlindungan & enkripsi data Anda',
             onTap: () => context.push('/home/profile/privacy'),
           ));
-          tiles.add(SettingsTile(
-            icon: Icons.logout,
-            iconColor: Colors.red,
-            textColor: Colors.red,
-            title: AppStrings.logout,
-            onTap: () async {
-              final confirmed = await ConfirmDialog.show(
-                context,
-                title: 'Keluar Akun?',
-                message: 'Anda akan keluar dari akun MySaku. Pastikan data Anda sudah tersimpan.',
-                confirmText: 'Ya, Keluar',
-                icon: Icons.logout_rounded,
-                iconColor: Colors.red,
-                confirmColor: Colors.red,
-              );
-              if (confirmed && context.mounted) {
-                await ref.read(authRepositoryProvider).signOut();
-                if (context.mounted) context.go('/auth/login');
-              }
-            },
-          ));
 
           return SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 140),
@@ -276,6 +255,44 @@ class ProfileScreen extends ConsumerWidget {
                             const Divider(height: 1, color: AppColors.divider, indent: 60),
                         ],
                       ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: OutlinedButton.icon(
+                    onPressed: () async {
+                      final confirmed = await ConfirmDialog.show(
+                        context,
+                        title: 'Keluar Akun?',
+                        message: 'Anda akan keluar dari akun MySaku. Pastikan data Anda sudah tersimpan.',
+                        confirmText: 'Ya, Keluar',
+                        icon: Icons.logout_rounded,
+                        iconColor: Colors.red,
+                        confirmColor: Colors.red,
+                      );
+                      if (confirmed && context.mounted) {
+                        await ref.read(authRepositoryProvider).signOut();
+                        if (context.mounted) context.go('/auth/login');
+                      }
+                    },
+                    icon: const Icon(Icons.logout_rounded, color: Colors.red, size: 20),
+                    label: const Text(
+                      AppStrings.logout,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.red.withValues(alpha: 0.05),
+                      side: BorderSide(color: Colors.red.withValues(alpha: 0.25), width: 1.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
                   ),
                 ),
