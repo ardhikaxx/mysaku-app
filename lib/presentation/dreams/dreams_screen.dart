@@ -127,7 +127,7 @@ class DreamsScreen extends ConsumerWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Saldo dompet: ${balance.toIDR} • $achievedCount/${list.length} Tercapai 🎉',
+                                  'Saldo dompet: ${balance.toIDR} • $achievedCount/${list.length} Tercapai',
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 12,

@@ -175,22 +175,22 @@ class DreamCard extends ConsumerWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF8FAFC),
+                      color: const Color(0xFFEFF6FF),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                      border: Border.all(color: const Color(0xFFBFDBFE)),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.tips_and_updates_rounded,
-                            size: 16, color: Color(0xFFD97706)),
+                        const Icon(Icons.card_giftcard_rounded,
+                            size: 16, color: AppColors.primaryColor),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            '💡 Saran Nabung: ${(remaining / 90).toCompactIDR}/hari atau ${(remaining / 3).toCompactIDR}/bln (estimasi 3 bln)',
+                            'Saran Nabung: ${(remaining / 90).toCompactIDR}/hari atau ${(remaining / 3).toCompactIDR}/bln (estimasi 3 bln)',
                             style: const TextStyle(
                               fontSize: 11.5,
-                              color: Color(0xFF475569),
-                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1E40AF),
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
