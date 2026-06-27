@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
+import '../../core/utils/currency_formatter.dart';
 import '../../data/models/dream_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/dream_provider.dart';
@@ -95,9 +96,10 @@ class _AddDreamScreenState extends ConsumerState<AddDreamScreen> {
               TextFormField(
                 controller: _amountController,
                 keyboardType: TextInputType.number,
+                inputFormatters: [ThousandsFormatter()],
                 decoration: InputDecoration(
                   labelText: 'Target Dana (Rp)',
-                  hintText: '10000000',
+                  hintText: '10.000.000',
                   filled: true,
                   fillColor: AppColors.surfaceWhite,
                   border: OutlineInputBorder(

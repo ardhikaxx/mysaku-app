@@ -5,6 +5,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/errors/app_exception.dart';
 import '../../core/extensions/datetime_extension.dart';
+import '../../core/utils/currency_formatter.dart';
 import '../../data/models/transaction_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/transaction_provider.dart';
@@ -259,6 +260,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                     TextFormField(
                       controller: _amountController,
                       keyboardType: TextInputType.number,
+                      inputFormatters: [ThousandsFormatter()],
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 32,

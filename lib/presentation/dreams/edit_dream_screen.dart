@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
+import '../../core/utils/currency_formatter.dart';
+import 'package:intl/intl.dart';
 import '../../data/models/dream_model.dart';
 import '../../providers/dream_provider.dart';
 import '../../providers/user_provider.dart';
@@ -34,7 +36,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
     super.initState();
     _nameController = TextEditingController(text: widget.dream.name);
     _amountController = TextEditingController(
-        text: widget.dream.targetAmount.toInt().toString());
+        text: NumberFormat.decimalPattern('id_ID').format(widget.dream.targetAmount.toInt()));
     _descController = TextEditingController(text: widget.dream.description ?? '');
     _isAchieved = widget.dream.isAchieved;
   }
@@ -149,6 +151,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
               TextFormField(
                 controller: _amountController,
                 keyboardType: TextInputType.number,
+                inputFormatters: [ThousandsFormatter()],
                 decoration: InputDecoration(
                   labelText: 'Target Dana (Rp)',
                   filled: true,

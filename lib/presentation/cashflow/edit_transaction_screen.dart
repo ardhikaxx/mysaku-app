@@ -5,6 +5,8 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/errors/app_exception.dart';
 import '../../core/extensions/datetime_extension.dart';
+import '../../core/utils/currency_formatter.dart';
+import 'package:intl/intl.dart';
 import '../../data/models/transaction_model.dart';
 import '../../providers/transaction_provider.dart';
 import '../../providers/user_provider.dart';
@@ -60,8 +62,8 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.tx.name);
-    _amountController =
-        TextEditingController(text: widget.tx.amount.toInt().toString());
+    _amountController = TextEditingController(
+        text: NumberFormat.decimalPattern('id_ID').format(widget.tx.amount.toInt()));
     _descController = TextEditingController(text: widget.tx.description ?? '');
     _type = widget.tx.type;
     _category = widget.tx.category;
@@ -303,6 +305,7 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
                     TextFormField(
                       controller: _amountController,
                       keyboardType: TextInputType.number,
+                      inputFormatters: [ThousandsFormatter()],
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 32,
