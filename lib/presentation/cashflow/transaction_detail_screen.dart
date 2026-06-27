@@ -10,6 +10,7 @@ import '../../providers/transaction_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/wallet_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
+import '../shared/widgets/confirm_dialog.dart';
 
 class TransactionDetailScreen extends ConsumerWidget {
   final TransactionModel tx;
@@ -273,31 +274,11 @@ class TransactionDetailScreen extends ConsumerWidget {
   }
 
   void _confirmDelete(BuildContext context, WidgetRef ref) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Hapus Transaksi?'),
-        content: const Text(
-            'Transaksi ini akan dihapus secara permanen dari tabungan.'),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        actions: [
-          TextButton(
-            onPressed: () => ctx.pop(false),
-            child: const Text('Batal', style: TextStyle(color: Colors.grey)),
-          ),
-          ElevatedButton(
-            onPressed: () => ctx.pop(true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFEF4444),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-            ),
-            child: const Text('Hapus'),
-          ),
-        ],
-      ),
+    final confirmed = await ConfirmDialog.show(
+      context,
+      title: 'Hapus Transaksi?',
+      message: 'Transaksi ini akan dihapus secara permanen dari tabungan.',
+      confirmText: 'Hapus',
     );
 
     if (confirmed != true || !context.mounted) return;

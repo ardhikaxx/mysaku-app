@@ -172,30 +172,21 @@ class ProfileScreen extends ConsumerWidget {
                     onTap: () => context.push('/home/profile/members'),
                   ),
                 ] else ...[
-                  SettingsTile(
+SettingsTile(
                     icon: Icons.exit_to_app,
                     iconColor: Colors.redAccent,
                     title: AppStrings.leaveWallet,
                     subtitle: 'Keluar dari tabungan bersama ini',
                     onTap: () async {
-                      final confirmed = await showDialog<bool>(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Keluar Tabungan?'),
-                          content: const Text(
-                              'Anda akan kembali menggunakan Tabungan Pribadi.'),
-                          actions: [
-                            TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: const Text('Batal')),
-                            TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: const Text('Keluar',
-                                    style: TextStyle(color: Colors.red))),
-                          ],
-                        ),
+                      final confirmed = await ConfirmDialog.show(
+                        context,
+                        title: 'Keluar Tabungan?',
+                        message: 'Anda akan kembali menggunakan Tabungan Pribadi.',
+                        confirmText: 'Keluar',
+                        icon: Icons.exit_to_app,
+                        iconColor: const Color(0xFFEF4444),
                       );
-                      if (confirmed == true && wallet != null) {
+                      if (confirmed && wallet != null) {
                         ref.read(walletRepositoryProvider).leaveWallet(
                             wallet.walletId, user.uid, user.personalWalletId);
                       }

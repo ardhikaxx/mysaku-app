@@ -7,6 +7,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/wallet_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
+import '../shared/widgets/confirm_dialog.dart';
 import 'widgets/member_item_card.dart';
 
 class ManageMembersScreen extends ConsumerWidget {
@@ -47,37 +48,26 @@ class ManageMembersScreen extends ConsumerWidget {
                     member: m,
                     isCurrentUser: isMe,
                     onRemove: (!m.isOwner && wallet != null)
-                        ? () async {
-                            final confirm = await showDialog<bool>(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Hapus Anggota?'),
-                                content: Text(
-                                    'Akses ${m.name} ke tabungan ini akan dicabut.'),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, false),
-                                      child: const Text('Batal')),
-                                  TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, true),
-                                      child: const Text('Hapus',
-                                          style: TextStyle(color: Colors.red))),
-                                ],
-                              ),
-                            );
+                      ? () async {
+                          final confirm = await ConfirmDialog.show(
+                            context,
+                            title: 'Hapus Anggota?',
+                            message: 'Akses ${m.name} ke tabungan ini akan dicabut.',
+                            confirmText: 'Hapus',
+                            icon: Icons.person_remove_outlined,
+                            iconColor: const Color(0xFFEF4444),
+                          );
 
-                            if (confirm == true) {
-                              final userRepo = ref.read(userRepositoryProvider);
-                              final userDoc = await userRepo.getUser(m.uid);
-                              final personalW =
-                                  userDoc?.personalWalletId ?? m.uid;
-                              ref.read(walletRepositoryProvider).leaveWallet(
-                                  wallet.walletId, m.uid, personalW);
-                            }
+                          if (confirm == true) {
+                            final userRepo = ref.read(userRepositoryProvider);
+                            final userDoc = await userRepo.getUser(m.uid);
+                            final personalW =
+                                userDoc?.personalWalletId ?? m.uid;
+                            ref.read(walletRepositoryProvider).leaveWallet(
+                                wallet.walletId, m.uid, personalW);
                           }
-                        : null,
+                        }
+                      : null,
                   );
                 },
               ),
