@@ -5,6 +5,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/errors/app_exception.dart';
 import '../../providers/auth_provider.dart';
+import '../home/widgets/floating_capsule_app_bar.dart';
 import 'widgets/auth_form_field.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -46,13 +47,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => context.pop(),
-        ),
+      appBar: FloatingCapsuleAppBar(
+        title: AppStrings.registerTitle,
+        showBack: true,
+        onLeadingTap: () => context.pop(),
       ),
       body: SafeArea(
         child: Center(
