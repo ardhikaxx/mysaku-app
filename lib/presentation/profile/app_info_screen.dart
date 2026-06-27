@@ -200,6 +200,23 @@ class AppInfoScreen extends StatelessWidget {
                         'assets/qris.png',
                         width: 200,
                         fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          width: 200,
+                          height: 200,
+                          alignment: Alignment.center,
+                          child: const Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.qr_code_2_rounded, size: 64, color: AppColors.textSecondary),
+                              SizedBox(height: 8),
+                              Text(
+                                'Silakan Restart Aplikasi\n(Stop & Run ulang)\nuntuk memuat aset baru',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
