@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/extensions/currency_extension.dart';
+import '../../../core/utils/app_haptics.dart';
+import '../../../providers/privacy_provider.dart';
 import '../../../providers/transaction_provider.dart';
 import '../../../providers/wallet_provider.dart';
 
@@ -13,7 +15,6 @@ class BalanceCard extends ConsumerStatefulWidget {
 }
 
 class _BalanceCardState extends ConsumerState<BalanceCard> {
-  bool _isHidden = false;
   late DateTime _now;
   Timer? _timer;
 
@@ -51,6 +52,7 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
   Widget build(BuildContext context) {
     final balance = ref.watch(walletBalanceProvider);
     final walletAsync = ref.watch(walletProvider);
+    final isHidden = ref.watch(privacyProvider);
 
     return Container(
       width: double.infinity,
@@ -60,7 +62,7 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF111827).withOpacity(0.25),
+            color: const Color(0xFF111827).withValues(alpha: 0.25),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -85,9 +87,12 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
                   ),
                   const SizedBox(width: 8),
                   GestureDetector(
-                    onTap: () => setState(() => _isHidden = !_isHidden),
+                    onTap: () {
+                      AppHaptics.lightTap();
+                      ref.read(privacyProvider.notifier).toggleVisibility();
+                    },
                     child: Icon(
-                      _isHidden
+                      isHidden
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
                       color: const Color(0xFF9CA3AF),
@@ -154,7 +159,7 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
 
           // Massive Clean Nominal
           Text(
-            _isHidden ? 'Rp ••••••••' : balance.toIDR,
+            isHidden ? 'Rp ••••••••' : balance.toIDR,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 36,
@@ -168,7 +173,7 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
           // Minimalist Separator
           Container(
             height: 1,
-            color: Colors.white.withOpacity(0.08),
+            color: Colors.white.withValues(alpha: 0.08),
           ),
 
           const SizedBox(height: 18),

@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/extensions/currency_extension.dart';
+import '../../core/utils/app_haptics.dart';
+import '../../providers/privacy_provider.dart';
 import '../../providers/transaction_provider.dart';
 import '../../providers/user_provider.dart';
 import 'widgets/analytics_card.dart';
@@ -19,6 +21,7 @@ class CashflowScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final txList = ref.watch(transactionsProvider).value ?? [];
     final user = ref.watch(userProvider).value;
+    final isHidden = ref.watch(privacyProvider);
     double income = 0;
     double expense = 0;
     for (final tx in txList) {
@@ -42,7 +45,7 @@ class CashflowScreen extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF0F172A).withOpacity(0.06),
+                    color: const Color(0xFF0F172A).withValues(alpha: 0.06),
                     blurRadius: 16,
                     offset: const Offset(0, 6),
                   ),
@@ -116,10 +119,29 @@ class CashflowScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  // Kanan: Ikon + MySaku
+                  // Kanan: Tombol Privasi + Ikon + MySaku
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      GestureDetector(
+                        onTap: () {
+                          AppHaptics.lightTap();
+                          ref.read(privacyProvider.notifier).toggleVisibility();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                            color: isHidden ? const Color(0xFFFEE2E2) : const Color(0xFFF3F4F6),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            isHidden ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                            color: isHidden ? const Color(0xFFEF4444) : const Color(0xFF6B7280),
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(

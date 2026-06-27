@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../providers/privacy_provider.dart';
 
-class SummaryCard extends StatelessWidget {
+class SummaryCard extends ConsumerWidget {
   final String title;
   final String amount;
   final IconData icon;
@@ -16,7 +18,9 @@ class SummaryCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isHidden = ref.watch(privacyProvider);
+
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -26,7 +30,7 @@ class SummaryCard extends StatelessWidget {
           border: Border.all(color: const Color(0xFFF3F4F6), width: 1.2),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -37,7 +41,7 @@ class SummaryCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.12),
+                color: color.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: color, size: 18),
@@ -60,7 +64,7 @@ class SummaryCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    amount,
+                    isHidden ? 'Rp ••••••' : amount,
                     style: const TextStyle(
                       color: Color(0xFF111827),
                       fontWeight: FontWeight.w700,
