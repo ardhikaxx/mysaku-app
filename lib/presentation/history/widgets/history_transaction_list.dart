@@ -440,11 +440,11 @@ class _HistoryTransactionListState
     }
 
     if (filter == 'expense') {
-      return 'Ditemukan ${list.length} transaksi • Total Keluar: ${exp.toIDR}';
+      return 'Total Keluar: ${exp.toIDR}';
     } else if (filter == 'income') {
-      return 'Ditemukan ${list.length} transaksi • Total Masuk: ${inc.toIDR}';
+      return 'Total Masuk: ${inc.toIDR}';
     } else {
-      return 'Ditemukan ${list.length} transaksi • Masuk: ${inc.toCompactIDR} • Keluar: ${exp.toCompactIDR}';
+      return 'Masuk: ${inc.toCompactIDR} • Keluar: ${exp.toCompactIDR}';
     }
   }
 
