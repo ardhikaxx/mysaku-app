@@ -15,10 +15,11 @@ class BottomNavBar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 32, right: 32, bottom: 20),
       child: Container(
-        height: 60,
+        height: 64,
+        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
               color: const Color(0xFF0F172A).withOpacity(0.07),
@@ -47,30 +48,39 @@ class BottomNavBar extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onTap(index),
         behavior: HitTestBehavior.opaque,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedScale(
-              scale: isSelected ? 1.12 : 1.0,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeOutCubic,
-              child: Icon(
-                icon,
-                size: 22,
-                color: isSelected ? activeColor : inactiveColor,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOutCubic,
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFEFF6FF) : Colors.transparent,
+            borderRadius: BorderRadius.circular(26),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedScale(
+                scale: isSelected ? 1.08 : 1.0,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOutCubic,
+                child: Icon(
+                  icon,
+                  size: 20,
+                  color: isSelected ? activeColor : inactiveColor,
+                ),
               ),
-            ),
-            const SizedBox(height: 3),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? activeColor : inactiveColor,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                fontSize: 10.5,
-                letterSpacing: -0.2,
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? activeColor : inactiveColor,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                  fontSize: 10.5,
+                  letterSpacing: -0.2,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
