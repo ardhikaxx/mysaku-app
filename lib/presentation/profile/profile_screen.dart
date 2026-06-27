@@ -9,7 +9,6 @@ import '../../providers/user_provider.dart';
 import '../../providers/wallet_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
 import '../shared/widgets/confirm_dialog.dart';
-import 'widgets/export_report_modal.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/settings_tile.dart';
 
@@ -197,13 +196,6 @@ class ProfileScreen extends ConsumerWidget {
             ));
           }
 
-          tiles.add(SettingsTile(
-            icon: Icons.download_rounded,
-            iconColor: const Color(0xFF10B981),
-            title: 'Ekspor Laporan Finansial',
-            subtitle: 'Unduh rekap transaksi Excel / CSV / PDF',
-            onTap: () => ExportReportModal.show(context),
-          ));
           tiles.add(SettingsTile(
             icon: Icons.headset_mic_rounded,
             iconColor: const Color(0xFF3B82F6),
