@@ -107,33 +107,42 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(
-                      Icons.access_time_rounded,
+                      Icons.calendar_today_rounded,
                       color: Color(0xFF60A5FA),
-                      size: 12,
+                      size: 11,
                     ),
                     const SizedBox(width: 5),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          _formatTime(_now),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        Text(
-                          _formatDate(_now),
-                          style: const TextStyle(
-                            color: Color(0xFF9CA3AF),
-                            fontSize: 9.5,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      _formatDate(_now),
+                      style: const TextStyle(
+                        color: Color(0xFFD1D5DB),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 6),
+                      width: 3,
+                      height: 3,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF4B5563),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const Icon(
+                      Icons.access_time_rounded,
+                      color: Color(0xFF60A5FA),
+                      size: 11,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      _formatTime(_now),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.4,
+                      ),
                     ),
                   ],
                 ),
