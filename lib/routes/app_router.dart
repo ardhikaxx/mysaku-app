@@ -15,6 +15,7 @@ import '../presentation/dreams/dreams_screen.dart';
 import '../presentation/dreams/edit_dream_screen.dart';
 import '../presentation/history/history_screen.dart';
 import '../presentation/home/home_screen.dart';
+import '../presentation/profile/app_info_screen.dart';
 import '../presentation/profile/faq_screen.dart';
 import '../presentation/profile/help_screen.dart';
 import '../presentation/profile/invite_member_screen.dart';
@@ -165,6 +166,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'privacy',
                     builder: (context, state) => const PrivacyScreen(),
+                  ),
+                  GoRoute(
+                    path: 'app-info',
+                    builder: (context, state) => const AppInfoScreen(),
                   ),
                 ],
               ),

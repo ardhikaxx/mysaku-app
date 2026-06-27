@@ -15,90 +15,6 @@ import 'widgets/settings_tile.dart';
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
-  void _showAppInfoModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      backgroundColor: AppColors.surfaceWhite,
-      builder: (context) => Padding(
-        padding: const EdgeInsets.fromLTRB(24, 20, 24, 40),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                color: Color(0xFFEFF6FF),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.account_balance_wallet_rounded,
-                  size: 48, color: AppColors.primaryColor),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'MySaku App',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
-              ),
-            ),
-            const SizedBox(height: 4),
-            const Text(
-              'Versi 1.0.0 (Build 100)',
-              style: TextStyle(
-                fontSize: 13,
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF8FAFC),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFE2E8F0)),
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.code_rounded, size: 20, color: AppColors.primaryColor),
-                  SizedBox(width: 8),
-                  Text(
-                    'Dikembangkan oleh Yanuar Ardhika R.U',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF334155),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Aplikasi pencatatan keuangan dan target impian bersama untuk keluarga & pasangan.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12.5, color: AppColors.textSecondary, height: 1.4),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   void _showInvitationsModal(BuildContext context, WidgetRef ref) {
     showModalBottomSheet(
       context: context,
@@ -300,7 +216,7 @@ class ProfileScreen extends ConsumerWidget {
             icon: Icons.info_outline_rounded,
             title: 'Info Aplikasi',
             subtitle: 'Versi 1.0.0 • Dikembangkan oleh Yanuar Ardhika R.U',
-            onTap: () => _showAppInfoModal(context),
+            onTap: () => context.push('/home/profile/app-info'),
           ));
 
           return SingleChildScrollView(
