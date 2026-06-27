@@ -151,7 +151,7 @@ class CashflowScreen extends ConsumerWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
         child: Column(
           children: [
             const BalanceCard(),

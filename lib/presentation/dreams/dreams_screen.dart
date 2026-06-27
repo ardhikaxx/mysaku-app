@@ -26,7 +26,7 @@ class DreamsScreen extends ConsumerWidget {
         leadingIcon: Icons.auto_awesome_rounded,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -68,7 +68,7 @@ class _InviteMemberScreenState extends ConsumerState<InviteMemberScreen> {
         onLeadingTap: () => context.pop(),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 120),
         child: Form(
           key: _formKey,
           child: Column(

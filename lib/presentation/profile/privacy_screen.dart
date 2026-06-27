@@ -16,7 +16,7 @@ class PrivacyScreen extends StatelessWidget {
         onLeadingTap: () => context.pop(),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 120),
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../data/models/dream_model.dart';
@@ -21,10 +22,13 @@ import '../presentation/profile/privacy_screen.dart';
 import '../presentation/profile/profile_screen.dart';
 import '../providers/auth_provider.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final appRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
 
   return GoRouter(
+    navigatorKey: _rootNavigatorKey,
     initialLocation: '/auth/login',
     redirect: (context, state) {
       final isLoggedIn = authState.value != null;
@@ -59,10 +63,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: 'add',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const AddTransactionScreen(),
                   ),
                   GoRoute(
                     path: 'edit/:id',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) {
                       final tx = state.extra as TransactionModel;
                       return EditTransactionScreen(tx: tx);
@@ -70,6 +76,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   ),
                   GoRoute(
                     path: 'detail/:id',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) {
                       final tx = state.extra as TransactionModel;
                       return TransactionDetailScreen(tx: tx);
@@ -87,10 +94,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: 'add',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const AddDreamScreen(),
                   ),
                   GoRoute(
                     path: 'edit/:id',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) {
                       final dream = state.extra as DreamModel;
                       return EditDreamScreen(dream: dream);
@@ -98,6 +107,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   ),
                   GoRoute(
                     path: 'detail/:id',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) {
                       final dream = state.extra as DreamModel;
                       return DreamDetailScreen(dream: dream);
@@ -115,22 +125,27 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: 'invite',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const InviteMemberScreen(),
                   ),
                   GoRoute(
                     path: 'members',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const ManageMembersScreen(),
                   ),
                   GoRoute(
                     path: 'help',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const HelpScreen(),
                   ),
                   GoRoute(
                     path: 'faq',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const FaqScreen(),
                   ),
                   GoRoute(
                     path: 'privacy',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const PrivacyScreen(),
                   ),
                 ],

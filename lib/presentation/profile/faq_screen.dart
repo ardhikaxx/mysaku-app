@@ -95,7 +95,7 @@ class _FaqScreenState extends State<FaqScreen> {
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 120),
                     itemCount: filteredFaqs.length,
                     itemBuilder: (context, index) {
                       final item = filteredFaqs[index];
