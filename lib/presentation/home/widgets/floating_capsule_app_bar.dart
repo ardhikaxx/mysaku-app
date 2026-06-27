@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class FloatingCapsuleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final Widget? titleWidget;
   final IconData? leadingIcon;
   final VoidCallback? onLeadingTap;
   final bool showBack;
@@ -10,6 +11,7 @@ class FloatingCapsuleAppBar extends StatelessWidget implements PreferredSizeWidg
   const FloatingCapsuleAppBar({
     super.key,
     required this.title,
+    this.titleWidget,
     this.leadingIcon,
     this.onLeadingTap,
     this.showBack = false,
@@ -72,17 +74,18 @@ class FloatingCapsuleAppBar extends StatelessWidget implements PreferredSizeWidg
                   ),
                 ),
               Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16,
-                    letterSpacing: -0.4,
-                    color: Color(0xFF111827),
+                child: titleWidget ??
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16,
+                      letterSpacing: -0.4,
+                      color: Color(0xFF111827),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
               ),
               if (trailing != null) trailing!,
             ],

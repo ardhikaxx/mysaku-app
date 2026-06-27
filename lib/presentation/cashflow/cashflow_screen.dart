@@ -29,17 +29,45 @@ class CashflowScreen extends ConsumerWidget {
       backgroundColor: AppColors.backgroundLight,
       appBar: FloatingCapsuleAppBar(
         title: AppStrings.appName,
+        titleWidget: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              user?.name ?? AppStrings.appName,
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 14,
+                letterSpacing: -0.3,
+                color: Color(0xFF111827),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              user?.email ?? '',
+              style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 11,
+                color: Color(0xFF6B7280),
+                letterSpacing: -0.1,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
         trailing: GestureDetector(
           onTap: () => context.go('/home/profile'),
           child: Container(
-            width: 36,
-            height: 36,
+            width: 38,
+            height: 38,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: const Color(0xFFE5E7EB), width: 2),
             ),
             child: CircleAvatar(
-              radius: 18,
+              radius: 19,
               backgroundColor: const Color(0xFFEFF6FF),
               backgroundImage: user != null && user.photoUrl != null
                   ? NetworkImage(user.photoUrl!)
@@ -52,7 +80,7 @@ class CashflowScreen extends ConsumerWidget {
                       style: const TextStyle(
                         color: Color(0xFF1E3A8A),
                         fontWeight: FontWeight.w700,
-                        fontSize: 14,
+                        fontSize: 15,
                       ),
                     )
                   : null,
