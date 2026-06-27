@@ -139,7 +139,6 @@ class ProfileScreen extends ConsumerWidget {
           if (invList.isNotEmpty) {
             tiles.add(SettingsTile(
               icon: Icons.mark_email_unread_outlined,
-              iconColor: AppColors.accentAmber,
               title: 'Undangan Bergabung',
               subtitle: '${invList.length} undangan menunggu respon',
               trailing: Container(
@@ -168,7 +167,6 @@ class ProfileScreen extends ConsumerWidget {
           } else {
             tiles.add(SettingsTile(
               icon: Icons.exit_to_app,
-              iconColor: Colors.redAccent,
               title: AppStrings.leaveWallet,
               subtitle: 'Keluar dari tabungan bersama ini',
               onTap: () async {
@@ -198,21 +196,18 @@ class ProfileScreen extends ConsumerWidget {
 
           tiles.add(SettingsTile(
             icon: Icons.headset_mic_rounded,
-            iconColor: const Color(0xFF3B82F6),
             title: 'Pusat Bantuan',
             subtitle: 'Layanan dukungan pelanggan WhatsApp / Email',
             onTap: () => context.push('/home/profile/help'),
           ));
           tiles.add(SettingsTile(
             icon: Icons.question_answer_rounded,
-            iconColor: const Color(0xFF8B5CF6),
             title: 'Pertanyaan Umum (FAQ)',
             subtitle: 'Panduan cara menghapus, edit, & fitur impian',
             onTap: () => context.push('/home/profile/faq'),
           ));
           tiles.add(SettingsTile(
             icon: Icons.privacy_tip_rounded,
-            iconColor: const Color(0xFFF59E0B),
             title: 'Kebijakan Privasi',
             subtitle: 'Komitmen perlindungan & enkripsi data Anda',
             onTap: () => context.push('/home/profile/privacy'),
