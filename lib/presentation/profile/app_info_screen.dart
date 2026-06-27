@@ -132,56 +132,6 @@ class AppInfoScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-
-            // Kartu Sorotan Fitur Utama
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceWhite,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: AppColors.divider),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 16,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Row(
-                    children: [
-                      Icon(Icons.star_rounded,
-                          color: AppColors.accentAmber, size: 24),
-                      SizedBox(width: 10),
-                      Text(
-                        'Sorotan Fitur Utama',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF111827),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Divider(height: 1, color: AppColors.divider),
-                  const SizedBox(height: 16),
-                  _buildFeatureItem(Icons.account_balance_wallet_outlined,
-                      'Tabungan Bersama & Pribadi', 'Kelola keuangan secara mandiri maupun kolaboratif bersama pasangan atau keluarga.'),
-                  const SizedBox(height: 14),
-                  _buildFeatureItem(Icons.card_giftcard_rounded,
-                      'Target Impian Cerdas', 'Sistem penasihat tabungan otomatis dan pengurutan progres target impian.'),
-                  const SizedBox(height: 14),
-                  _buildFeatureItem(Icons.receipt_long_rounded,
-                      'Riwayat Transaksi Lengkap', 'Pencarian cepat dan filter per bulan yang akurat dan mudah digunakan.'),
-                ],
-              ),
-            ),
             const SizedBox(height: 24),
             Text(
               '© 2026 MySaku. Hak Cipta Dilindungi Undang-Undang.',
@@ -220,47 +170,6 @@ class AppInfoScreen extends StatelessWidget {
                   fontSize: 13.5,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF1E293B),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFeatureItem(IconData icon, String title, String description) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(
-            color: Color(0xFFEFF6FF),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, size: 18, color: AppColors.primaryColor),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF1E293B),
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                description,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textSecondary,
-                  height: 1.4,
                 ),
               ),
             ],
