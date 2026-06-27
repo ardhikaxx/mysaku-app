@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
 
 class HelpScreen extends StatefulWidget {
@@ -112,10 +113,17 @@ class _HelpScreenState extends State<HelpScreen> {
                     children: [
                       Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Menghubungi WhatsApp Support MySaku...')),
-                            );
+                          onPressed: () async {
+                            final url = Uri.parse('https://wa.me/6285933648537?text=Halo%20Support%20MySaku,%20saya%20butuh%20bantuan');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url, mode: LaunchMode.externalApplication);
+                            } else {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Gagal membuka WhatsApp. Pastikan aplikasi terinstal.')),
+                                );
+                              }
+                            }
                           },
                           icon: const Icon(Icons.chat_rounded, size: 18),
                           label: const Text('WhatsApp'),
@@ -130,10 +138,17 @@ class _HelpScreenState extends State<HelpScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Membuka aplikasi Email...')),
-                            );
+                          onPressed: () async {
+                            final url = Uri.parse('mailto:ardhikayanuar58@gmail.com?subject=Bantuan%20MySaku');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            } else {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Gagal membuka aplikasi Email.')),
+                                );
+                              }
+                            }
                           },
                           icon: const Icon(Icons.email_rounded, size: 18),
                           label: const Text('Email'),
