@@ -36,8 +36,10 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
     super.initState();
     _nameController = TextEditingController(text: widget.dream.name);
     _amountController = TextEditingController(
-        text: NumberFormat.decimalPattern('id_ID').format(widget.dream.targetAmount.toInt()));
-    _descController = TextEditingController(text: widget.dream.description ?? '');
+        text: NumberFormat.decimalPattern('id_ID')
+            .format(widget.dream.targetAmount.toInt()));
+    _descController =
+        TextEditingController(text: widget.dream.description ?? '');
     _isAchieved = widget.dream.isAchieved;
   }
 
@@ -80,7 +82,8 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
     final confirmed = await ConfirmDialog.show(
       context,
       title: 'Hapus Impian?',
-      message: 'Impian keuangan ini akan dihapus secara permanen dan tidak dapat dikembalikan.',
+      message:
+          'Impian keuangan ini akan dihapus secara permanen dan tidak dapat dikembalikan.',
       confirmText: 'Ya, Hapus',
       icon: Icons.auto_awesome_rounded,
       iconColor: const Color(0xFFEF4444),
@@ -114,7 +117,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
         showBack: true,
         onLeadingTap: () => context.pop(),
         trailing: IconButton(
-          icon: const Icon(Icons.delete_outline, color: Colors.red),
+          icon: const Icon(Icons.delete_outline_rounded, color: Colors.red),
           onPressed: _isLoading ? null : _delete,
         ),
       ),
@@ -123,88 +126,315 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SwitchListTile(
-                title: const Text('Tandai Sudah Tercapai',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: const Text('Mengubah status pencapaian impian'),
-                value: _isAchieved,
-                activeColor: AppColors.accentGreen,
-                onChanged: (val) => setState(() => _isAchieved = val),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Nama Impian / Target',
-                  filled: true,
-                  fillColor: AppColors.surfaceWhite,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.divider)),
+              // ACHIEVEMENT STATUS CARD
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: _isAchieved
+                      ? AppColors.accentGreen.withValues(alpha: 0.1)
+                      : AppColors.surfaceWhite,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: _isAchieved
+                        ? AppColors.accentGreen
+                        : AppColors.divider.withValues(alpha: 0.6),
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _isAchieved
+                          ? AppColors.accentGreen.withValues(alpha: 0.08)
+                          : Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
                 ),
-                validator: (val) => val == null || val.trim().length < 2
-                    ? 'Minimal 2 karakter'
-                    : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _amountController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [ThousandsFormatter()],
-                decoration: InputDecoration(
-                  labelText: 'Target Dana (Rp)',
-                  filled: true,
-                  fillColor: AppColors.surfaceWhite,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.divider)),
-                ),
-                validator: (val) {
-                  if (val == null || val.isEmpty) return 'Target wajib diisi';
-                  final parsed = double.tryParse(
-                      val.replaceAll('.', '').replaceAll(',', ''));
-                  if (parsed == null || parsed <= 0) {
-                    return 'Target harus lebih dari 0';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _descController,
-                maxLines: 3,
-                maxLength: 200,
-                decoration: InputDecoration(
-                  labelText: 'Keterangan Tambahan (Opsional)',
-                  filled: true,
-                  fillColor: AppColors.surfaceWhite,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.divider)),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: _isAchieved
+                            ? AppColors.accentGreen
+                            : const Color(0xFFF3F4F6),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        _isAchieved
+                            ? Icons.emoji_events_rounded
+                            : Icons.hourglass_empty_rounded,
+                        color: _isAchieved ? Colors.white : AppColors.textSecondary,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _isAchieved
+                                ? 'Target Telah Tercapai! 🎉'
+                                : 'Dalam Proses Menabung',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              color: _isAchieved
+                                  ? AppColors.accentGreen
+                                  : AppColors.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            _isAchieved
+                                ? 'Impian ini sudah tercapai seutuhnya.'
+                                : 'Aktifkan jika target impian ini sudah terwujud.',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Switch(
+                      value: _isAchieved,
+                      activeThumbColor: AppColors.accentGreen,
+                      onChanged: (val) => setState(() => _isAchieved = val),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 24),
-              SizedBox(
+
+              // HERO AMOUNT INPUT CARD
+              Container(
                 width: double.infinity,
-                height: 52,
+                padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceWhite,
+                  borderRadius: BorderRadius.circular(28),
+                  border: Border.all(
+                      color: AppColors.accentAmber.withValues(alpha: 0.3),
+                      width: 1.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accentAmber.withValues(alpha: 0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'TARGET DANA IMPIAN',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.accentAmber,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _amountController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [ThousandsFormatter()],
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.accentAmber,
+                      ),
+                      decoration: const InputDecoration(
+                        hintText: 'Rp 0',
+                        hintStyle: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.divider,
+                        ),
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                      validator: (val) {
+                        if (val == null || val.isEmpty) {
+                          return 'Target wajib diisi';
+                        }
+                        final parsed = double.tryParse(
+                            val.replaceAll('.', '').replaceAll(',', ''));
+                        if (parsed == null || parsed <= 0) {
+                          return 'Target harus lebih dari 0';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // GROUPED FORM CARD
+              const Padding(
+                padding: EdgeInsets.only(left: 4, bottom: 8),
+                child: Text(
+                  'DETAIL IMPIAN',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textSecondary,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceWhite,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                      color: AppColors.divider.withValues(alpha: 0.6),
+                      width: 1.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 16,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    // Nama Impian
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 8),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AppColors.accentAmber.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(Icons.auto_awesome_rounded,
+                                color: AppColors.accentAmber, size: 22),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: TextFormField(
+                              controller: _nameController,
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textPrimary),
+                              decoration: const InputDecoration(
+                                hintText: 'Nama Impian',
+                                hintStyle: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontWeight: FontWeight.normal),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              validator: (val) =>
+                                  val == null || val.trim().length < 2
+                                      ? 'Minimal 2 karakter'
+                                      : null,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                        height: 1,
+                        color: AppColors.divider.withValues(alpha: 0.4),
+                        indent: 56),
+
+                    // Keterangan
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF6B7280).withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(Icons.notes_rounded,
+                                color: Color(0xFF6B7280), size: 22),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: TextFormField(
+                              controller: _descController,
+                              maxLines: 3,
+                              maxLength: 200,
+                              style: const TextStyle(
+                                  fontSize: 15, color: AppColors.textPrimary),
+                              decoration: const InputDecoration(
+                                hintText: 'Keterangan tambahan (opsional)...',
+                                hintStyle: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 14),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                counterText: '',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 36),
+
+              // SUBMIT BUTTON
+              Container(
+                width: double.infinity,
+                height: 56,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accentAmber.withValues(alpha: 0.3),
+                      blurRadius: 16,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _save,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
+                    backgroundColor: AppColors.accentAmber,
                     foregroundColor: Colors.white,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                        borderRadius: BorderRadius.circular(16)),
                   ),
                   child: _isLoading
                       ? const SizedBox(
                           width: 24,
                           height: 24,
                           child: CircularProgressIndicator(
-                              color: Colors.white, strokeWidth: 2))
-                      : const Text('Perbarui Impian',
+                              color: Colors.white, strokeWidth: 2.5))
+                      : const Text(
+                          'Simpan Perubahan',
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
+                              fontSize: 16, fontWeight: FontWeight.w800),
+                        ),
                 ),
               ),
             ],
