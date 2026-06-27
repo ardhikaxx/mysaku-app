@@ -28,14 +28,23 @@ final walletBalanceProvider = Provider<double>((ref) {
 
 final transactionFilterProvider = StateProvider<String>((ref) => 'all'); // 'all', 'income', 'expense'
 final transactionSearchProvider = StateProvider<String>((ref) => '');
+final transactionMonthFilterProvider = StateProvider<DateTime?>((ref) => null);
 
 final filteredTransactionsProvider = Provider<List<TransactionModel>>((ref) {
   final filter = ref.watch(transactionFilterProvider);
   final query = ref.watch(transactionSearchProvider).toLowerCase().trim();
+  final monthFilter = ref.watch(transactionMonthFilterProvider);
   var list = ref.watch(transactionsProvider).value ?? [];
 
   if (filter == 'income') list = list.where((tx) => tx.isIncome).toList();
   if (filter == 'expense') list = list.where((tx) => tx.isExpense).toList();
+
+  if (monthFilter != null) {
+    list = list.where((tx) {
+      return tx.transactionDate.year == monthFilter.year &&
+             tx.transactionDate.month == monthFilter.month;
+    }).toList();
+  }
 
   if (query.isNotEmpty) {
     list = list.where((tx) {
