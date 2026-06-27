@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ConfirmDialog extends StatelessWidget {
+class ConfirmDialog extends StatefulWidget {
   final String title;
   final String message;
   final String confirmText;
@@ -30,11 +30,13 @@ class ConfirmDialog extends StatelessWidget {
     IconData icon = Icons.delete_outline_rounded,
     Color iconColor = const Color(0xFFEF4444),
   }) async {
-    final result = await showDialog<bool>(
+    final result = await showGeneralDialog<bool>(
       context: context,
       barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.4),
-      builder: (_) => ConfirmDialog(
+      barrierLabel: 'Dismiss',
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 280),
+      pageBuilder: (_, __, ___) => ConfirmDialog(
         title: title,
         message: message,
         confirmText: confirmText,
@@ -43,124 +45,216 @@ class ConfirmDialog extends StatelessWidget {
         icon: icon,
         iconColor: iconColor,
       ),
+      transitionBuilder: (_, anim, __, child) {
+        final curved = CurvedAnimation(
+          parent: anim,
+          curve: Curves.easeOutBack,
+        );
+        return ScaleTransition(
+          scale: Tween<double>(begin: 0.82, end: 1.0).animate(curved),
+          child: FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
+        );
+      },
     );
     return result ?? false;
   }
+
+  @override
+  State<ConfirmDialog> createState() => _ConfirmDialogState();
+}
+
+class _ConfirmDialogState extends State<ConfirmDialog> {
+  bool _confirmHovered = false;
+  bool _cancelHovered = false;
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 32),
       child: Container(
-        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.12),
-              blurRadius: 32,
-              offset: const Offset(0, 16),
+              color: Colors.black.withOpacity(0.10),
+              blurRadius: 40,
+              spreadRadius: 0,
+              offset: const Offset(0, 20),
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Icon circle
-            Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                color: iconColor.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: iconColor, size: 30),
-            ),
-            const SizedBox(height: 20),
-
-            // Title
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.4,
-                color: Color(0xFF111827),
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // Message
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 13.5,
-                color: Color(0xFF6B7280),
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 28),
-
-            // Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(false),
-                    child: Container(
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF3F4F6),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ── Top section: icon + text ──
+              Padding(
+                padding: const EdgeInsets.fromLTRB(28, 36, 28, 28),
+                child: Column(
+                  children: [
+                    // Icon with layered ring effect
+                    Stack(
                       alignment: Alignment.center,
-                      child: Text(
-                        cancelText,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          color: Color(0xFF374151),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(true),
-                    child: Container(
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: confirmColor,
-                        borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
-                          BoxShadow(
-                            color: confirmColor.withOpacity(0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: widget.iconColor.withOpacity(0.06),
+                            shape: BoxShape.circle,
                           ),
-                        ],
+                        ),
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: widget.iconColor.withOpacity(0.12),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: widget.iconColor.withOpacity(0.15),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            widget.icon,
+                            color: widget.iconColor,
+                            size: 22,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 22),
+
+                    // Title
+                    Text(
+                      widget.title,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.5,
+                        color: Color(0xFF0F172A),
+                        height: 1.2,
                       ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        confirmText,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                          color: Colors.white,
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Message
+                    Text(
+                      widget.message,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 13.5,
+                        color: Color(0xFF6B7280),
+                        height: 1.55,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // ── Divider ──
+              const Divider(height: 1, color: Color(0xFFF1F5F9)),
+
+              // ── Buttons section ──
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+                child: Column(
+                  children: [
+                    // Confirm button (full width, prominent)
+                    GestureDetector(
+                      onTapDown: (_) => setState(() => _confirmHovered = true),
+                      onTapUp: (_) {
+                        setState(() => _confirmHovered = false);
+                        Navigator.of(context).pop(true);
+                      },
+                      onTapCancel: () => setState(() => _confirmHovered = false),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 120),
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: _confirmHovered
+                              ? widget.confirmColor.withOpacity(0.88)
+                              : widget.confirmColor,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: widget.confirmColor.withOpacity(0.28),
+                              blurRadius: _confirmHovered ? 6 : 14,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          widget.confirmText,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                            color: Colors.white,
+                            letterSpacing: -0.2,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+
+                    const SizedBox(height: 10),
+
+                    // Cancel button (subtle, text-like)
+                    GestureDetector(
+                      onTapDown: (_) => setState(() => _cancelHovered = true),
+                      onTapUp: (_) {
+                        setState(() => _cancelHovered = false);
+                        Navigator.of(context).pop(false);
+                      },
+                      onTapCancel: () => setState(() => _cancelHovered = false),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 120),
+                        width: double.infinity,
+                        height: 46,
+                        decoration: BoxDecoration(
+                          color: _cancelHovered
+                              ? const Color(0xFFF1F5F9)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          widget.cancelText,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                            color: _cancelHovered
+                                ? const Color(0xFF374151)
+                                : const Color(0xFF9CA3AF),
+                            letterSpacing: -0.2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
