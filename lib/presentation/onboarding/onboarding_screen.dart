@@ -43,7 +43,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           'Geser kanan pada transaksi untuk mengeditnya. Ubah nama, jumlah, atau kategori sesuai kebutuhan.',
     ),
     OnboardingPageData(
-      icon: Icons.auto_awesome_outlined,
+      icon: Icons.rocket_launch_outlined,
       iconColor: const Color(0xFFD97706),
       title: 'Tambah Impian',
       description:
