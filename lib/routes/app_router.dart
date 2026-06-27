@@ -9,6 +9,7 @@ import '../presentation/cashflow/cashflow_screen.dart';
 import '../presentation/cashflow/edit_transaction_screen.dart';
 import '../presentation/cashflow/transaction_detail_screen.dart';
 import '../presentation/dreams/add_dream_screen.dart';
+import '../presentation/dreams/dream_detail_screen.dart';
 import '../presentation/dreams/dreams_screen.dart';
 import '../presentation/dreams/edit_dream_screen.dart';
 import '../presentation/home/home_screen.dart';
@@ -90,6 +91,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     builder: (context, state) {
                       final dream = state.extra as DreamModel;
                       return EditDreamScreen(dream: dream);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'detail/:id',
+                    builder: (context, state) {
+                      final dream = state.extra as DreamModel;
+                      return DreamDetailScreen(dream: dream);
                     },
                   ),
                 ],
