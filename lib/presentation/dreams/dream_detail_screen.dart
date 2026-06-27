@@ -40,7 +40,7 @@ class DreamDetailScreen extends ConsumerWidget {
             : null,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 140),
         child: Column(
           children: [
             Container(

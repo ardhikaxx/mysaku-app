@@ -165,7 +165,7 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 140),
         child: Form(
           key: _formKey,
           child: Column(
