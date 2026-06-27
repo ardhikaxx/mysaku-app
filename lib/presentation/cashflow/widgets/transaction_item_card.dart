@@ -7,6 +7,7 @@ import '../../../core/extensions/datetime_extension.dart';
 import '../../../data/models/transaction_model.dart';
 import '../../../providers/transaction_provider.dart';
 import '../../../providers/user_provider.dart';
+import '../../shared/widgets/confirm_dialog.dart';
 
 class TransactionItemCard extends ConsumerWidget {
   final TransactionModel tx;
@@ -185,31 +186,11 @@ class TransactionItemCard extends ConsumerWidget {
           context.push('/home/cashflow/edit/${tx.transactionId}', extra: tx);
           return false;
         } else {
-          final confirmed = await showDialog<bool>(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              title: const Text('Hapus Transaksi?'),
-              content: Text('Transaksi "${tx.name}" akan dihapus permanen.'),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              actions: [
-                TextButton(
-                  onPressed: () => ctx.pop(false),
-                  child:
-                      const Text('Batal', style: TextStyle(color: Colors.grey)),
-                ),
-                ElevatedButton(
-                  onPressed: () => ctx.pop(true),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFEF4444),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                  ),
-                  child: const Text('Hapus'),
-                ),
-              ],
-            ),
+          final confirmed = await ConfirmDialog.show(
+            context,
+            title: 'Hapus Transaksi?',
+            message: 'Transaksi "${tx.name}" akan dihapus secara permanen dan tidak dapat dikembalikan.',
+            confirmText: 'Ya, Hapus',
           );
 
           if (confirmed != true) return false;

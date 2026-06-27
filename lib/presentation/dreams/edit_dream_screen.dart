@@ -7,6 +7,7 @@ import '../../data/models/dream_model.dart';
 import '../../providers/dream_provider.dart';
 import '../../providers/user_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
+import '../shared/widgets/confirm_dialog.dart';
 
 class EditDreamScreen extends ConsumerStatefulWidget {
   final DreamModel dream;
@@ -74,21 +75,13 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
   }
 
   Future<void> _delete() async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Hapus Impian?'),
-        content:
-            const Text('Impian keuangan ini akan dihapus secara permanen.'),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Batal')),
-          TextButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: const Text('Hapus', style: TextStyle(color: Colors.red))),
-        ],
-      ),
+    final confirmed = await ConfirmDialog.show(
+      context,
+      title: 'Hapus Impian?',
+      message: 'Impian keuangan ini akan dihapus secara permanen dan tidak dapat dikembalikan.',
+      confirmText: 'Ya, Hapus',
+      icon: Icons.auto_awesome_rounded,
+      iconColor: const Color(0xFFEF4444),
     );
 
     if (confirmed != true) return;

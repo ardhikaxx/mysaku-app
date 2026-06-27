@@ -9,6 +9,7 @@ import '../../data/models/transaction_model.dart';
 import '../../providers/transaction_provider.dart';
 import '../../providers/user_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
+import '../shared/widgets/confirm_dialog.dart';
 
 class EditTransactionScreen extends ConsumerStatefulWidget {
   final TransactionModel tx;
@@ -121,20 +122,11 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
   }
 
   Future<void> _delete() async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Hapus Transaksi?'),
-        content: const Text('Transaksi ini akan dihapus secara permanen.'),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Batal')),
-          TextButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: const Text('Hapus', style: TextStyle(color: Colors.red))),
-        ],
-      ),
+    final confirmed = await ConfirmDialog.show(
+      context,
+      title: 'Hapus Transaksi?',
+      message: 'Transaksi ini akan dihapus secara permanen dan tidak dapat dikembalikan.',
+      confirmText: 'Ya, Hapus',
     );
 
     if (confirmed != true) return;

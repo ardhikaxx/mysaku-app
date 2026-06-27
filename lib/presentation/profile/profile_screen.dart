@@ -8,6 +8,7 @@ import '../../providers/invitation_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/wallet_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
+import '../shared/widgets/confirm_dialog.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/settings_tile.dart';
 
@@ -217,8 +218,19 @@ class ProfileScreen extends ConsumerWidget {
                   textColor: Colors.red,
                   title: AppStrings.logout,
                   onTap: () async {
-                    await ref.read(authRepositoryProvider).signOut();
-                    if (context.mounted) context.go('/auth/login');
+                    final confirmed = await ConfirmDialog.show(
+                      context,
+                      title: 'Keluar Akun?',
+                      message: 'Anda akan keluar dari akun MySaku. Pastikan data Anda sudah tersimpan.',
+                      confirmText: 'Ya, Keluar',
+                      icon: Icons.logout_rounded,
+                      iconColor: Colors.red,
+                      confirmColor: Colors.red,
+                    );
+                    if (confirmed && context.mounted) {
+                      await ref.read(authRepositoryProvider).signOut();
+                      if (context.mounted) context.go('/auth/login');
+                    }
                   },
                 ),
               ],
