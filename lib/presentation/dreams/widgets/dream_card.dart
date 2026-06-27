@@ -68,7 +68,7 @@ class DreamCard extends ConsumerWidget {
                         gradient: LinearGradient(
                           colors: isAchieved
                               ? [const Color(0xFF10B981), const Color(0xFF059669)]
-                              : [const Color(0xFFF59E0B), const Color(0xFFD97706)],
+                              : [const Color(0xFF3B82F6), const Color(0xFF1D4ED8)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -77,7 +77,7 @@ class DreamCard extends ConsumerWidget {
                           BoxShadow(
                             color: (isAchieved
                                     ? const Color(0xFF10B981)
-                                    : const Color(0xFFF59E0B))
+                                    : const Color(0xFF3B82F6))
                                 .withValues(alpha: 0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
@@ -130,7 +130,7 @@ class DreamCard extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: isAchieved
                             ? AppColors.accentGreen.withValues(alpha: 0.12)
-                            : AppColors.accentAmber.withValues(alpha: 0.12),
+                            : AppColors.primaryColor.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -138,7 +138,7 @@ class DreamCard extends ConsumerWidget {
                         style: TextStyle(
                           color: isAchieved
                               ? AppColors.accentGreen
-                              : AppColors.accentAmber,
+                              : AppColors.primaryColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w800,
                         ),
@@ -154,7 +154,7 @@ class DreamCard extends ConsumerWidget {
                     minHeight: 10,
                     backgroundColor: const Color(0xFFF3F4F6),
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      isAchieved ? AppColors.accentGreen : AppColors.accentAmber,
+                      isAchieved ? AppColors.accentGreen : AppColors.primaryColor,
                     ),
                   ),
                 ),

@@ -219,11 +219,11 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
                   color: AppColors.surfaceWhite,
                   borderRadius: BorderRadius.circular(28),
                   border: Border.all(
-                      color: AppColors.accentAmber.withValues(alpha: 0.3),
+                      color: AppColors.primaryColor.withValues(alpha: 0.3),
                       width: 1.5),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accentAmber.withValues(alpha: 0.08),
+                      color: AppColors.primaryColor.withValues(alpha: 0.08),
                       blurRadius: 24,
                       offset: const Offset(0, 8),
                     ),
@@ -237,7 +237,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.accentAmber,
+                        color: AppColors.primaryColor,
                         letterSpacing: 1.0,
                       ),
                     ),
@@ -250,7 +250,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
                       style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.accentAmber,
+                        color: AppColors.primaryColor,
                       ),
                       decoration: const InputDecoration(
                         hintText: 'Rp 0',
@@ -320,11 +320,11 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: AppColors.accentAmber.withValues(alpha: 0.1),
+                              color: AppColors.primaryColor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Icon(Icons.card_giftcard_rounded,
-                                color: AppColors.accentAmber, size: 22),
+                                color: AppColors.primaryColor, size: 22),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -409,7 +409,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accentAmber.withValues(alpha: 0.3),
+                      color: AppColors.primaryColor.withValues(alpha: 0.3),
                       blurRadius: 16,
                       offset: const Offset(0, 8),
                     ),
@@ -418,7 +418,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _save,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.accentAmber,
+                    backgroundColor: AppColors.primaryColor,
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(

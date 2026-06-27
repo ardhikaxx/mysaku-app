@@ -83,7 +83,7 @@ class DreamsScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 80),
         child: FloatingActionButton(
           onPressed: () => context.push('/home/dreams/add'),
-          backgroundColor: AppColors.accentAmber,
+          backgroundColor: AppColors.primaryColor,
           child: const Icon(Icons.add, color: Colors.white, size: 28),
         ),
       ),

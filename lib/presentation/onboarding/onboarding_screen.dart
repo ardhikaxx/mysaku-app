@@ -44,7 +44,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     ),
     OnboardingPageData(
       icon: Icons.card_giftcard_outlined,
-      iconColor: const Color(0xFFD97706),
+      iconColor: const Color(0xFF1E88E5),
       title: 'Tambah Impian',
       description:
           'Tetapkan target tabungan impian Anda. Tekan tombol + di halaman Impian untuk menambah target baru.',

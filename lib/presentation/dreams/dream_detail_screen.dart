@@ -97,7 +97,7 @@ class DreamDetailScreen extends ConsumerWidget {
                           : Icons.card_giftcard_rounded,
                       color: isAchieved
                           ? const Color(0xFF34D399)
-                          : const Color(0xFFFBBF24),
+                          : const Color(0xFF60A5FA),
                       size: 40,
                     ),
                   ),
@@ -142,7 +142,7 @@ class DreamDetailScreen extends ConsumerWidget {
                         fontWeight: FontWeight.w700,
                         color: isAchieved
                             ? const Color(0xFF34D399)
-                            : const Color(0xFFFBBF24),
+                            : const Color(0xFF60A5FA),
                       ),
                     ),
                   ),
@@ -156,7 +156,7 @@ class DreamDetailScreen extends ConsumerWidget {
                       valueColor: AlwaysStoppedAnimation<Color>(
                         isAchieved
                             ? const Color(0xFF34D399)
-                            : const Color(0xFFFBBF24),
+                            : const Color(0xFF60A5FA),
                       ),
                     ),
                   ),
@@ -219,16 +219,16 @@ class DreamDetailScreen extends ConsumerWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.accentAmber.withValues(alpha: 0.1),
+                  color: AppColors.primaryColor.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: AppColors.accentAmber.withValues(alpha: 0.3),
+                    color: AppColors.primaryColor.withValues(alpha: 0.25),
                   ),
                 ),
                 child: Row(
                   children: [
                     const Icon(Icons.info_outline_rounded,
-                        color: AppColors.accentAmber, size: 24),
+                        color: AppColors.primaryColor, size: 24),
                     const SizedBox(width: 14),
                     Expanded(
                       child: Text(
@@ -236,7 +236,7 @@ class DreamDetailScreen extends ConsumerWidget {
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xFF92400E),
+                          color: Color(0xFF1E3A8A),
                           height: 1.3,
                         ),
                       ),
