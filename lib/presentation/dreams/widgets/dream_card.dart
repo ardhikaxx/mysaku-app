@@ -26,35 +26,33 @@ class DreamCard extends ConsumerWidget {
     final isAchieved = dream.isAchieved || balance >= dream.targetAmount;
 
     final cardContent = Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: AppColors.surfaceWhite,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isAchieved
-              ? AppColors.accentGreen.withValues(alpha: 0.5)
-              : AppColors.divider.withValues(alpha: 0.6),
-          width: 1.5,
+              ? AppColors.accentGreen.withValues(alpha: 0.4)
+              : const Color(0xFFF3F4F6),
+          width: 1.2,
         ),
         boxShadow: [
           BoxShadow(
-            color: isAchieved
-                ? AppColors.accentGreen.withValues(alpha: 0.08)
-                : Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         child: InkWell(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(20),
           onTap: () => context.push('/home/dreams/detail/${dream.dreamId}',
               extra: dream),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -62,34 +60,22 @@ class DreamCard extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 48,
-                      height: 48,
+                      width: 42,
+                      height: 42,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: isAchieved
-                              ? [const Color(0xFF10B981), const Color(0xFF059669)]
-                              : [const Color(0xFF3B82F6), const Color(0xFF1D4ED8)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: (isAchieved
-                                    ? const Color(0xFF10B981)
-                                    : const Color(0xFF3B82F6))
-                                .withValues(alpha: 0.3),
-                            blurRadius: 8,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                        color: isAchieved
+                            ? const Color(0xFFECFDF5)
+                            : const Color(0xFFEFF6FF),
+                        shape: BoxShape.circle,
                       ),
                       child: Icon(
                         isAchieved
                             ? Icons.emoji_events_rounded
                             : Icons.card_giftcard_rounded,
-                        color: Colors.white,
-                        size: 26,
+                        color: isAchieved
+                            ? const Color(0xFF10B981)
+                            : AppColors.primaryColor,
+                        size: 20,
                       ),
                     ),
                     const SizedBox(width: 16),
