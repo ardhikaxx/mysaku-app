@@ -94,7 +94,7 @@ class DreamDetailScreen extends ConsumerWidget {
                     child: Icon(
                       isAchieved
                           ? Icons.emoji_events_rounded
-                          : Icons.rocket_launch_rounded,
+                          : Icons.card_giftcard_rounded,
                       color: isAchieved
                           ? const Color(0xFF34D399)
                           : const Color(0xFFFBBF24),

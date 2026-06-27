@@ -31,7 +31,7 @@ class BottomNavBar extends StatelessWidget {
         child: Row(
           children: [
             _buildNavItem(0, Icons.swap_horiz_rounded, 'Cashflow'),
-            _buildNavItem(1, Icons.rocket_launch_rounded, 'Impian'),
+            _buildNavItem(1, Icons.card_giftcard_rounded, 'Impian'),
             _buildNavItem(2, Icons.person_rounded, 'Profil'),
           ],
         ),

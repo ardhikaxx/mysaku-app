@@ -87,7 +87,7 @@ class DreamCard extends ConsumerWidget {
                       child: Icon(
                         isAchieved
                             ? Icons.emoji_events_rounded
-                            : Icons.rocket_launch_rounded,
+                            : Icons.card_giftcard_rounded,
                         color: Colors.white,
                         size: 26,
                       ),

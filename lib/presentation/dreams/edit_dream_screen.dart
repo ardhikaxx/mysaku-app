@@ -323,7 +323,7 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
                               color: AppColors.accentAmber.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Icon(Icons.rocket_launch_rounded,
+                            child: const Icon(Icons.card_giftcard_rounded,
                                 color: AppColors.accentAmber, size: 22),
                           ),
                           const SizedBox(width: 16),
