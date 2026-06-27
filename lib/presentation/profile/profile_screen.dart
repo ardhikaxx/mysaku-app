@@ -215,7 +215,7 @@ class ProfileScreen extends ConsumerWidget {
           tiles.add(SettingsTile(
             icon: Icons.info_outline_rounded,
             title: 'Info Aplikasi',
-            subtitle: 'Versi 1.0.0 • Dikembangkan oleh Yanuar Ardhika R.U',
+            subtitle: 'Versi 1.0.0',
             onTap: () => context.push('/home/profile/app-info'),
           ));
 
