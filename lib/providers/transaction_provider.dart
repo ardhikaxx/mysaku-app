@@ -27,12 +27,25 @@ final walletBalanceProvider = Provider<double>((ref) {
 });
 
 final transactionFilterProvider = StateProvider<String>((ref) => 'all'); // 'all', 'income', 'expense'
+final transactionSearchProvider = StateProvider<String>((ref) => '');
 
 final filteredTransactionsProvider = Provider<List<TransactionModel>>((ref) {
   final filter = ref.watch(transactionFilterProvider);
-  final list = ref.watch(transactionsProvider).value ?? [];
+  final query = ref.watch(transactionSearchProvider).toLowerCase().trim();
+  var list = ref.watch(transactionsProvider).value ?? [];
 
-  if (filter == 'income') return list.where((tx) => tx.isIncome).toList();
-  if (filter == 'expense') return list.where((tx) => tx.isExpense).toList();
+  if (filter == 'income') list = list.where((tx) => tx.isIncome).toList();
+  if (filter == 'expense') list = list.where((tx) => tx.isExpense).toList();
+
+  if (query.isNotEmpty) {
+    list = list.where((tx) {
+      final nameMatches = tx.name.toLowerCase().contains(query);
+      final descMatches = tx.description?.toLowerCase().contains(query) ?? false;
+      final amountMatches = tx.amount.toString().contains(query);
+      final categoryMatches = tx.category.toLowerCase().contains(query);
+      return nameMatches || descMatches || amountMatches || categoryMatches;
+    }).toList();
+  }
+
   return list;
 });

@@ -6,13 +6,27 @@ import '../../../providers/transaction_provider.dart';
 import '../../../providers/wallet_provider.dart';
 import 'transaction_item_card.dart';
 
-class TransactionList extends ConsumerWidget {
+class TransactionList extends ConsumerStatefulWidget {
   const TransactionList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TransactionList> createState() => _TransactionListState();
+}
+
+class _TransactionListState extends ConsumerState<TransactionList> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final txAsync = ref.watch(transactionsProvider);
     final filter = ref.watch(transactionFilterProvider);
+    final searchQuery = ref.watch(transactionSearchProvider);
     final currentUid = ref.watch(authStateProvider).value?.uid ?? '';
     final wallet = ref.watch(walletProvider).value;
     final isOwner = wallet?.ownerId == currentUid;
@@ -43,6 +57,44 @@ class TransactionList extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 12),
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.surfaceWhite,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFF3F4F6), width: 1.2),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.02),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: TextField(
+            controller: _searchController,
+            onChanged: (val) {
+              ref.read(transactionSearchProvider.notifier).state = val;
+            },
+            decoration: InputDecoration(
+              hintText: 'Cari transaksi...',
+              hintStyle: const TextStyle(fontSize: 13, color: Color(0xFF9CA3AF)),
+              prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFF6B7280), size: 20),
+              suffixIcon: searchQuery.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear, size: 18, color: Color(0xFF6B7280)),
+                      onPressed: () {
+                        _searchController.clear();
+                        ref.read(transactionSearchProvider.notifier).state = '';
+                      },
+                    )
+                  : null,
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            ),
+            style: const TextStyle(fontSize: 13, color: Color(0xFF111827)),
+          ),
+        ),
+        const SizedBox(height: 14),
         txAsync.when(
           data: (allList) {
             var list = allList;
@@ -53,6 +105,17 @@ class TransactionList extends ConsumerWidget {
               list = list.where((x) => x.isExpense).toList();
             }
 
+            final query = searchQuery.toLowerCase().trim();
+            if (query.isNotEmpty) {
+              list = list.where((tx) {
+                final nameMatches = tx.name.toLowerCase().contains(query);
+                final descMatches = tx.description?.toLowerCase().contains(query) ?? false;
+                final amountMatches = tx.amount.toString().contains(query);
+                final categoryMatches = tx.category.toLowerCase().contains(query);
+                return nameMatches || descMatches || amountMatches || categoryMatches;
+              }).toList();
+            }
+
             if (list.isEmpty) {
               return Container(
                 width: double.infinity,
@@ -60,13 +123,18 @@ class TransactionList extends ConsumerWidget {
                 decoration: BoxDecoration(
                     color: AppColors.surfaceWhite,
                     borderRadius: BorderRadius.circular(16)),
-                child: const Column(
+                child: Column(
                   children: [
-                    Icon(Icons.receipt_long_outlined,
-                        size: 48, color: AppColors.divider),
-                    SizedBox(height: 8),
-                    Text('Belum ada transaksi',
-                        style: TextStyle(color: AppColors.textSecondary)),
+                    Icon(
+                      query.isNotEmpty ? Icons.search_off_rounded : Icons.receipt_long_outlined,
+                      size: 48,
+                      color: AppColors.divider,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      query.isNotEmpty ? 'Transaksi tidak ditemukan' : 'Belum ada transaksi',
+                      style: const TextStyle(color: AppColors.textSecondary),
+                    ),
                   ],
                 ),
               );
@@ -109,7 +177,7 @@ class TransactionList extends ConsumerWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.06),
+                    color: Colors.black.withValues(alpha: 0.06),
                     blurRadius: 4,
                     offset: const Offset(0, 1),
                   )
