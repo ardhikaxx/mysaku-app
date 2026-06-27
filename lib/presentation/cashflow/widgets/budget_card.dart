@@ -29,6 +29,12 @@ class BudgetCard extends ConsumerWidget {
     final double ratio = budget > 0 ? (currentMonthExpense / budget) : 0.0;
     final double clampedRatio = ratio.clamp(0.0, 1.0);
 
+    final int daysInMonth = DateTime(now.year, now.month + 1, 0).day;
+    final int remainingDays = (daysInMonth - now.day + 1).clamp(1, 31);
+    final double remainingBudget = budget - currentMonthExpense;
+    final double dailyBurnRate =
+        remainingBudget > 0 ? (remainingBudget / remainingDays) : 0.0;
+
     Color statusColor;
     String statusText;
     if (ratio >= 1.0) {
@@ -184,6 +190,72 @@ class BudgetCard extends ConsumerWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 14),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: remainingBudget <= 0
+                  ? const Color(0xFFFEF2F2)
+                  : const Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: remainingBudget <= 0
+                    ? const Color(0xFFFECACA)
+                    : const Color(0xFFE2E8F0),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  remainingBudget <= 0
+                      ? Icons.warning_amber_rounded
+                      : Icons.insights_rounded,
+                  size: 18,
+                  color: remainingBudget <= 0
+                      ? const Color(0xFFEF4444)
+                      : AppColors.primaryColor,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text.rich(
+                    TextSpan(
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF334155),
+                      ),
+                      children: remainingBudget <= 0
+                          ? [
+                              const TextSpan(
+                                text:
+                                    'Anggaran habis! Tekan rem pengeluaran Anda hari ini.',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFFEF4444)),
+                              ),
+                            ]
+                          : [
+                              const TextSpan(text: 'Batas aman hari ini: '),
+                              TextSpan(
+                                text: '${dailyBurnRate.toIDR}/hari',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFF0F172A),
+                                ),
+                              ),
+                              TextSpan(
+                                text: ' ($remainingDays hari lagi)',
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                            ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
