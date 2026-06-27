@@ -7,6 +7,7 @@ import '../../core/errors/app_exception.dart';
 import '../../core/extensions/datetime_extension.dart';
 import 'package:intl/intl.dart';
 import '../../core/utils/app_haptics.dart';
+import '../../core/utils/app_undo_toast.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../data/models/transaction_model.dart';
 import '../../providers/auth_provider.dart';
@@ -99,9 +100,19 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       );
 
       final repo = ref.read(transactionRepositoryProvider);
-      await repo.addTransaction(walletId, tx);
+      final newId = await repo.addTransaction(walletId, tx);
       AppHaptics.successFeedback();
-      if (mounted) context.pop();
+      if (mounted) {
+        final currentContext = context;
+        currentContext.pop();
+        AppUndoToast.show(
+          currentContext,
+          message: 'Transaksi baru berhasil dicatat',
+          onUndo: () async {
+            await repo.deleteTransaction(walletId, newId);
+          },
+        );
+      }
     } on AppException catch (e) {
       AppHaptics.errorFeedback();
       if (mounted) {

@@ -6,6 +6,7 @@ import '../../core/constants/app_strings.dart';
 import '../../core/errors/app_exception.dart';
 import '../../core/extensions/datetime_extension.dart';
 import '../../core/utils/app_haptics.dart';
+import '../../core/utils/app_undo_toast.dart';
 import '../../core/utils/currency_formatter.dart';
 import 'package:intl/intl.dart';
 import '../../data/models/transaction_model.dart';
@@ -107,9 +108,20 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
       );
 
       final repo = ref.read(transactionRepositoryProvider);
+      final oldTx = widget.tx;
       await repo.updateTransaction(walletId, updatedTx);
       AppHaptics.successFeedback();
-      if (mounted) context.pop();
+      if (mounted) {
+        final currentContext = context;
+        currentContext.pop();
+        AppUndoToast.show(
+          currentContext,
+          message: 'Transaksi berhasil diperbarui',
+          onUndo: () async {
+            await repo.updateTransaction(walletId, oldTx);
+          },
+        );
+      }
     } on AppException catch (e) {
       AppHaptics.errorFeedback();
       if (mounted) {
@@ -142,9 +154,20 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
     setState(() => _isLoading = true);
     try {
       final repo = ref.read(transactionRepositoryProvider);
+      final oldTx = widget.tx;
       await repo.deleteTransaction(walletId, widget.tx.transactionId);
       AppHaptics.successFeedback();
-      if (mounted) context.pop();
+      if (mounted) {
+        final currentContext = context;
+        currentContext.pop();
+        AppUndoToast.show(
+          currentContext,
+          message: 'Transaksi berhasil dihapus',
+          onUndo: () async {
+            await repo.addTransaction(walletId, oldTx);
+          },
+        );
+      }
     } catch (e) {
       AppHaptics.errorFeedback();
       if (mounted) {

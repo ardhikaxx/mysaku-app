@@ -18,13 +18,19 @@ class TransactionRepository {
             .toList());
   }
 
-  Future<void> addTransaction(String walletId, TransactionModel tx) async {
+  Future<String> addTransaction(String walletId, TransactionModel tx) async {
     try {
-      final ref = _firestore
-          .collection(FirebaseConstants.wallets)
-          .doc(walletId)
-          .collection(FirebaseConstants.transactions)
-          .doc();
+      final ref = tx.transactionId.isNotEmpty
+          ? _firestore
+              .collection(FirebaseConstants.wallets)
+              .doc(walletId)
+              .collection(FirebaseConstants.transactions)
+              .doc(tx.transactionId)
+          : _firestore
+              .collection(FirebaseConstants.wallets)
+              .doc(walletId)
+              .collection(FirebaseConstants.transactions)
+              .doc();
 
       final newTx = TransactionModel(
         transactionId: ref.id,
@@ -36,11 +42,12 @@ class TransactionRepository {
         transactionDate: tx.transactionDate,
         createdBy: tx.createdBy,
         createdByName: tx.createdByName,
-        createdAt: DateTime.now(),
+        createdAt: tx.createdAt,
         updatedAt: DateTime.now(),
       );
 
       await ref.set(newTx.toJson());
+      return ref.id;
     } catch (e) {
       throw AppException(e.toString());
     }

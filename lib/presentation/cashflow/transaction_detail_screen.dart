@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/extensions/currency_extension.dart';
 import '../../core/extensions/datetime_extension.dart';
+import '../../core/utils/app_haptics.dart';
+import '../../core/utils/app_undo_toast.dart';
 import '../../data/models/transaction_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/transaction_provider.dart';
@@ -292,11 +294,22 @@ class TransactionDetailScreen extends ConsumerWidget {
 
     try {
       final repo = ref.read(transactionRepositoryProvider);
+      final oldTx = tx;
       await repo.deleteTransaction(walletId, tx.transactionId);
+      AppHaptics.successFeedback();
       if (context.mounted) {
-        context.pop(); // Pop detail screen
+        final currentContext = context;
+        currentContext.pop();
+        AppUndoToast.show(
+          currentContext,
+          message: 'Transaksi berhasil dihapus',
+          onUndo: () async {
+            await repo.addTransaction(walletId, oldTx);
+          },
+        );
       }
     } catch (e) {
+      AppHaptics.errorFeedback();
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Gagal menghapus: $e')));
