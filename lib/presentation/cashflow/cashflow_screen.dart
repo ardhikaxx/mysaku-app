@@ -5,6 +5,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/extensions/currency_extension.dart';
 import '../../providers/transaction_provider.dart';
+import '../../providers/user_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
 import 'widgets/balance_card.dart';
 import 'widgets/summary_card.dart';
@@ -16,6 +17,7 @@ class CashflowScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final txList = ref.watch(transactionsProvider).value ?? [];
+    final user = ref.watch(userProvider).value;
     double income = 0;
     double expense = 0;
     for (final tx in txList) {
@@ -27,15 +29,34 @@ class CashflowScreen extends ConsumerWidget {
       backgroundColor: AppColors.backgroundLight,
       appBar: FloatingCapsuleAppBar(
         title: AppStrings.appName,
-        trailing: Container(
-          decoration: const BoxDecoration(
-            color: Color(0xFFF3F4F6),
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            icon: const Icon(Icons.notifications_outlined,
-                color: Color(0xFF111827), size: 20),
-            onPressed: () {},
+        trailing: GestureDetector(
+          onTap: () => context.go('/home/profile'),
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFE5E7EB), width: 2),
+            ),
+            child: CircleAvatar(
+              radius: 18,
+              backgroundColor: const Color(0xFFEFF6FF),
+              backgroundImage: user != null && user.photoUrl != null
+                  ? NetworkImage(user.photoUrl!)
+                  : null,
+              child: user == null || user.photoUrl == null
+                  ? Text(
+                      user != null && user.name.isNotEmpty
+                          ? user.name[0].toUpperCase()
+                          : '?',
+                      style: const TextStyle(
+                        color: Color(0xFF1E3A8A),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                      ),
+                    )
+                  : null,
+            ),
           ),
         ),
       ),
