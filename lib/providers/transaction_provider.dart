@@ -58,3 +58,6 @@ final filteredTransactionsProvider = Provider<List<TransactionModel>>((ref) {
 
   return list;
 });
+
+final monthlyBudgetProvider = StateProvider<double>((ref) => 3000000.0);
+

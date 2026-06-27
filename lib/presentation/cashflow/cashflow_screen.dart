@@ -6,7 +6,9 @@ import '../../core/constants/app_strings.dart';
 import '../../core/extensions/currency_extension.dart';
 import '../../providers/transaction_provider.dart';
 import '../../providers/user_provider.dart';
+import 'widgets/analytics_card.dart';
 import 'widgets/balance_card.dart';
+import 'widgets/budget_card.dart';
 import 'widgets/summary_card.dart';
 import 'widgets/transaction_list.dart';
 
@@ -173,6 +175,10 @@ class CashflowScreen extends ConsumerWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 16),
+            const BudgetCard(),
+            const SizedBox(height: 16),
+            const AnalyticsCard(),
             const SizedBox(height: 24),
             const TransactionList(),
           ],
