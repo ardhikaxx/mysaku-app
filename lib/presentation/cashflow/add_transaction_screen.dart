@@ -117,6 +117,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   Widget build(BuildContext context) {
     final activeCategories =
         _type == 'income' ? _incomeCategories : _expenseCategories;
+    final isIncome = _type == 'income';
+    final activeColor = isIncome ? AppColors.accentGreen : AppColors.accentRed;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
@@ -126,154 +128,320 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
         onLeadingTap: () => context.pop(),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 140),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 140),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Jenis Transaksi',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: SegmentedButton<String>(
-                  segments: const [
-                    ButtonSegment(
-                        value: 'income',
-                        label: Text('Pemasukan',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    ButtonSegment(
-                        value: 'expense',
-                        label: Text('Pengeluaran',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
+              // Custom Type Switcher
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceWhite,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.divider),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          if (!isIncome) {
+                            setState(() {
+                              _type = 'income';
+                              _category = 'salary';
+                            });
+                          }
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                            color: isIncome ? AppColors.accentGreen : Colors.transparent,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: isIncome
+                                ? [
+                                    BoxShadow(
+                                      color: AppColors.accentGreen.withValues(alpha: 0.3),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    )
+                                  ]
+                                : null,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Pemasukan',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: isIncome ? Colors.white : AppColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          if (isIncome) {
+                            setState(() {
+                              _type = 'expense';
+                              _category = 'food';
+                            });
+                          }
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                            color: !isIncome ? AppColors.accentRed : Colors.transparent,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: !isIncome
+                                ? [
+                                    BoxShadow(
+                                      color: AppColors.accentRed.withValues(alpha: 0.3),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    )
+                                  ]
+                                : null,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Pengeluaran',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: !isIncome ? Colors.white : AppColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
-                  selected: {_type},
-                  onSelectionChanged: (val) {
-                    setState(() {
-                      _type = val.first;
-                      _category = _type == 'income' ? 'salary' : 'food';
-                    });
-                  },
                 ),
               ),
               const SizedBox(height: 20),
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Judul Transaksi',
-                  hintText: 'mis. Beli makan siang',
-                  filled: true,
-                  fillColor: AppColors.surfaceWhite,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.divider)),
+
+              // Hero Amount Card
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceWhite,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: activeColor.withValues(alpha: 0.3), width: 1.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: activeColor.withValues(alpha: 0.05),
+                      blurRadius: 16,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
                 ),
-                validator: (val) => val == null || val.trim().length < 2
-                    ? 'Minimal 2 karakter'
-                    : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _amountController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: 'Nominal (Rp)',
-                  hintText: '0',
-                  filled: true,
-                  fillColor: AppColors.surfaceWhite,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.divider)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Nominal Transaksi',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: activeColor,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _amountController,
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                        color: activeColor,
+                      ),
+                      decoration: const InputDecoration(
+                        hintText: 'Rp 0',
+                        hintStyle: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.divider,
+                        ),
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                      validator: (val) {
+                        if (val == null || val.isEmpty) return 'Nominal wajib diisi';
+                        final parsed = double.tryParse(
+                            val.replaceAll('.', '').replaceAll(',', ''));
+                        if (parsed == null || parsed <= 0) {
+                          return 'Nominal harus lebih dari 0';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
-                validator: (val) {
-                  if (val == null || val.isEmpty) return 'Nominal wajib diisi';
-                  final parsed = double.tryParse(
-                      val.replaceAll('.', '').replaceAll(',', ''));
-                  if (parsed == null || parsed <= 0) {
-                    return 'Nominal harus lebih dari 0';
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: _category,
-                decoration: InputDecoration(
-                  labelText: 'Kategori',
-                  filled: true,
-                  fillColor: AppColors.surfaceWhite,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.divider)),
+              const SizedBox(height: 20),
+
+              // Grouped Form Fields Card
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceWhite,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: AppColors.divider),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.02),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-                items: activeCategories.entries
-                    .map((e) =>
-                        DropdownMenuItem(value: e.key, child: Text(e.value)))
-                    .toList(),
-                onChanged: (val) => setState(() => _category = val!),
-              ),
-              const SizedBox(height: 16),
-              InkWell(
-                onTap: _pickDate,
-                borderRadius: BorderRadius.circular(12),
-                child: InputDecorator(
-                  decoration: InputDecoration(
-                    labelText: 'Tanggal Transaksi',
-                    filled: true,
-                    fillColor: AppColors.surfaceWhite,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.divider)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: Column(
                     children: [
-                      Text(_date.toShortDate),
-                      const Icon(Icons.calendar_today_outlined,
-                          size: 20, color: AppColors.primaryColor),
+                      // Judul Transaksi
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+                        child: TextFormField(
+                          controller: _nameController,
+                          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.edit_note_rounded, color: AppColors.primaryColor, size: 26),
+                            labelText: 'Judul Transaksi',
+                            labelStyle: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                            hintText: 'mis. Beli makan siang',
+                            hintStyle: TextStyle(color: AppColors.divider, fontWeight: FontWeight.normal),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          validator: (val) => val == null || val.trim().length < 2
+                              ? 'Minimal 2 karakter'
+                              : null,
+                        ),
+                      ),
+                      const Divider(height: 1, color: AppColors.divider, indent: 56),
+
+                      // Kategori Dropdown
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+                        child: DropdownButtonFormField<String>(
+                          value: _category,
+                          icon: const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.textSecondary),
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.category_rounded, color: AppColors.accentAmber, size: 24),
+                            labelText: 'Kategori',
+                            labelStyle: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          items: activeCategories.entries
+                              .map((e) => DropdownMenuItem(
+                                    value: e.key,
+                                    child: Text(e.value, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+                                  ))
+                              .toList(),
+                          onChanged: (val) => setState(() => _category = val!),
+                        ),
+                      ),
+                      const Divider(height: 1, color: AppColors.divider, indent: 56),
+
+                      // Tanggal Transaksi
+                      InkWell(
+                        onTap: _pickDate,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.calendar_today_rounded, color: Color(0xFF3B82F6), size: 22),
+                              const SizedBox(width: 18),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Tanggal Transaksi', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+                                    const SizedBox(height: 2),
+                                    Text(_date.toShortDate, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: AppColors.textPrimary)),
+                                  ],
+                                ),
+                              ),
+                              const Icon(Icons.chevron_right_rounded, color: AppColors.divider, size: 22),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Divider(height: 1, color: AppColors.divider, indent: 56),
+
+                      // Keterangan Tambahan
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+                        child: TextFormField(
+                          controller: _descController,
+                          maxLines: 2,
+                          maxLength: 200,
+                          style: const TextStyle(fontSize: 14),
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.notes_rounded, color: Color(0xFF8B5CF6), size: 24),
+                            labelText: 'Catatan Tambahan (Opsional)',
+                            labelStyle: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                            hintText: 'Tulis catatan...',
+                            hintStyle: TextStyle(color: AppColors.divider),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _descController,
-                maxLines: 3,
-                maxLength: 200,
-                decoration: InputDecoration(
-                  labelText: 'Keterangan Tambahan (Opsional)',
-                  hintText: 'catatan kecil...',
-                  filled: true,
-                  fillColor: AppColors.surfaceWhite,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.divider)),
-                ),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
+              const SizedBox(height: 32),
+
+              // Save Action Button
+              Container(
                 width: double.infinity,
-                height: 52,
+                height: 56,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  boxShadow: [
+                    BoxShadow(
+                      color: activeColor.withValues(alpha: 0.3),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _save,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _type == 'income'
-                        ? AppColors.accentGreen
-                        : AppColors.accentRed,
+                    backgroundColor: activeColor,
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
                   ),
                   child: _isLoading
                       ? const SizedBox(
                           width: 24,
                           height: 24,
-                          child: CircularProgressIndicator(
-                              color: Colors.white, strokeWidth: 2))
-                      : const Text('Simpan Transaksi',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
+                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
+                        )
+                      : const Text(
+                          'Simpan Transaksi',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 0.5),
+                        ),
                 ),
               ),
             ],
