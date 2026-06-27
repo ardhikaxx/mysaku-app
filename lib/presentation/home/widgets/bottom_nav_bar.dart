@@ -13,80 +13,78 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
+      padding: const EdgeInsets.only(left: 28, right: 28, bottom: 24),
       child: Container(
-        height: 68,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        height: 66,
+        padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: const Color(0xFF111827),
-          borderRadius: BorderRadius.circular(40),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(36),
+          border: Border.all(color: const Color(0xFFF3F4F6), width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF111827).withOpacity(0.35),
+              color: const Color(0xFF0F172A).withOpacity(0.08),
               blurRadius: 24,
               offset: const Offset(0, 10),
             ),
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildNavItem(0, Icons.swap_horiz_rounded, 'Cashflow'),
-            _buildNavItem(1, Icons.auto_awesome_rounded, 'Impian'),
-            _buildNavItem(2, Icons.person_rounded, 'Profil'),
+            _buildDockItem(0, Icons.swap_horiz_rounded, 'Cashflow'),
+            _buildDockItem(1, Icons.auto_awesome_rounded, 'Impian'),
+            _buildDockItem(2, Icons.person_rounded, 'Profil'),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon, String label) {
+  Widget _buildDockItem(int index, IconData icon, String label) {
     final isSelected = currentIndex == index;
 
-    return GestureDetector(
-      onTap: () => onTap(index),
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeOutCubic,
-        padding: EdgeInsets.symmetric(
-            horizontal: isSelected ? 20 : 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  )
-                ]
-              : null,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: 20,
-              color: isSelected
-                  ? const Color(0xFF111827)
-                  : const Color(0xFF9CA3AF),
-            ),
-            if (isSelected) ...[
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: Color(0xFF111827),
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13,
-                  letterSpacing: -0.3,
-                ),
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => onTap(index),
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.easeOutCubic,
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFF111827) : Colors.transparent,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: const Color(0xFF111827).withOpacity(0.25),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    )
+                  ]
+                : null,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 20,
+                color: isSelected ? Colors.white : const Color(0xFF6B7280),
               ),
+              if (isSelected) ...[
+                const SizedBox(width: 6),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12.5,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
