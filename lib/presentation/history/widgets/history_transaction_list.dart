@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/extensions/currency_extension.dart';
-import '../../../data/models/transaction_model.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/transaction_provider.dart';
 import '../../../providers/wallet_provider.dart';
@@ -296,67 +294,6 @@ class _HistoryTransactionListState
 
               return Column(
                 children: [
-                  // Banner Ringkasan Total Nominal Hasil Filter (Tetap diam di atas list)
-                  if (list.isNotEmpty ||
-                      query.isNotEmpty ||
-                      monthFilter != null ||
-                      filter != 'all') ...[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: filter == 'expense'
-                              ? const Color(0xFFFEF2F2)
-                              : filter == 'income'
-                                  ? const Color(0xFFECFDF5)
-                                  : const Color(0xFFEFF6FF),
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(
-                            color: filter == 'expense'
-                                ? const Color(0xFFFECACA)
-                                : filter == 'income'
-                                    ? const Color(0xFFA7F3D0)
-                                    : const Color(0xFFBFDBFE),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              filter == 'expense'
-                                  ? Icons.arrow_upward_rounded
-                                  : filter == 'income'
-                                      ? Icons.arrow_downward_rounded
-                                      : Icons.analytics_outlined,
-                              size: 18,
-                              color: filter == 'expense'
-                                  ? const Color(0xFFDC2626)
-                                  : filter == 'income'
-                                      ? const Color(0xFF059669)
-                                      : const Color(0xFF2563EB),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                _getSummaryText(list, filter),
-                                style: TextStyle(
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.w700,
-                                  color: filter == 'expense'
-                                      ? const Color(0xFF991B1B)
-                                      : filter == 'income'
-                                          ? const Color(0xFF065F46)
-                                          : const Color(0xFF1E40AF),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
                   Expanded(
                     child: list.isEmpty
                         ? SingleChildScrollView(
@@ -429,23 +366,6 @@ class _HistoryTransactionListState
       'Desember'
     ];
     return '${months[dt.month - 1]} ${dt.year}';
-  }
-
-  String _getSummaryText(List<TransactionModel> list, String filter) {
-    double inc = 0;
-    double exp = 0;
-    for (var t in list) {
-      if (t.isIncome) inc += t.amount;
-      if (t.isExpense) exp += t.amount;
-    }
-
-    if (filter == 'expense') {
-      return 'Total Keluar: ${exp.toIDR}';
-    } else if (filter == 'income') {
-      return 'Total Masuk: ${inc.toIDR}';
-    } else {
-      return 'Masuk: ${inc.toCompactIDR} • Keluar: ${exp.toCompactIDR}';
-    }
   }
 
   Widget _buildTab(
