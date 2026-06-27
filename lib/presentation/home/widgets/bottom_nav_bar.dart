@@ -13,78 +13,64 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 28, right: 28, bottom: 24),
+      padding: const EdgeInsets.only(left: 32, right: 32, bottom: 20),
       child: Container(
-        height: 66,
-        padding: const EdgeInsets.all(6),
+        height: 60,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(36),
-          border: Border.all(color: const Color(0xFFF3F4F6), width: 1.5),
+          borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF0F172A).withOpacity(0.08),
-              blurRadius: 24,
-              offset: const Offset(0, 10),
+              color: const Color(0xFF0F172A).withOpacity(0.07),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
         child: Row(
           children: [
-            _buildDockItem(0, Icons.swap_horiz_rounded, 'Cashflow'),
-            _buildDockItem(1, Icons.auto_awesome_rounded, 'Impian'),
-            _buildDockItem(2, Icons.person_rounded, 'Profil'),
+            _buildNavItem(0, Icons.swap_horiz_rounded, 'Cashflow'),
+            _buildNavItem(1, Icons.auto_awesome_rounded, 'Impian'),
+            _buildNavItem(2, Icons.person_rounded, 'Profil'),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDockItem(int index, IconData icon, String label) {
+  Widget _buildNavItem(int index, IconData icon, String label) {
     final isSelected = currentIndex == index;
+    const activeColor = Color(0xFF1E3A8A);
+    const inactiveColor = Color(0xFF9CA3AF);
 
     return Expanded(
       child: GestureDetector(
         onTap: () => onTap(index),
         behavior: HitTestBehavior.opaque,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 260),
-          curve: Curves.easeOutCubic,
-          decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF111827) : Colors.transparent,
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: const Color(0xFF111827).withOpacity(0.25),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    )
-                  ]
-                : null,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedScale(
+              scale: isSelected ? 1.12 : 1.0,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOutCubic,
+              child: Icon(
                 icon,
-                size: 20,
-                color: isSelected ? Colors.white : const Color(0xFF6B7280),
+                size: 22,
+                color: isSelected ? activeColor : inactiveColor,
               ),
-              if (isSelected) ...[
-                const SizedBox(width: 6),
-                Text(
-                  label,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12.5,
-                    letterSpacing: -0.3,
-                  ),
-                ),
-              ],
-            ],
-          ),
+            ),
+            const SizedBox(height: 3),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? activeColor : inactiveColor,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                fontSize: 10.5,
+                letterSpacing: -0.2,
+              ),
+            ),
+          ],
         ),
       ),
     );
