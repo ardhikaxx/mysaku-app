@@ -62,6 +62,22 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
     if (picked != null) setState(() => _date = picked);
   }
 
+  void _addAmount(double addVal) {
+    AppHaptics.lightTap();
+    final currentStr =
+        _amountController.text.replaceAll('.', '').replaceAll(',', '');
+    final currentVal = double.tryParse(currentStr) ?? 0;
+    final newVal = addVal == 0 ? 0.0 : currentVal + addVal;
+
+    if (newVal == 0) {
+      _amountController.text = '';
+    } else {
+      final formatted =
+          NumberFormat.decimalPattern('id_ID').format(newVal.toInt());
+      _amountController.text = formatted;
+    }
+  }
+
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) {
       AppHaptics.errorFeedback();
@@ -325,6 +341,24 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
                         return null;
                       },
                     ),
+                    const SizedBox(height: 14),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildAmountPill('+10rb', 10000, activeColor),
+                          const SizedBox(width: 8),
+                          _buildAmountPill('+20rb', 20000, activeColor),
+                          const SizedBox(width: 8),
+                          _buildAmountPill('+50rb', 50000, activeColor),
+                          const SizedBox(width: 8),
+                          _buildAmountPill('+100rb', 100000, activeColor),
+                          const SizedBox(width: 8),
+                          _buildAmountPill('Reset', 0, const Color(0xFF64748B)),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -483,6 +517,29 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAmountPill(String label, double val, Color color) {
+    return InkWell(
+      onTap: () => _addAmount(val),
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: color,
           ),
         ),
       ),
