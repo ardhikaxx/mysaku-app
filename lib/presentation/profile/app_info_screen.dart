@@ -106,31 +106,8 @@ class AppInfoScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Row(
-                    children: [
-                      Icon(Icons.developer_mode_rounded,
-                          color: AppColors.primaryColor, size: 22),
-                      SizedBox(width: 10),
-                      Text(
-                        'Informasi Pengembang',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF111827),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Divider(height: 1, color: AppColors.divider),
-                  const SizedBox(height: 16),
-                  _buildInfoRow(
-                      Icons.person_outline_rounded, 'Dikembangkan Oleh', 'Yanuar Ardhika R.U'),
-                ],
-              ),
+              child: _buildInfoRow(
+                  Icons.person_outline_rounded, 'Dikembangkan Oleh', 'Yanuar Ardhika R.U'),
             ),
             const SizedBox(height: 20),
 
