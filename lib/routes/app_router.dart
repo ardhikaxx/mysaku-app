@@ -13,8 +13,11 @@ import '../presentation/dreams/dream_detail_screen.dart';
 import '../presentation/dreams/dreams_screen.dart';
 import '../presentation/dreams/edit_dream_screen.dart';
 import '../presentation/home/home_screen.dart';
+import '../presentation/profile/faq_screen.dart';
+import '../presentation/profile/help_screen.dart';
 import '../presentation/profile/invite_member_screen.dart';
 import '../presentation/profile/manage_members_screen.dart';
+import '../presentation/profile/privacy_screen.dart';
 import '../presentation/profile/profile_screen.dart';
 import '../providers/auth_provider.dart';
 
@@ -117,6 +120,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'members',
                     builder: (context, state) => const ManageMembersScreen(),
+                  ),
+                  GoRoute(
+                    path: 'help',
+                    builder: (context, state) => const HelpScreen(),
+                  ),
+                  GoRoute(
+                    path: 'faq',
+                    builder: (context, state) => const FaqScreen(),
+                  ),
+                  GoRoute(
+                    path: 'privacy',
+                    builder: (context, state) => const PrivacyScreen(),
                   ),
                 ],
               ),

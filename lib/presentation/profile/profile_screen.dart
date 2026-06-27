@@ -10,7 +10,6 @@ import '../../providers/wallet_provider.dart';
 import '../home/widgets/floating_capsule_app_bar.dart';
 import '../shared/widgets/confirm_dialog.dart';
 import 'widgets/export_report_modal.dart';
-import 'widgets/help_faq_modal.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/settings_tile.dart';
 
@@ -213,11 +212,25 @@ SettingsTile(
                   onTap: () => ExportReportModal.show(context),
                 ),
                 SettingsTile(
-                  icon: Icons.help_outline_rounded,
+                  icon: Icons.headset_mic_rounded,
                   iconColor: const Color(0xFF3B82F6),
-                  title: 'Pusat Bantuan & FAQ',
-                  subtitle: 'Pertanyaan umum & kontak customer support',
-                  onTap: () => HelpFaqModal.show(context),
+                  title: 'Pusat Bantuan',
+                  subtitle: 'Layanan dukungan pelanggan WhatsApp / Email',
+                  onTap: () => context.push('/home/profile/help'),
+                ),
+                SettingsTile(
+                  icon: Icons.question_answer_rounded,
+                  iconColor: const Color(0xFF8B5CF6),
+                  title: 'Pertanyaan Umum (FAQ)',
+                  subtitle: 'Panduan cara menghapus, edit, & fitur impian',
+                  onTap: () => context.push('/home/profile/faq'),
+                ),
+                SettingsTile(
+                  icon: Icons.privacy_tip_rounded,
+                  iconColor: const Color(0xFFF59E0B),
+                  title: 'Kebijakan Privasi',
+                  subtitle: 'Komitmen perlindungan & enkripsi data Anda',
+                  onTap: () => context.push('/home/profile/privacy'),
                 ),
                 const SizedBox(height: 12),
                 SettingsTile(
