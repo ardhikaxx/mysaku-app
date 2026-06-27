@@ -51,7 +51,7 @@ class AppInfoScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    'MySaku App',
+                    'MySaku',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
