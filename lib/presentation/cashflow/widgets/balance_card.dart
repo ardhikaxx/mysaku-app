@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/extensions/currency_extension.dart';
@@ -13,6 +14,38 @@ class BalanceCard extends ConsumerStatefulWidget {
 
 class _BalanceCardState extends ConsumerState<BalanceCard> {
   bool _isHidden = false;
+  late DateTime _now;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _now = DateTime.now();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() => _now = DateTime.now());
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  String _formatDate(DateTime dt) {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+      'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des',
+    ];
+    return '${dt.day} ${months[dt.month - 1]} ${dt.year}';
+  }
+
+  String _formatTime(DateTime dt) {
+    final h = dt.hour.toString().padLeft(2, '0');
+    final m = dt.minute.toString().padLeft(2, '0');
+    final s = dt.second.toString().padLeft(2, '0');
+    return '$h:$m:$s';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +56,7 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
       width: double.infinity,
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: const Color(0xFF111827), // Sleek Jet Black / Midnight
+        color: const Color(0xFF111827),
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(
@@ -63,10 +96,9 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
                   ),
                 ],
               ),
-              // Live Sync Badge
+              // Date & Time Badge
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1F2937),
                   borderRadius: BorderRadius.circular(20),
@@ -74,22 +106,34 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF10B981),
-                        shape: BoxShape.circle,
-                      ),
+                    const Icon(
+                      Icons.access_time_rounded,
+                      color: Color(0xFF60A5FA),
+                      size: 12,
                     ),
-                    const SizedBox(width: 6),
-                    const Text(
-                      'Realtime',
-                      style: TextStyle(
-                        color: Color(0xFFD1D5DB),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    const SizedBox(width: 5),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          _formatTime(_now),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        Text(
+                          _formatDate(_now),
+                          style: const TextStyle(
+                            color: Color(0xFF9CA3AF),
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
