@@ -48,6 +48,7 @@ class AuthRepository {
       );
       if (credential.user != null) {
         await _initializeUserAndWallet(credential.user!, name);
+        await _handlePostLogin(credential.user);
       }
       return credential;
     } on FirebaseAuthException catch (e) {
