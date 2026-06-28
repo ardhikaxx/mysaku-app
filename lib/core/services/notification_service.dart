@@ -59,91 +59,148 @@ class NotificationService {
   }
 
   Future<void> scheduleDailyReminder({
-    required int hour,
-    required int minute,
+    int? hour,
+    int? minute,
     required bool isEnabled,
   }) async {
     await init();
 
-    const int notificationId = 888;
-    await _notificationsPlugin.cancel(id: notificationId);
+    final List<Map<String, dynamic>> schedules = [
+      {
+        'id': 801,
+        'hour': 8,
+        'minute': 0,
+        'title': '🌅 Jam 08.00 - Selamat Pagi!',
+        'body': 'Awali hari dengan rapi! Yuk catat pengeluaran sarapan atau persiapan harimu di MySaku.',
+      },
+      {
+        'id': 802,
+        'hour': 12,
+        'minute': 0,
+        'title': '☀️ Jam 12.00 - Istirahat Siang',
+        'body': 'Sudah makan siang? Jangan lupa catat pengeluaranmu barusan di MySaku ya!',
+      },
+      {
+        'id': 803,
+        'hour': 15,
+        'minute': 0,
+        'title': '☕ Jam 15.00 - Waktu Sore & Jajan',
+        'body': 'Ada beli kopi atau jajan sore ini? Yuk luangkan 10 detik catat di MySaku.',
+      },
+      {
+        'id': 804,
+        'hour': 18,
+        'minute': 0,
+        'title': '🌆 Jam 18.00 - Petang & Malam',
+        'body': 'Sore menjelang malam! Yuk rapihkan catatan transaksi pengeluaran hari ini.',
+      },
+      {
+        'id': 805,
+        'hour': 21,
+        'minute': 0,
+        'title': '🌙 Jam 21.00 - Evaluasi Harian',
+        'body': 'Sebelum istirahat malam, pastikan seluruh transaksi harimu sudah tercatat rapi!',
+      },
+    ];
+
+    for (var s in schedules) {
+      await _notificationsPlugin.cancel(id: s['id'] as int);
+    }
+    await _notificationsPlugin.cancel(id: 888);
 
     if (!isEnabled) return;
 
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+    final Int64List vibrationPattern = Int64List.fromList([0, 1000, 500, 1000]);
 
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    for (var s in schedules) {
+      final int id = s['id'] as int;
+      final int h = s['hour'] as int;
+      final int m = s['minute'] as int;
+      final String title = s['title'] as String;
+      final String body = s['body'] as String;
+
+      tz.TZDateTime scheduledDate = tz.TZDateTime(
+        tz.local,
+        now.year,
+        now.month,
+        now.day,
+        h,
+        m,
+      );
+
+      if (scheduledDate.isBefore(now)) {
+        scheduledDate = scheduledDate.add(const Duration(days: 1));
+      }
+
+      final AndroidNotificationDetails androidDetails =
+          AndroidNotificationDetails(
+        'mysaku_daily_reminder_channel',
+        'Pengingat Catat Harian (5x Sehari)',
+        channelDescription:
+            'Notifikasi pengingat otomatis di jam 08:00, 12:00, 15:00, 18:00, dan 21:00',
+        importance: Importance.max,
+        priority: Priority.high,
+        enableVibration: true,
+        vibrationPattern: vibrationPattern,
+        playSound: true,
+        fullScreenIntent: true,
+        visibility: NotificationVisibility.public,
+        styleInformation: BigTextStyleInformation(
+          body,
+          contentTitle: title,
+        ),
+      );
+
+      const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+
+      final NotificationDetails notificationDetails = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+      );
+
+      await _notificationsPlugin.zonedSchedule(
+        id: id,
+        title: title,
+        body: body,
+        scheduledDate: scheduledDate,
+        notificationDetails: notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
     }
-
-    final Int64List vibrationPattern = Int64List.fromList([0, 500, 250, 500]);
-
-    final AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-      'mysaku_daily_reminder',
-      'Pengingat Catat Harian',
-      channelDescription:
-          'Notifikasi pengingat untuk mencatat transaksi keuangan harian MySaku',
-      importance: Importance.max,
-      priority: Priority.high,
-      enableVibration: true,
-      vibrationPattern: vibrationPattern,
-      playSound: true,
-      styleInformation: const BigTextStyleInformation(
-        'Yuk luangkan 1 menit untuk mencatat pemasukan & pengeluaranmu hari ini di MySaku agar keuanganmu tetap terkontrol!',
-        contentTitle: '🌙 Sudah catat keuanganmu hari ini?',
-      ),
-    );
-
-    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-
-    final NotificationDetails notificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
-
-    await _notificationsPlugin.zonedSchedule(
-      id: notificationId,
-      title: '🌙 Sudah catat keuanganmu hari ini?',
-      body:
-          'Yuk luangkan 1 menit untuk mencatat pemasukan & pengeluaranmu hari ini di MySaku!',
-      scheduledDate: scheduledDate,
-      notificationDetails: notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
   }
 
   Future<void> showInstantTestNotification() async {
     await init();
 
-    final Int64List vibrationPattern = Int64List.fromList([0, 500, 250, 500]);
+    final Int64List vibrationPattern = Int64List.fromList([0, 1000, 500, 1000]);
 
     final AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
-      'mysaku_daily_reminder',
-      'Pengingat Catat Harian',
+      'mysaku_daily_reminder_channel',
+      'Pengingat Catat Harian (5x Sehari)',
       channelDescription: 'Notifikasi pengingat keuangan harian MySaku',
       importance: Importance.max,
       priority: Priority.high,
       enableVibration: true,
       vibrationPattern: vibrationPattern,
       playSound: true,
+      fullScreenIntent: true,
+      visibility: NotificationVisibility.public,
     );
 
     const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
 
     await _notificationsPlugin.show(
       id: 999,
-      title: '🔔 Uji Coba Pengingat MySaku',
+      title: '🔔 Tes Notifikasi & Getaran MySaku',
       body:
-          'Pengingat harian aktif! Ponsel bergetar dan memberi pesan saat layar tertutup.',
+          'Berhasil! Ponsel Anda akan bergetar dan memunculkan pengingat otomatis setiap jam 08.00, 12.00, 15.00, 18.00, & 21.00 meski layar tertutup.',
       notificationDetails:
           NotificationDetails(android: androidDetails, iOS: iosDetails),
     );

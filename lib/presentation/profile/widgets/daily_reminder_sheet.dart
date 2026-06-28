@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/utils/app_haptics.dart';
+import '../../../core/utils/app_toast.dart';
 import '../../../providers/notification_provider.dart';
 
 class DailyReminderSheet extends ConsumerWidget {
@@ -63,7 +64,7 @@ class DailyReminderSheet extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Dapatkan notifikasi & getaran halus setiap hari agar tidak lupa mencatat pengeluaran Anda.',
+            'Dapatkan notifikasi & getaran otomatis 5x sehari (08.00, 12.00, 15.00, 18.00, 21.00) meski layar HP dalam keadaan tertutup/mati.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13,
@@ -116,60 +117,41 @@ class DailyReminderSheet extends ConsumerWidget {
           ),
           if (reminderState.isEnabled) ...[
             const SizedBox(height: 14),
-            InkWell(
-              onTap: () async {
-                AppHaptics.lightTap();
-                final picked = await showTimePicker(
-                  context: context,
-                  initialTime: reminderState.time,
-                );
-                if (picked != null) {
-                  notifier.updateTime(picked);
-                }
-              },
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF8FAFC),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Row(
-                      children: [
-                        Icon(Icons.access_time_rounded,
-                            color: AppColors.primaryColor, size: 22),
-                        SizedBox(width: 12),
-                        Text(
-                          'Waktu Pengingat',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF0F172A),
-                          ),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEFF6FF),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: const Color(0xFFBFDBFE)),
+              ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.schedule_rounded,
+                          color: AppColors.primaryColor, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Jadwal Pengingat Otomatis',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF1E3A8A),
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    '⏰ 08.00 • 12.00 • 15.00 • 18.00 • 21.00 WIB\nSistem akan memberi getaran & pesan pengingat di jam-jam tersebut.',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: Color(0xFF1E40AF),
+                      height: 1.4,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          reminderState.time.format(context),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        const Icon(Icons.arrow_forward_ios_rounded,
-                            size: 14, color: AppColors.textSecondary),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -181,12 +163,7 @@ class DailyReminderSheet extends ConsumerWidget {
                 AppHaptics.successFeedback();
                 NotificationService().showInstantTestNotification();
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                        '🔔 Notifikasi tes dikirim! Silakan tutup layar HP Anda sekarang.'),
-                  ),
-                );
+                AppToast.showSuccess(context, '🔔 Tes dikirim! Segera matikan/tutup layar HP Anda.');
               },
               icon: const Icon(Icons.vibration_rounded,
                   size: 18, color: AppColors.primaryColor),
