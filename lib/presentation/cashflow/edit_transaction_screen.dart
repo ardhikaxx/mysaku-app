@@ -433,7 +433,7 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
                         child: DropdownButtonFormField<String>(
-                          value: _category,
+                          initialValue: _category,
                           icon: const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.textSecondary),
                           decoration: const InputDecoration(
                             icon: Icon(Icons.category_rounded, color: AppColors.accentAmber, size: 24),
