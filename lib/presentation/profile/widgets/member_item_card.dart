@@ -26,7 +26,7 @@ class MemberItemCard extends StatelessWidget {
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         leading: CircleAvatar(
-          backgroundColor: AppColors.primaryColor.withOpacity(0.1),
+          backgroundColor: AppColors.primaryColor.withValues(alpha: 0.1),
           backgroundImage:
               member.photoUrl != null ? NetworkImage(member.photoUrl!) : null,
           child: member.photoUrl == null
@@ -62,7 +62,7 @@ class MemberItemCard extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withOpacity(0.1),
+                    color: AppColors.primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12)),
                 child: const Text('Owner',
                     style: TextStyle(

@@ -118,7 +118,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                 border: Border.all(color: const Color(0xFFF3F4F6), width: 1.5),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: Colors.black.withValues(alpha: 0.03),
                     blurRadius: 16,
                     offset: const Offset(0, 8),
                   ),
@@ -130,7 +130,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                     width: 72,
                     height: 72,
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.12),
+                      color: color.withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(_getCategoryIcon(tx.category),

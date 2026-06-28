@@ -103,20 +103,18 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       final repo = ref.read(transactionRepositoryProvider);
       final newId = await repo.addTransaction(walletId, tx);
       AppHaptics.successFeedback();
-      if (mounted) {
-        final currentContext = context;
-        currentContext.pop();
-        AppUndoToast.show(
-          currentContext,
-          message: 'Data transaksi berhasil disimpan',
-          onUndo: () async {
-            await repo.deleteTransaction(walletId, newId);
-            if (currentContext.mounted) {
-              AppToast.showSuccess(currentContext, 'Aksi simpan berhasil dibatalkan');
-            }
-          },
-        );
-      }
+      if (!mounted) return;
+      context.pop();
+      AppUndoToast.show(
+        context,
+        message: 'Data transaksi berhasil disimpan',
+        onUndo: () async {
+          await repo.deleteTransaction(walletId, newId);
+          if (mounted) {
+            AppToast.showSuccess(context, 'Aksi simpan berhasil dibatalkan');
+          }
+        },
+      );
     } on AppException catch (e) {
       if (mounted) {
         AppToast.showError(context, 'Gagal menyimpan data: ${e.message}');

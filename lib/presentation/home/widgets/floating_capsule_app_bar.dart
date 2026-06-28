@@ -35,7 +35,7 @@ class FloatingCapsuleAppBar extends StatelessWidget implements PreferredSizeWidg
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF0F172A).withOpacity(0.06),
+                color: const Color(0xFF0F172A).withValues(alpha: 0.06),
                 blurRadius: 16,
                 offset: const Offset(0, 6),
               ),
@@ -87,7 +87,7 @@ class FloatingCapsuleAppBar extends StatelessWidget implements PreferredSizeWidg
                     overflow: TextOverflow.ellipsis,
                   ),
               ),
-              if (trailing != null) trailing!,
+              ?trailing,
             ],
           ),
         ),

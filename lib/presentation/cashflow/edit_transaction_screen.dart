@@ -112,20 +112,18 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
       final oldTx = widget.tx;
       await repo.updateTransaction(walletId, updatedTx);
       AppHaptics.successFeedback();
-      if (mounted) {
-        final currentContext = context;
-        currentContext.pop();
-        AppUndoToast.show(
-          currentContext,
-          message: 'Data transaksi berhasil diperbarui',
-          onUndo: () async {
-            await repo.updateTransaction(walletId, oldTx);
-            if (currentContext.mounted) {
-              AppToast.showSuccess(currentContext, 'Pembaruan dibatalkan (dikembalikan ke asal)');
-            }
-          },
-        );
-      }
+      if (!mounted) return;
+      context.pop();
+      AppUndoToast.show(
+        context,
+        message: 'Data transaksi berhasil diperbarui',
+        onUndo: () async {
+          await repo.updateTransaction(walletId, oldTx);
+          if (mounted) {
+            AppToast.showSuccess(context, 'Pembaruan dibatalkan (dikembalikan ke asal)');
+          }
+        },
+      );
     } on AppException catch (e) {
       if (mounted) {
         AppToast.showError(context, 'Gagal memperbarui data: ${e.message}');
@@ -157,20 +155,18 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
       final oldTx = widget.tx;
       await repo.deleteTransaction(walletId, widget.tx.transactionId);
       AppHaptics.successFeedback();
-      if (mounted) {
-        final currentContext = context;
-        currentContext.pop();
-        AppUndoToast.show(
-          currentContext,
-          message: 'Data transaksi berhasil dihapus',
-          onUndo: () async {
-            await repo.addTransaction(walletId, oldTx);
-            if (currentContext.mounted) {
-              AppToast.showSuccess(currentContext, 'Penghapusan dibatalkan (data dipulihkan)');
-            }
-          },
-        );
-      }
+      if (!mounted) return;
+      context.pop();
+      AppUndoToast.show(
+        context,
+        message: 'Data transaksi berhasil dihapus',
+        onUndo: () async {
+          await repo.addTransaction(walletId, oldTx);
+          if (mounted) {
+            AppToast.showSuccess(context, 'Penghapusan dibatalkan (data dipulihkan)');
+          }
+        },
+      );
     } catch (e) {
       if (mounted) {
         AppToast.showError(context, 'Gagal menghapus data: Terjadi kesalahan sistem');

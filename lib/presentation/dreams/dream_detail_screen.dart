@@ -276,7 +276,7 @@ class DreamDetailScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   _buildDetailRow(
-                      Icons.calendar_today_outlined, 'Dibuat Pada', '${dream.createdAt.toFullDate}'),
+                      Icons.calendar_today_outlined, 'Dibuat Pada', dream.createdAt.toFullDate),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Divider(
@@ -284,7 +284,7 @@ class DreamDetailScreen extends ConsumerWidget {
                         color: AppColors.divider.withValues(alpha: 0.4)),
                   ),
                   _buildDetailRow(
-                      Icons.update_rounded, 'Terakhir Diperbarui', '${dream.updatedAt.toFullDate}'),
+                      Icons.update_rounded, 'Terakhir Diperbarui', dream.updatedAt.toFullDate),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Divider(

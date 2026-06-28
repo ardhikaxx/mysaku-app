@@ -65,6 +65,7 @@ class DailyReminderScreen extends ConsumerWidget {
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF0F172A),
                     ),
+                  ),
                   const SizedBox(height: 24),
                   // Toggle Box
                   Container(

@@ -36,7 +36,7 @@ class ConfirmDialog extends StatefulWidget {
       barrierLabel: 'Dismiss',
       barrierColor: Colors.black54,
       transitionDuration: const Duration(milliseconds: 280),
-      pageBuilder: (_, __, ___) => ConfirmDialog(
+      pageBuilder: (context, anim1, anim2) => ConfirmDialog(
         title: title,
         message: message,
         confirmText: confirmText,
@@ -45,7 +45,7 @@ class ConfirmDialog extends StatefulWidget {
         icon: icon,
         iconColor: iconColor,
       ),
-      transitionBuilder: (_, anim, __, child) {
+      transitionBuilder: (context, anim, secAnim, child) {
         final curved = CurvedAnimation(
           parent: anim,
           curve: Curves.easeOutBack,
@@ -82,13 +82,13 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
           borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.10),
+              color: Colors.black.withValues(alpha: 0.10),
               blurRadius: 40,
               spreadRadius: 0,
               offset: const Offset(0, 20),
             ),
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -112,7 +112,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                           width: 80,
                           height: 80,
                           decoration: BoxDecoration(
-                            color: widget.iconColor.withOpacity(0.06),
+                            color: widget.iconColor.withValues(alpha: 0.06),
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -120,7 +120,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                           width: 60,
                           height: 60,
                           decoration: BoxDecoration(
-                            color: widget.iconColor.withOpacity(0.12),
+                            color: widget.iconColor.withValues(alpha: 0.12),
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -128,7 +128,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                           width: 44,
                           height: 44,
                           decoration: BoxDecoration(
-                            color: widget.iconColor.withOpacity(0.15),
+                            color: widget.iconColor.withValues(alpha: 0.15),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
@@ -192,12 +192,12 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                         height: 50,
                         decoration: BoxDecoration(
                           color: _confirmHovered
-                              ? widget.confirmColor.withOpacity(0.88)
+                              ? widget.confirmColor.withValues(alpha: 0.88)
                               : widget.confirmColor,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: widget.confirmColor.withOpacity(0.28),
+                              color: widget.confirmColor.withValues(alpha: 0.28),
                               blurRadius: _confirmHovered ? 6 : 14,
                               offset: const Offset(0, 4),
                             ),

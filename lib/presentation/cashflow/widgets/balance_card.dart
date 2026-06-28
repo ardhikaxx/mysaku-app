@@ -200,7 +200,7 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
                 ),
                 loading: () => const Text('Memuat...',
                     style: TextStyle(color: Colors.white70, fontSize: 13)),
-                error: (_, __) => const Text('Tabungan',
+                error: (error, stack) => const Text('Tabungan',
                     style: TextStyle(color: Colors.white, fontSize: 13)),
               ),
               walletAsync.when(
@@ -213,7 +213,7 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
                   ),
                 ),
                 loading: () => const SizedBox(),
-                error: (_, __) => const SizedBox(),
+                error: (error, stack) => const SizedBox(),
               ),
             ],
           ),

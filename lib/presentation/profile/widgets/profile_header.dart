@@ -25,7 +25,7 @@ class ProfileHeader extends ConsumerWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -35,7 +35,7 @@ class ProfileHeader extends ConsumerWidget {
         children: [
           CircleAvatar(
             radius: 40,
-            backgroundColor: AppColors.primaryColor.withOpacity(0.15),
+            backgroundColor: AppColors.primaryColor.withValues(alpha: 0.15),
             backgroundImage:
                 user.photoUrl != null ? NetworkImage(user.photoUrl!) : null,
             child: user.photoUrl == null
@@ -67,8 +67,8 @@ class ProfileHeader extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
               color: isPersonal
-                  ? AppColors.primaryColor.withOpacity(0.1)
-                  : AppColors.accentAmber.withOpacity(0.15),
+                  ? AppColors.primaryColor.withValues(alpha: 0.1)
+                  : AppColors.accentAmber.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(

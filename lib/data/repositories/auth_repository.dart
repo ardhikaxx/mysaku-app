@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../core/constants/firebase_constants.dart';
@@ -113,7 +114,7 @@ class AuthRepository {
         await _initializeUserAndWallet(authUser, displayName);
       }
     } catch (e) {
-      print('Gagal inisialisasi user di Firestore: $e');
+      debugPrint('Gagal inisialisasi user di Firestore: $e');
     }
   }
 
