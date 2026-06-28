@@ -65,17 +65,6 @@ class DailyReminderScreen extends ConsumerWidget {
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF0F172A),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Dapatkan notifikasi & getaran otomatis 5x sehari (08.00, 12.00, 15.00, 18.00, 21.00) meski layar HP dalam keadaan tertutup/mati.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13.5,
-                      color: AppColors.textSecondary,
-                      height: 1.5,
-                    ),
-                  ),
                   const SizedBox(height: 24),
                   // Toggle Box
                   Container(
