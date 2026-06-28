@@ -1,5 +1,5 @@
 class AppStrings {
-  static const String appName = 'MySAKU';
+  static const String appName = 'MySaku';
   static const String appSubtitle = 'My Smart Saving & Cashflow Utility';
   static const String loginTitle = 'Selamat Datang Kembali';
   static const String loginSubtitle = 'Kelola arus kas & impian keuangan bersama';

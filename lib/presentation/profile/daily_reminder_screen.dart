@@ -129,49 +129,6 @@ class DailyReminderScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // Jadwal Card
-            if (reminderState.isEnabled) ...[
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEFF6FF),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: const Color(0xFFBFDBFE), width: 1.5),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Row(
-                      children: [
-                        Icon(Icons.schedule_rounded,
-                            color: AppColors.primaryColor, size: 22),
-                        SizedBox(width: 10),
-                        Text(
-                          'Jadwal Pengingat Otomatis',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF1E3A8A),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      '⏰ 08.00 • 12.00 • 15.00 • 18.00 • 21.00 WIB\n\nSistem secara cerdas mengirim pesan motivasi dan getaran di 5 waktu penting tersebut agar seluruh pengeluaran harimu tercatat presisi tanpa ada yang terlewat.',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF1E40AF),
-                        height: 1.5,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-            ],
             // Uji Coba Tombol
             Container(
               width: double.infinity,

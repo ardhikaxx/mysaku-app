@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -32,7 +33,7 @@ class NotificationService {
     }
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('ic_stat_notify');
 
     const DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
@@ -146,6 +147,9 @@ class NotificationService {
         playSound: true,
         fullScreenIntent: true,
         visibility: NotificationVisibility.public,
+        icon: 'ic_stat_notify',
+        color: const Color(0xFF1E3A8A),
+        largeIcon: const DrawableResourceAndroidBitmap('app_logo'),
         styleInformation: BigTextStyleInformation(
           body,
           contentTitle: title,
@@ -192,15 +196,18 @@ class NotificationService {
       playSound: true,
       fullScreenIntent: true,
       visibility: NotificationVisibility.public,
+      icon: 'ic_stat_notify',
+      color: const Color(0xFF1E3A8A),
+      largeIcon: const DrawableResourceAndroidBitmap('app_logo'),
     );
 
     const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
 
     await _notificationsPlugin.show(
       id: 999,
-      title: '🔔 Tes Notifikasi & Getaran MySaku',
+      title: 'Notifikasi MySaku',
       body:
-          'Berhasil! Ponsel Anda akan bergetar dan memunculkan pengingat otomatis setiap jam 08.00, 12.00, 15.00, 18.00, & 21.00 meski layar tertutup.',
+          'Berhasil! Ponsel Anda memunculkan pengingat otomatis.',
       notificationDetails:
           NotificationDetails(android: androidDetails, iOS: iosDetails),
     );
