@@ -26,7 +26,7 @@ class DailyReminderState {
 class DailyReminderNotifier extends StateNotifier<DailyReminderState> {
   DailyReminderNotifier()
       : super(const DailyReminderState(
-          isEnabled: false,
+          isEnabled: true,
           time: TimeOfDay(hour: 20, minute: 0),
         )) {
     _loadSettings();
@@ -38,7 +38,7 @@ class DailyReminderNotifier extends StateNotifier<DailyReminderState> {
 
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    final isEnabled = prefs.getBool(_keyEnabled) ?? false;
+    final isEnabled = prefs.getBool(_keyEnabled) ?? true;
     final hour = prefs.getInt(_keyHour) ?? 20;
     final minute = prefs.getInt(_keyMinute) ?? 0;
 

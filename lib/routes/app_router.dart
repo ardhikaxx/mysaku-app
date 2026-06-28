@@ -16,6 +16,7 @@ import '../presentation/dreams/edit_dream_screen.dart';
 import '../presentation/history/history_screen.dart';
 import '../presentation/home/home_screen.dart';
 import '../presentation/profile/app_info_screen.dart';
+import '../presentation/profile/daily_reminder_screen.dart';
 import '../presentation/profile/faq_screen.dart';
 import '../presentation/profile/help_screen.dart';
 import '../presentation/profile/invite_member_screen.dart';
@@ -175,6 +176,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'manage-categories',
                     builder: (context, state) => const ManageCategoriesScreen(),
+                  ),
+                  GoRoute(
+                    path: 'daily-reminder',
+                    builder: (context, state) => const DailyReminderScreen(),
                   ),
                 ],
               ),
