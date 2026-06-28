@@ -7,7 +7,6 @@ import '../../../core/extensions/currency_extension.dart';
 import '../../../core/utils/app_haptics.dart';
 import '../../../core/utils/app_toast.dart';
 import '../../../core/utils/currency_formatter.dart';
-import '../../../providers/privacy_provider.dart';
 import '../../../providers/transaction_provider.dart';
 
 class BudgetCard extends ConsumerWidget {
@@ -17,7 +16,6 @@ class BudgetCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final txList = ref.watch(transactionsProvider).value ?? [];
     final budget = ref.watch(monthlyBudgetProvider);
-    final isHidden = ref.watch(privacyProvider);
 
     final now = DateTime.now();
     double currentMonthExpense = 0;
@@ -132,7 +130,7 @@ class BudgetCard extends ConsumerWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
-                isHidden ? 'Rp ••••••' : currentMonthExpense.toIDR,
+                currentMonthExpense.toIDR,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
@@ -140,7 +138,7 @@ class BudgetCard extends ConsumerWidget {
                 ),
               ),
               Text(
-                isHidden ? 'dari Rp •••••' : 'dari ${budget.toCompactIDR}',
+                'dari ${budget.toCompactIDR}',
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -240,7 +238,7 @@ class BudgetCard extends ConsumerWidget {
                           : [
                               const TextSpan(text: 'Batas aman hari ini: '),
                               TextSpan(
-                                text: isHidden ? 'Rp •••/hari' : '${dailyBurnRate.toIDR}/hari',
+                                text: '${dailyBurnRate.toIDR}/hari',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w800,
                                   color: Color(0xFF0F172A),

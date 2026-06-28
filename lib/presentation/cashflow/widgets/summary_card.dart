@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../providers/privacy_provider.dart';
 
 class SummaryCard extends ConsumerWidget {
   final String title;
@@ -19,8 +18,6 @@ class SummaryCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isHidden = ref.watch(privacyProvider);
-
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -64,7 +61,7 @@ class SummaryCard extends ConsumerWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    isHidden ? 'Rp ••••••' : amount,
+                    amount,
                     style: const TextStyle(
                       color: Color(0xFF111827),
                       fontWeight: FontWeight.w700,
