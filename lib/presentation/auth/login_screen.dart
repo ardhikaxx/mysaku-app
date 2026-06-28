@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/errors/app_exception.dart';
+import '../../core/services/notification_service.dart';
 import '../../providers/auth_provider.dart';
 import 'widgets/auth_form_field.dart';
 import 'widgets/google_sign_in_button.dart';
@@ -20,6 +21,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationService().requestPermissionNow();
+    });
+  }
 
   Future<void> _loginEmail() async {
     if (!_formKey.currentState!.validate()) return;

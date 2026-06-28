@@ -152,10 +152,20 @@ class DailyReminderScreen extends ConsumerWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
-                      onPressed: () {
+                      onPressed: () async {
                         AppHaptics.successFeedback();
-                        NotificationService().showInstantTestNotification();
-                        AppToast.showSuccess(context, '🔔 Tes dikirim! Segera matikan/tutup layar HP Anda.');
+                        try {
+                          await NotificationService().showInstantTestNotification();
+                          if (context.mounted) {
+                            AppToast.showSuccess(context, '🔔 Tes dikirim! Periksa bar notifikasi Anda.');
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Gagal memunculkan notifikasi: $e')),
+                            );
+                          }
+                        }
                       },
                       icon: const Icon(Icons.vibration_rounded,
                           size: 18, color: AppColors.primaryColor),

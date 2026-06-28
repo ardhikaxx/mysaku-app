@@ -33,7 +33,7 @@ class NotificationService {
     }
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_stat_notify');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     const DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
@@ -57,6 +57,19 @@ class NotificationService {
     }
 
     _isInitialized = true;
+  }
+
+  Future<bool> requestPermissionNow() async {
+    await init();
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final androidImplementation = _notificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+      final bool? granted = await androidImplementation?.requestNotificationsPermission();
+      debugPrint('Requested notification permission from UI: $granted');
+      return granted ?? false;
+    }
+    return true;
   }
 
   Future<void> scheduleDailyReminder({
@@ -136,10 +149,10 @@ class NotificationService {
 
       final AndroidNotificationDetails androidDetails =
           AndroidNotificationDetails(
-        'mysaku_daily_reminder_channel',
-        'Pengingat Catat Harian (5x Sehari)',
+        'mysaku_notifications_channel_v2',
+        'Notifikasi & Pengingat MySaku',
         channelDescription:
-            'Notifikasi pengingat otomatis di jam 08:00, 12:00, 15:00, 18:00, dan 21:00',
+            'Saluran utama untuk notifikasi dan pengingat keuangan MySaku',
         importance: Importance.max,
         priority: Priority.high,
         enableVibration: true,
@@ -147,9 +160,8 @@ class NotificationService {
         playSound: true,
         fullScreenIntent: true,
         visibility: NotificationVisibility.public,
-        icon: 'ic_stat_notify',
+        icon: '@mipmap/ic_launcher',
         color: const Color(0xFF1E3A8A),
-        largeIcon: const DrawableResourceAndroidBitmap('app_logo'),
         styleInformation: BigTextStyleInformation(
           body,
           contentTitle: title,
@@ -167,28 +179,48 @@ class NotificationService {
         iOS: iosDetails,
       );
 
-      await _notificationsPlugin.zonedSchedule(
-        id: id,
-        title: title,
-        body: body,
-        scheduledDate: scheduledDate,
-        notificationDetails: notificationDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        matchDateTimeComponents: DateTimeComponents.time,
-      );
+      try {
+        await _notificationsPlugin.zonedSchedule(
+          id: id,
+          title: title,
+          body: body,
+          scheduledDate: scheduledDate,
+          notificationDetails: notificationDetails,
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          matchDateTimeComponents: DateTimeComponents.time,
+        );
+      } catch (e) {
+        debugPrint('Exact alarm failed, falling back to inexact: $e');
+        await _notificationsPlugin.zonedSchedule(
+          id: id,
+          title: title,
+          body: body,
+          scheduledDate: scheduledDate,
+          notificationDetails: notificationDetails,
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          matchDateTimeComponents: DateTimeComponents.time,
+        );
+      }
     }
   }
 
   Future<void> showInstantTestNotification() async {
     await init();
 
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final androidImplementation = _notificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+      await androidImplementation?.requestNotificationsPermission();
+    }
+
     final Int64List vibrationPattern = Int64List.fromList([0, 1000, 500, 1000]);
 
     final AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
-      'mysaku_daily_reminder_channel',
-      'Pengingat Catat Harian (5x Sehari)',
-      channelDescription: 'Notifikasi pengingat keuangan harian MySaku',
+      'mysaku_notifications_channel_v2',
+      'Notifikasi & Pengingat MySaku',
+      channelDescription: 'Saluran utama untuk notifikasi dan pengingat keuangan MySaku',
       importance: Importance.max,
       priority: Priority.high,
       enableVibration: true,
@@ -196,9 +228,8 @@ class NotificationService {
       playSound: true,
       fullScreenIntent: true,
       visibility: NotificationVisibility.public,
-      icon: 'ic_stat_notify',
+      icon: '@mipmap/ic_launcher',
       color: const Color(0xFF1E3A8A),
-      largeIcon: const DrawableResourceAndroidBitmap('app_logo'),
     );
 
     const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
