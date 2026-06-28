@@ -5,6 +5,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/extensions/currency_extension.dart';
 import '../../core/extensions/datetime_extension.dart';
 import '../../core/utils/app_haptics.dart';
+import '../../core/utils/app_toast.dart';
 import '../../core/utils/app_undo_toast.dart';
 import '../../data/models/transaction_model.dart';
 import '../../providers/auth_provider.dart';
@@ -302,17 +303,18 @@ class TransactionDetailScreen extends ConsumerWidget {
         currentContext.pop();
         AppUndoToast.show(
           currentContext,
-          message: 'Transaksi berhasil dihapus',
+          message: 'Data transaksi berhasil dihapus',
           onUndo: () async {
             await repo.addTransaction(walletId, oldTx);
+            if (currentContext.mounted) {
+              AppToast.showSuccess(currentContext, 'Penghapusan dibatalkan (data dipulihkan)');
+            }
           },
         );
       }
     } catch (e) {
-      AppHaptics.errorFeedback();
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Gagal menghapus: $e')));
+        AppToast.showError(context, 'Gagal menghapus data: Terjadi kesalahan sistem');
       }
     }
   }

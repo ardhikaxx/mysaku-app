@@ -12,7 +12,14 @@ class AppUndoToast {
       SnackBar(
         content: Row(
           children: [
-            const Icon(Icons.history_rounded, color: Colors.white, size: 20),
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(
+                color: Color(0xFF10B981),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.check, color: Colors.white, size: 14),
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Text(

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
+import '../../core/utils/app_toast.dart';
 import '../../core/utils/currency_formatter.dart';
 import 'package:intl/intl.dart';
 import '../../data/models/dream_model.dart';
@@ -67,11 +68,13 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
 
       final repo = ref.read(dreamRepositoryProvider);
       await repo.updateDream(walletId, updated);
-      if (mounted) context.pop();
+      if (mounted) {
+        context.pop();
+        AppToast.showSuccess(context, 'Target impian berhasil diperbarui');
+      }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+        AppToast.showError(context, 'Gagal memperbarui target impian');
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -97,11 +100,13 @@ class _EditDreamScreenState extends ConsumerState<EditDreamScreen> {
     try {
       final repo = ref.read(dreamRepositoryProvider);
       await repo.deleteDream(walletId, widget.dream.dreamId);
-      if (mounted) context.pop();
+      if (mounted) {
+        context.pop();
+        AppToast.showSuccess(context, 'Target impian berhasil dihapus');
+      }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+        AppToast.showError(context, 'Gagal menghapus target impian');
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);

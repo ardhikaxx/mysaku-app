@@ -6,6 +6,7 @@ import '../../core/constants/app_strings.dart';
 import '../../core/errors/app_exception.dart';
 import '../../core/extensions/datetime_extension.dart';
 import '../../core/utils/app_haptics.dart';
+import '../../core/utils/app_toast.dart';
 import '../../core/utils/app_undo_toast.dart';
 import '../../core/utils/currency_formatter.dart';
 import 'package:intl/intl.dart';
@@ -116,23 +117,22 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
         currentContext.pop();
         AppUndoToast.show(
           currentContext,
-          message: 'Transaksi berhasil diperbarui',
+          message: 'Data transaksi berhasil diperbarui',
           onUndo: () async {
             await repo.updateTransaction(walletId, oldTx);
+            if (currentContext.mounted) {
+              AppToast.showSuccess(currentContext, 'Pembaruan dibatalkan (dikembalikan ke asal)');
+            }
           },
         );
       }
     } on AppException catch (e) {
-      AppHaptics.errorFeedback();
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message)));
+        AppToast.showError(context, 'Gagal memperbarui data: ${e.message}');
       }
     } catch (e) {
-      AppHaptics.errorFeedback();
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+        AppToast.showError(context, 'Gagal memperbarui data: Terjadi kesalahan sistem');
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -162,17 +162,18 @@ class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
         currentContext.pop();
         AppUndoToast.show(
           currentContext,
-          message: 'Transaksi berhasil dihapus',
+          message: 'Data transaksi berhasil dihapus',
           onUndo: () async {
             await repo.addTransaction(walletId, oldTx);
+            if (currentContext.mounted) {
+              AppToast.showSuccess(currentContext, 'Penghapusan dibatalkan (data dipulihkan)');
+            }
           },
         );
       }
     } catch (e) {
-      AppHaptics.errorFeedback();
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+        AppToast.showError(context, 'Gagal menghapus data: Terjadi kesalahan sistem');
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/extensions/currency_extension.dart';
 import '../../../core/utils/app_haptics.dart';
+import '../../../core/utils/app_toast.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../providers/privacy_provider.dart';
 import '../../../providers/transaction_provider.dart';
@@ -424,14 +425,24 @@ class BudgetCard extends ConsumerWidget {
                           flex: 2,
                           child: ElevatedButton(
                               onPressed: () {
-                                AppHaptics.successFeedback();
-                                final cleanText =
-                                    controller.text.replaceAll('.', '');
-                                final newBudget =
-                                    double.tryParse(cleanText) ?? 3000000.0;
-                                ref.read(monthlyBudgetProvider.notifier).state =
-                                    newBudget;
-                                Navigator.pop(ctx);
+                                try {
+                                  final cleanText = controller.text
+                                      .replaceAll('Rp', '')
+                                      .replaceAll('.', '')
+                                      .trim();
+                                  final newBudget =
+                                      double.tryParse(cleanText) ?? 3000000.0;
+                                  ref.read(monthlyBudgetProvider.notifier).state =
+                                      newBudget;
+                                  Navigator.pop(ctx);
+                                  if (context.mounted) {
+                                    AppToast.showSuccess(context, 'Batas anggaran bulanan berhasil disimpan');
+                                  }
+                                } catch (e) {
+                                  if (context.mounted) {
+                                    AppToast.showError(context, 'Gagal menyimpan batas anggaran');
+                                  }
+                                }
                               },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryColor,

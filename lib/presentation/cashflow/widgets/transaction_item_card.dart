@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/extensions/currency_extension.dart';
 import '../../../core/extensions/datetime_extension.dart';
+import '../../../core/utils/app_toast.dart';
+import '../../../core/utils/app_undo_toast.dart';
 import '../../../data/models/transaction_model.dart';
 import '../../../providers/transaction_provider.dart';
 import '../../../providers/user_provider.dart';
@@ -205,12 +207,24 @@ class TransactionItemCard extends ConsumerWidget {
 
           try {
             final repo = ref.read(transactionRepositoryProvider);
+            final oldTx = tx;
             await repo.deleteTransaction(walletId, tx.transactionId);
+            if (context.mounted) {
+              AppUndoToast.show(
+                context,
+                message: 'Data transaksi berhasil dihapus',
+                onUndo: () async {
+                  await repo.addTransaction(walletId, oldTx);
+                  if (context.mounted) {
+                    AppToast.showSuccess(context, 'Penghapusan dibatalkan (data dipulihkan)');
+                  }
+                },
+              );
+            }
             return true;
           } catch (e) {
             if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Gagal menghapus: $e')));
+              AppToast.showError(context, 'Gagal menghapus data: Terjadi kesalahan sistem');
             }
             return false;
           }

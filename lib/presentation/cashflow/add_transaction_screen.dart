@@ -7,6 +7,7 @@ import '../../core/errors/app_exception.dart';
 import '../../core/extensions/datetime_extension.dart';
 import 'package:intl/intl.dart';
 import '../../core/utils/app_haptics.dart';
+import '../../core/utils/app_toast.dart';
 import '../../core/utils/app_undo_toast.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../data/models/transaction_model.dart';
@@ -107,23 +108,22 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
         currentContext.pop();
         AppUndoToast.show(
           currentContext,
-          message: 'Transaksi baru berhasil dicatat',
+          message: 'Data transaksi berhasil disimpan',
           onUndo: () async {
             await repo.deleteTransaction(walletId, newId);
+            if (currentContext.mounted) {
+              AppToast.showSuccess(currentContext, 'Aksi simpan berhasil dibatalkan');
+            }
           },
         );
       }
     } on AppException catch (e) {
-      AppHaptics.errorFeedback();
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message)));
+        AppToast.showError(context, 'Gagal menyimpan data: ${e.message}');
       }
     } catch (e) {
-      AppHaptics.errorFeedback();
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+        AppToast.showError(context, 'Gagal menyimpan data: Terjadi kesalahan sistem');
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
