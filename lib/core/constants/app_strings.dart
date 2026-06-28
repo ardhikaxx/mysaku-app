@@ -1,11 +1,11 @@
 class AppStrings {
   static const String appName = 'MySaku';
-  static const String appSubtitle = 'My Smart Saving & Cashflow Utility';
+  static const String appSubtitle = 'Kelola Keuangan, Wujudkan Impian';
   static const String loginTitle = 'Selamat Datang Kembali';
-  static const String loginSubtitle = 'Kelola arus kas & impian keuangan bersama';
-  static const String registerTitle = 'Buat Akun MySAKU';
-  static const String registerSubtitle = 'Mulai perjalanan finansial kolaboratif Anda';
-  static const String cashflowTab = 'Cashflow';
+  static const String loginSubtitle = 'Kelola Keuangan, Wujudkan Impian';
+  static const String registerTitle = 'Buat Akun MySaku';
+  static const String registerSubtitle = 'Kelola Keuangan, Wujudkan Impian';
+  static const String cashflowTab = 'Keuangan';
   static const String dreamsTab = 'Impian';
   static const String profileTab = 'Profil';
   static const String totalBalance = 'Total Saldo';

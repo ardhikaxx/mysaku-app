@@ -30,7 +30,7 @@ class BottomNavBar extends StatelessWidget {
         ),
         child: Row(
           children: [
-            _buildNavItem(0, Icons.swap_horiz_rounded, 'Cashflow'),
+            _buildNavItem(0, Icons.swap_horiz_rounded, 'Keuangan'),
             _buildNavItem(1, Icons.receipt_long_rounded, 'Riwayat'),
             _buildNavItem(2, Icons.card_giftcard_rounded, 'Impian'),
             _buildNavItem(3, Icons.person_rounded, 'Profil'),

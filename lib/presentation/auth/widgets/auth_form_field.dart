@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_sizes.dart';
 
-class AuthFormField extends StatelessWidget {
+class AuthFormField extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final String hint;
@@ -23,16 +23,44 @@ class AuthFormField extends StatelessWidget {
   });
 
   @override
+  State<AuthFormField> createState() => _AuthFormFieldState();
+}
+
+class _AuthFormFieldState extends State<AuthFormField> {
+  late bool _isObscured;
+
+  @override
+  void initState() {
+    super.initState();
+    _isObscured = widget.obscureText;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      validator: validator,
+      controller: widget.controller,
+      obscureText: _isObscured,
+      keyboardType: widget.keyboardType,
+      validator: widget.validator,
       decoration: InputDecoration(
-        labelText: label,
-        hintText: hint,
-        prefixIcon: Icon(prefixIcon, color: AppColors.primaryColor),
+        labelText: widget.label,
+        hintText: widget.hint,
+        prefixIcon: Icon(widget.prefixIcon, color: AppColors.primaryColor),
+        suffixIcon: widget.obscureText
+            ? IconButton(
+                icon: Icon(
+                  _isObscured
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: AppColors.textSecondary,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isObscured = !_isObscured;
+                  });
+                },
+              )
+            : null,
         filled: true,
         fillColor: AppColors.surfaceWhite,
         border: OutlineInputBorder(

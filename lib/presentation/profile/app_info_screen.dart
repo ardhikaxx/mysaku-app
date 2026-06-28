@@ -85,7 +85,7 @@ class AppInfoScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'Aplikasi pencatatan arus kas dan manajemen target impian bersama secara real-time untuk keluarga & pasangan.',
+                    'Aplikasi pencatatan keuangan dan manajemen target impian bersama secara real-time untuk keluarga & pasangan.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 13,

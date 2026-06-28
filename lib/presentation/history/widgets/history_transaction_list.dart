@@ -44,7 +44,7 @@ class _HistoryTransactionListState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Seluruh catatan arus kas masuk dan keluar yang tercatat dalam dompet Anda.',
+                'Seluruh catatan keuangan masuk dan keluar yang tercatat dalam dompet Anda.',
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
               ),
               const SizedBox(height: 14),
