@@ -67,6 +67,7 @@ class NotificationService {
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>();
       final bool? res = await androidImplementation?.requestNotificationsPermission();
+      await androidImplementation?.requestExactAlarmsPermission();
       granted = res ?? false;
       debugPrint('Requested notification permission from UI: $granted');
     }
@@ -189,7 +190,7 @@ class NotificationService {
           body: body,
           scheduledDate: scheduledDate,
           notificationDetails: notificationDetails,
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
           matchDateTimeComponents: DateTimeComponents.time,
         );
       } catch (e) {
@@ -289,7 +290,7 @@ class NotificationService {
         body: 'Hebat! Sistem alarm latar belakang HP Anda bekerja dengan tepat waktu.',
         scheduledDate: scheduledDate,
         notificationDetails: notificationDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: AndroidScheduleMode.alarmClock,
       );
     } catch (e) {
       debugPrint('Exact test alarm failed, falling back to inexact: $e');
