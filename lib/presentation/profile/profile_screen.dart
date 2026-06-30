@@ -203,7 +203,7 @@ class ProfileScreen extends ConsumerWidget {
           tiles.add(SettingsTile(
             icon: Icons.notifications_active_rounded,
             title: 'Pengingat Catat Harian',
-            subtitle: 'Atur jadwal otomatis 5x sehari (08.00 - 21.00 WIB)',
+            subtitle: 'Atur jadwal otomatis 5x sehari (09.00 - 21.00 WIB)',
             onTap: () => context.push('/home/profile/daily-reminder'),
           ));
           tiles.add(SettingsTile(

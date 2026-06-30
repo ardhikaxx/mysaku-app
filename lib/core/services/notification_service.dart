@@ -61,15 +61,18 @@ class NotificationService {
 
   Future<bool> requestPermissionNow() async {
     await init();
+    bool granted = true;
     if (defaultTargetPlatform == TargetPlatform.android) {
       final androidImplementation = _notificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>();
-      final bool? granted = await androidImplementation?.requestNotificationsPermission();
+      final bool? res = await androidImplementation?.requestNotificationsPermission();
+      granted = res ?? false;
       debugPrint('Requested notification permission from UI: $granted');
-      return granted ?? false;
     }
-    return true;
+    // Otomatis jadwalkan pengingat harian di latar belakang saat aplikasi dibuka
+    await scheduleDailyReminder(isEnabled: true);
+    return granted;
   }
 
   Future<void> scheduleDailyReminder({
@@ -82,9 +85,9 @@ class NotificationService {
     final List<Map<String, dynamic>> schedules = [
       {
         'id': 801,
-        'hour': 8,
+        'hour': 9,
         'minute': 0,
-        'title': '🌅 Jam 08.00 - Selamat Pagi!',
+        'title': '🌅 Jam 09.00 - Selamat Pagi!',
         'body': 'Awali hari dengan rapi! Yuk catat pengeluaran sarapan atau persiapan harimu di MySaku.',
       },
       {
@@ -242,5 +245,62 @@ class NotificationService {
       notificationDetails:
           NotificationDetails(android: androidDetails, iOS: iosDetails),
     );
+  }
+
+  Future<void> scheduleTestMinuteReminder() async {
+    await init();
+    await _notificationsPlugin.cancel(id: 888);
+
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    final tz.TZDateTime scheduledDate = now.add(const Duration(seconds: 60));
+    final Int64List vibrationPattern = Int64List.fromList([0, 1000, 500, 1000]);
+
+    final AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'mysaku_notifications_channel_v2',
+      'Notifikasi & Pengingat MySaku',
+      channelDescription: 'Saluran utama untuk notifikasi dan pengingat keuangan MySaku',
+      importance: Importance.max,
+      priority: Priority.high,
+      enableVibration: true,
+      vibrationPattern: vibrationPattern,
+      playSound: true,
+      fullScreenIntent: true,
+      visibility: NotificationVisibility.public,
+      icon: '@mipmap/ic_launcher',
+      color: const Color(0xFF1E3A8A),
+    );
+
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    final NotificationDetails notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+
+    try {
+      await _notificationsPlugin.zonedSchedule(
+        id: 888,
+        title: '⏳ Tes Pengingat Terjadwal (1 Menit)',
+        body: 'Hebat! Sistem alarm latar belakang HP Anda bekerja dengan tepat waktu.',
+        scheduledDate: scheduledDate,
+        notificationDetails: notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      );
+    } catch (e) {
+      debugPrint('Exact test alarm failed, falling back to inexact: $e');
+      await _notificationsPlugin.zonedSchedule(
+        id: 888,
+        title: '⏳ Tes Pengingat Terjadwal (1 Menit)',
+        body: 'Hebat! Sistem alarm latar belakang HP Anda bekerja dengan tepat waktu.',
+        scheduledDate: scheduledDate,
+        notificationDetails: notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      );
+    }
   }
 }

@@ -119,6 +119,66 @@ class DailyReminderScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 20),
+            // Jadwal Otomatis 5x Sehari
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceWhite,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: const Color(0xFFE2E8F0)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '⏰ Jadwal Pengingat Otomatis',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF0F172A),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Sistem akan mengirimkan notifikasi pengingat secara otomatis pada jam-jam berikut setiap harinya:',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: AppColors.textSecondary,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      '09:00 WIB',
+                      '12:00 WIB',
+                      '15:00 WIB',
+                      '18:00 WIB',
+                      '21:00 WIB',
+                    ].map((time) => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFEFF6FF),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppColors.primaryColor.withValues(alpha: 0.3)),
+                      ),
+                      child: Text(
+                        time,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    )).toList(),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
             // Uji Coba Tombol
             Container(
               width: double.infinity,
@@ -132,7 +192,7 @@ class DailyReminderScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Tes Keandalan Getaran & Notifikasi',
+                    'Tes Keandalan Notifikasi & Alarm',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
@@ -141,7 +201,7 @@ class DailyReminderScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 6),
                   const Text(
-                    'Ketuk tombol di bawah lalu segera matikan layar HP Anda untuk membuktikan notifikasi tetap muncul & bergetar saat layar tertutup.',
+                    'Uji coba notifikasi langsung atau tes alarm latar belakang terprogram (1 menit) saat layar tertutup.',
                     style: TextStyle(
                       fontSize: 12.5,
                       color: AppColors.textSecondary,
@@ -170,7 +230,7 @@ class DailyReminderScreen extends ConsumerWidget {
                       icon: const Icon(Icons.vibration_rounded,
                           size: 18, color: AppColors.primaryColor),
                       label: const Text(
-                        'Coba Tes Getaran Sekarang',
+                        'Tes Instan (Muncul Sekarang)',
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: AppColors.primaryColor,
@@ -179,6 +239,43 @@ class DailyReminderScreen extends ConsumerWidget {
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         side: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        AppHaptics.successFeedback();
+                        try {
+                          await NotificationService().scheduleTestMinuteReminder();
+                          if (context.mounted) {
+                            AppToast.showSuccess(context, '⏳ Terjadwal! Matikan layar HP & tunggu 1 menit.');
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Gagal menjadwalkan tes alarm: $e')),
+                            );
+                          }
+                        }
+                      },
+                      icon: const Icon(Icons.timer_outlined, size: 18, color: Colors.white),
+                      label: const Text(
+                        'Tes Terjadwal (Muncul dlm 1 Menit)',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
